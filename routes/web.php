@@ -103,3 +103,11 @@ Route::post('/news/{id}/share-increment', function ($id) {
     $news->increment('shares');
     return response()->json(['success' => true, 'total_shares' => $news->shares]);
 })->name('news.share.increment');
+
+Route::get('/lppm/profil', function () {
+    $page = \App\Models\Page::where('slug', 'profil-lppm')->firstOrFail();
+    return view('pages.akademik-sistem', compact('page'));
+})->name('lppm.profil');
+
+// Rute Direktori Publikasi / Jurnal (Livewire)
+Route::get('/lppm/publikasi', \App\Livewire\ResearchIndex::class)->name('lppm.publikasi');

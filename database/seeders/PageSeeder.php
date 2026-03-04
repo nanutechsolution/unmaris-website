@@ -66,5 +66,29 @@ class PageSeeder extends Seeder
                 ],
             ]
         );
+
+
+        Page::updateOrCreate(
+            ['slug' => 'profil-lppm'],
+            [
+                'title' => 'Lembaga Penelitian dan Pengabdian kepada Masyarakat (LPPM)',
+                'meta_description' => 'Motor penggerak Tri Dharma Perguruan Tinggi di Universitas Stella Maris Sumba yang berfokus pada inovasi dan pemberdayaan masyarakat lokal.',
+                'content' => [
+                    'umum' => '<h2>Visi LPPM UNMARIS</h2>
+                    <p>Menjadi lembaga riset dan pemberdayaan masyarakat yang unggul, inovatif, dan berdampak langsung pada pembangunan peradaban Sumba dan Indonesia Timur.</p>
+                    
+                    <h3>Fokus Penelitian Unggulan</h3>
+                    <ul>
+                        <li>Pengembangan Teknologi Agrikultur Lahan Kering</li>
+                        <li>Konservasi Budaya dan Kearifan Lokal Sumba</li>
+                        <li>Digitalisasi Pendidikan dan Bisnis Daerah</li>
+                        <li>Kesehatan Masyarakat dan Sanitasi Lingkungan</li>
+                    </ul>
+                    
+                    <h3>Program Pengabdian</h3>
+                    <p>Kami rutin menerjunkan mahasiswa dan dosen ke desa-desa binaan melalui program Kuliah Kerja Nyata (KKN) Tematik dan pemberdayaan UMKM lokal agar inovasi akademik dapat dirasakan manfaatnya secara nyata oleh masyarakat luas.</p>'
+                ],
+            ]
+        );
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Leader;
 use App\Models\Page;
 use App\Models\Partner;
 use App\Models\Scholarship;
+use App\Models\StudentOrganization;
 
 Route::get('/', function () {
     $sliders = \App\Models\Slider::where('is_active', true)->orderBy('order', 'asc')->get();
@@ -134,3 +135,15 @@ Route::get('/kemahasiswaan/beasiswa', function () {
 
     return view('pages.scholarships', compact('scholarships'));
 })->name('scholarships.index');
+
+
+Route::get('/kemahasiswaan/organisasi', function () {
+    // Ambil data yang aktif dan kelompokkan berdasarkan kategori
+    $organizationsGrouped = StudentOrganization::where('is_active', true)
+        ->orderBy('order', 'asc')
+        ->orderBy('name', 'asc')
+        ->get()
+        ->groupBy('category');
+
+    return view('pages.student-organizations', compact('organizationsGrouped'));
+})->name('organizations.index');

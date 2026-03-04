@@ -16,9 +16,16 @@
         }
     </script>
 
-    <!-- Reading Progress Bar -->
-    <div class="fixed top-0 left-0 w-full h-1.5 z-[60] pointer-events-none">
-        <div id="progress-bar" class="h-full bg-unmaris-yellow w-0 transition-all duration-150 shadow-[0_0_10px_rgba(253,224,26,0.8)]"></div>
+    <!-- Reading Progress Bar (Menggunakan Alpine.js Native) -->
+    <div class="fixed top-0 left-0 w-full h-1.5 z-[60] pointer-events-none"
+         x-data="{ scrollProgress: 0 }"
+         @scroll.window="
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            scrollProgress = (winScroll / height) * 100;
+         ">
+        <div class="h-full bg-unmaris-yellow transition-all duration-150 shadow-[0_0_10px_rgba(253,224,26,0.8)]"
+             :style="`width: ${scrollProgress}%`"></div>
     </div>
 
     <div class="bg-white min-h-screen pb-24">
@@ -102,27 +109,70 @@
                             <div class="mt-20 pt-10 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-8">
                                 <div class="flex items-center gap-4 lg:gap-6">
                                     <span class="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Bagikan:</span>
-                                    <div class="flex gap-2 lg:gap-3">
+                                    
+                                    <!-- Logika Share Alpine.js -->
+                                    <div class="flex gap-2 lg:gap-3" x-data="{
+                                        shareArticle(platform) {
+                                            const url = encodeURIComponent(window.location.href);
+                                            const title = encodeURIComponent('{{ addslashes($news->title) }}');
+                                            let shareUrl = '';
+
+                                            if (platform === 'facebook') shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                                            if (platform === 'whatsapp') shareUrl = `https://api.whatsapp.com/send?text=${title}%20${url}`;
+                                            if (platform === 'x') shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+
+                                            if (platform === 'copy') {
+                                                const tempInput = document.createElement('input');
+                                                tempInput.value = window.location.href;
+                                                document.body.appendChild(tempInput);
+                                                tempInput.select();
+                                                document.execCommand('copy');
+                                                document.body.removeChild(tempInput);
+
+                                                const btn = document.getElementById('copyLinkBtn');
+                                                if (btn) {
+                                                    const originalIcon = btn.innerHTML;
+                                                    btn.innerHTML = '<svg class=\'w-5 h-5 text-green-500\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'3\' viewBox=\'0 0 24 24\'><path d=\'M5 13l4 4L19 7\'></path></svg>';
+                                                    setTimeout(() => { btn.innerHTML = originalIcon; }, 2000);
+                                                }
+                                            } else if (shareUrl) {
+                                                window.open(shareUrl, '_blank', 'noopener,noreferrer');
+                                            }
+
+                                            // AJAX: Mencatat statistik share
+                                            const csrfToken = document.querySelector('meta[name=\'csrf-token\']');
+                                            if (csrfToken) {
+                                                fetch('{{ route('news.share.increment', $news->id) }}', {
+                                                    method: 'POST',
+                                                    headers: {
+                                                        'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
+                                                        'Content-Type': 'application/json',
+                                                        'Accept': 'application/json'
+                                                    }
+                                                }).catch(err => console.warn('Share stat error:', err));
+                                            }
+                                        }
+                                    }">
                                         <!-- Facebook -->
-                                        <button class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-[#1877F2] hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
+                                        <button @click="shareArticle('facebook')" type="button" class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-[#1877F2] hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                                             </svg>
                                         </button>
                                         <!-- X / Twitter -->
-                                        <button onclick="window.share('x')" class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-black hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
+                                        <button @click="shareArticle('x')" type="button" class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-black hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z" />
                                             </svg>
                                         </button>
                                         <!-- WhatsApp -->
-                                        <button onclick="window.share('whatsapp')" class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-[#25D366] hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
+                                        <button @click="shareArticle('whatsapp')" type="button" class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-[#25D366] hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
                                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
                                             </svg>
                                         </button>
                                         <!-- Copy Link -->
-                                        <button onclick="window.share('copy')" id="copyLinkBtn" class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-unmaris-blue hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
+                                        <button @click="shareArticle('copy')" id="copyLinkBtn" type="button" class="w-11 h-11 lg:w-12 lg:h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-400 hover:bg-unmaris-blue hover:text-white transition-all shadow-sm hover:shadow-xl hover:-translate-y-1">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                                 <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
                                             </svg>
@@ -168,9 +218,11 @@
                                     @if($rel->featured_image)
                                     <img src="{{ Storage::url($rel->featured_image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
                                     @else
-                                    <div class="w-full h-full bg-gray-100 flex items-center justify-center"><svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <div class="w-full h-full bg-gray-100 flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                        </svg></div>
+                                        </svg>
+                                    </div>
                                     @endif
                                 </div>
                                 <div class="flex flex-col justify-center">
@@ -207,88 +259,4 @@
             </div>
         </div>
     </div>
-
-    @push('scripts')
-    <script>
-        /**
-         * Inisialisasi fungsi share ke dalam global window secara eksplisit.
-         * Ini menjamin fungsi tersedia meskipun halaman dimuat melalui Livewire wire:navigate.
-         */
-        window.initNewsScripts = function() {
-            // Logika Reading Progress Bar
-            const handleScroll = function() {
-                let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-                let scrolled = (winScroll / height) * 100;
-                const bar = document.getElementById("progress-bar");
-                if (bar) bar.style.width = scrolled + "%";
-            };
-            window.addEventListener('scroll', handleScroll);
-
-            // Fungsi Share
-            window.share = function(platform) {
-                const url = encodeURIComponent(window.location.href);
-                const titleText = {
-                    !!json_encode($news - > title) !!
-                };
-                const title = encodeURIComponent(titleText);
-                let shareUrl = '';
-
-                switch (platform) {
-                    case 'facebook':
-                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-                        break;
-                    case 'whatsapp':
-                        shareUrl = `https://api.whatsapp.com/send?text=${title}%20${url}`;
-                        break;
-                    case 'x':
-                        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-                        break;
-                    case 'copy':
-                        const tempInput = document.createElement("input");
-                        tempInput.value = window.location.href;
-                        document.body.appendChild(tempInput);
-                        tempInput.select();
-                        document.execCommand("copy");
-                        document.body.removeChild(tempInput);
-
-                        const btn = document.getElementById('copyLinkBtn');
-                        if (btn) {
-                            const originalIcon = btn.innerHTML;
-                            btn.innerHTML = '<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"></path></svg>';
-                            setTimeout(() => {
-                                btn.innerHTML = originalIcon;
-                            }, 2000);
-                        }
-                        break;
-                }
-
-                if (shareUrl) {
-                    window.open(shareUrl, '_blank', 'noopener,noreferrer');
-                }
-
-                // AJAX: Mencatat statistik share
-                const csrfToken = document.querySelector('meta[name="csrf-token"]');
-                if (csrfToken) {
-                    fetch("{{ route('news.share.increment', $news->id) }}", {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken.getAttribute('content'),
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        }
-                    }).catch(err => console.warn('Gagal mencatat statistik share:', err));
-                }
-            };
-        };
-
-        // Jalankan saat load awal
-        window.initNewsScripts();
-
-        // Jalankan ulang saat navigasi Livewire (PENTING untuk perbaikan error Anda)
-        document.addEventListener('livewire:navigated', () => {
-            window.initNewsScripts();
-        });
-    </script>
-    @endpush
 </x-layouts.app>

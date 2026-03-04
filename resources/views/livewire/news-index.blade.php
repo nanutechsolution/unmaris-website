@@ -7,8 +7,8 @@
             </svg>
         </div>
         <div class="container mx-auto px-4 relative z-10 text-center">
-            <span class="text-unmaris-yellow font-black tracking-[0.3em] uppercase text-[10px] mb-4 block">Official Media Hub</span>
-            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">News & <span class="text-unmaris-yellow">Insights</span></h1>
+            <span class="text-unmaris-yellow font-black tracking-[0.3em] uppercase text-[10px] mb-4 block">Pusat Media Resmi</span>
+            <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">Berita & <span class="text-unmaris-yellow">Publikasi</span></h1>
             <p class="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-medium">Jendela informasi mengenai terobosan riset, prestasi global, dan dinamika akademik di Universitas Stella Maris Sumba.</p>
         </div>
     </section>
@@ -60,7 +60,7 @@
                             <span class="bg-unmaris-yellow text-unmaris-blue text-[10px] font-black px-5 py-2 rounded-full uppercase tracking-widest shadow-lg">
                                 {{ $featuredNews->category->name }}
                             </span>
-                            <span class="text-white/70 text-xs font-bold uppercase tracking-widest">{{ $featuredNews->published_at->format('M d, Y') }}</span>
+                            <span class="text-white/70 text-xs font-bold uppercase tracking-widest">{{ $featuredNews->published_at->format('d M Y') }}</span>
                         </div>
                         <h2 class="text-4xl md:text-6xl font-black text-white leading-[1.1] mb-8 group-hover:text-unmaris-yellow transition-colors duration-300">
                             <a href="{{ route('news.detail', $featuredNews->slug) }}">
@@ -72,11 +72,11 @@
                         </p>
                         <div class="flex items-center gap-6">
                             <a href="{{ route('news.detail', $featuredNews->slug) }}" class="bg-white text-unmaris-blue px-10 py-4 rounded-full font-black text-sm uppercase tracking-widest hover:bg-unmaris-yellow transition-all shadow-xl">
-                                Read Article
+                                Baca Artikel
                             </a>
                             <div class="flex items-center text-white/50 text-xs gap-4 font-bold">
-                                <span class="flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg> {{ number_format($featuredNews->views) }} Views</span>
-                                <span class="flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg> {{ number_format($featuredNews->shares) }} Shares</span>
+                                <span class="flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg> {{ number_format($featuredNews->views) }} Tayangan</span>
+                                <span class="flex items-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg> {{ number_format($featuredNews->shares) }} Dibagikan</span>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
             <!-- 2. MAIN NEWS GRID (Kiri) -->
             <div class="lg:col-span-8">
                 <div class="flex items-center gap-4 mb-10">
-                    <h2 class="text-2xl font-black text-gray-900 uppercase tracking-tighter">Latest Stories</h2>
+                    <h2 class="text-2xl font-black text-gray-900 uppercase tracking-tighter">Berita Terbaru</h2>
                     <div class="h-1 flex-grow bg-gray-100 rounded-full"></div>
                 </div>
 
@@ -113,7 +113,7 @@
                             <div class="px-4 flex flex-col flex-grow">
                                 <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-4 flex items-center gap-2">
                                     <div class="w-1 h-1 bg-unmaris-yellow rounded-full"></div>
-                                    {{ $item->published_at->format('F d, Y') }}
+                                    {{ $item->published_at->format('d F Y') }}
                                 </span>
                                 
                                 <h3 class="text-2xl font-black text-gray-900 leading-tight mb-4 group-hover:text-unmaris-blue transition-colors duration-300">
@@ -128,7 +128,7 @@
                                 
                                 <div class="mt-auto pt-6 border-t border-gray-50 flex justify-between items-center">
                                     <a href="{{ route('news.detail', $item->slug) }}" class="text-unmaris-blue font-black text-xs uppercase tracking-widest flex items-center gap-2 group/link">
-                                        Read More
+                                        Baca Selengkapnya
                                         <svg class="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
                                     </a>
                                     <div class="flex items-center gap-3 text-gray-300">
@@ -142,8 +142,8 @@
                             <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
                                 <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5L18.5 8H20"></path></svg>
                             </div>
-                            <h3 class="text-xl font-black text-gray-900 mb-2">No Articles Found</h3>
-                            <p class="text-gray-500 font-medium">Coba sesuaikan pencarian atau kategori filter Anda.</p>
+                            <h3 class="text-xl font-black text-gray-900 mb-2">Belum Ada Publikasi</h3>
+                            <p class="text-gray-500 font-medium">Silakan sesuaikan kata kunci pencarian atau filter kategori Anda.</p>
                         </div>
                     @endforelse
                 </div>
@@ -158,7 +158,7 @@
             <aside class="lg:col-span-4">
                 <div class="sticky top-24">
                     <div class="flex items-center gap-4 mb-10">
-                        <h2 class="text-2xl font-black text-gray-900 uppercase tracking-tighter">Trending</h2>
+                        <h2 class="text-2xl font-black text-gray-900 uppercase tracking-tighter">Terpopuler</h2>
                         <div class="h-1 flex-grow bg-unmaris-yellow rounded-full"></div>
                     </div>
 
@@ -192,15 +192,7 @@
                         @endforeach
                     </div>
 
-                    <!-- Newsletter or Call to Action in Sidebar -->
-                    <div class="mt-16 bg-gray-900 rounded-[2.5rem] p-8 text-white relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-unmaris-yellow/10 rounded-full blur-2xl"></div>
-                        <h3 class="text-xl font-black mb-4 relative z-10">Don't miss a story.</h3>
-                        <p class="text-gray-400 text-sm mb-6 relative z-10 leading-relaxed">Dapatkan pembaruan riset dan berita akademik langsung di inbox Anda.</p>
-                        <a href="{{ route('contact') }}" class="inline-block w-full text-center bg-unmaris-yellow text-unmaris-blue py-3 rounded-full font-black text-xs uppercase tracking-widest hover:bg-white transition-all">
-                            Subscribe Now
-                        </a>
-                    </div>
+                  
                 </div>
             </aside>
         </div>

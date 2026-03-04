@@ -103,14 +103,21 @@
                             </div>
 
                             <!-- Content Body -->
-                            <div class="prose prose-lg md:prose-xl max-w-none text-gray-700 
-                                        prose-img:rounded-2xl prose-img:shadow-md 
-                                        prose-headings:text-unmaris-blue prose-headings:font-black 
-                                        prose-a:text-unmaris-blue hover:prose-a:text-unmaris-yellow 
-                                        prose-li:marker:text-unmaris-yellow prose-blockquote:border-l-unmaris-blue">
+                           <div class="text-gray-700 text-base md:text-lg leading-relaxed
+                                        [&_p]:mb-6
+                                        [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-6 [&_ul]:space-y-2 marker:[&_ul]:text-unmaris-yellow marker:[&_ul]:text-xl
+                                        [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-6 [&_ol]:space-y-2 marker:[&_ol]:text-unmaris-blue marker:[&_ol]:font-bold
+                                        [&_h2]:text-2xl sm:[&_h2]:text-3xl [&_h2]:font-black [&_h2]:text-unmaris-blue [&_h2]:mt-10 [&_h2]:mb-6
+                                        [&_h3]:text-xl sm:[&_h3]:text-2xl [&_h3]:font-bold [&_h3]:text-unmaris-blue [&_h3]:mt-8 [&_h3]:mb-4
+                                        [&_strong]:text-gray-900 [&_strong]:font-extrabold
+                                        [&_a]:text-unmaris-blue [&_a]:font-bold [&_a]:underline hover:[&_a]:text-unmaris-yellow [&_a]:transition-colors
+                                        [&_blockquote]:border-l-4 [&_blockquote]:border-unmaris-yellow [&_blockquote]:bg-gray-50 [&_blockquote]:py-5 [&_blockquote]:px-6 md:[&_blockquote]:px-8 [&_blockquote]:rounded-r-2xl [&_blockquote]:italic [&_blockquote]:text-gray-600 [&_blockquote]:mb-8 [&_blockquote]:shadow-sm
+                                        [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:mx-auto [&_img]:my-8 [&_img]:max-w-full
+                                        [&_table]:w-full [&_table]:border-collapse [&_table]:rounded-xl [&_table]:overflow-hidden [&_table]:mb-6 
+                                        [&_th]:bg-unmaris-blue [&_th]:text-white [&_th]:p-3 [&_th]:text-left 
+                                        [&_td]:p-3 [&_td]:border-b [&_td]:border-gray-200 hover:[&_tr]:bg-gray-50">
                                 {!! $news->content !!}
                             </div>
-
                             <!-- Share Bar -->
                             <div class="mt-16 pt-8 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-6">
                                 <div class="flex items-center gap-4">

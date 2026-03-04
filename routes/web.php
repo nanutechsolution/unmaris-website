@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\Faculty;
 use App\Models\Leader;
 use App\Models\Page;
+use App\Models\Partner;
 
 Route::get('/', function () {
     $sliders = \App\Models\Slider::where('is_active', true)->orderBy('order', 'asc')->get();
@@ -111,3 +112,14 @@ Route::get('/lppm/profil', function () {
 
 // Rute Direktori Publikasi / Jurnal (Livewire)
 Route::get('/lppm/publikasi', \App\Livewire\ResearchIndex::class)->name('lppm.publikasi');
+
+
+Route::get('/kemitraan', function () {
+    // Ambil data aktif dan kelompokkan berdasarkan tipe
+    $partnersGrouped = Partner::where('is_active', true)
+        ->orderBy('order', 'asc')
+        ->get()
+        ->groupBy('type');
+
+    return view('pages.partnerships', compact('partnersGrouped'));
+})->name('partnerships.index');

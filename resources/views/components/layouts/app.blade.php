@@ -62,6 +62,7 @@
                     <div x-show="openTentang" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1" class="absolute top-full left-0 w-56 bg-white rounded-xl shadow-xl py-2 text-gray-800 border-t-4 border-unmaris-yellow overflow-hidden" style="display: none;">
                         <a href="{{ route('profile') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Profil & Pimpinan</a>
                         <a href="{{ route('facilities.index') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Fasilitas Kampus</a>
+                        <a href="{{ route('partnerships.index') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Jaringan Kemitraan</a>
                     </div>
                 </div>
 
@@ -147,6 +148,7 @@
                     <div x-show="openTentangMobile" x-collapse class="pl-4 pr-2 space-y-1" style="display: none;">
                         <a href="{{ route('profile') }}" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-900/50 rounded-lg">Profil & Pimpinan</a>
                         <a href="{{ route('facilities.index') }}" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-900/50 rounded-lg">Fasilitas Kampus</a>
+                        <a href="{{ route('partnerships.index') }}" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-900/50 rounded-lg">Jaringan Kemitraan</a>
                     </div>
                 </div>
 
@@ -262,7 +264,8 @@
                         <li><a href="{{ route('faculties.index') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Fakultas & Program Studi</a></li>
                         <li><a href="{{ route('akademik.sistem') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Sistem Pembelajaran</a></li>
                         <li><a href="{{ route('akademik.unduhan') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Kalender & Pusat Unduhan</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Penelitian & Pengabdian (LPPM)</a></li>
+                        <li><a href="{{ route('lppm.profil') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Profil LPPM</a></li>
+                        <li><a href="{{ route('lppm.publikasi') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Publikasi LPPM</a></li>
                         <li><a href="https://pmb.unmarissumba.ac.id" target="_blank" class="text-unmaris-yellow font-bold hover:text-white hover:translate-x-1 inline-block transition transform duration-200 mt-2">Pendaftaran Mahasiswa Baru</a></li>
                     </ul>
                 </div>

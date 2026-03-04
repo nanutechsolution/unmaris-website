@@ -9,8 +9,8 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Buat Role dan Permission
 
+        $this->call(UserSeeder::class);
         $this->call([
-            UserSeeder::class,
             RolePermissionSeeder::class,
             PageSeeder::class,
             CategorySeeder::class,

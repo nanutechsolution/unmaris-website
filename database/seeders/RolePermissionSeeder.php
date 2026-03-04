@@ -10,17 +10,16 @@ class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        // Pastikan role tersedia
-        Role::firstOrCreate(['name' => 'super_admin']);
-        Role::firstOrCreate(['name' => 'editor']);
+        // 1. Buat daftar Role
+        $superAdmin = Role::firstOrCreate(['name' => 'super_admin']);
+        $editor = Role::firstOrCreate(['name' => 'editor']);
         Role::firstOrCreate(['name' => 'akademik']);
 
-        // Ambil user admin
+        // 2. Berikan Role ke User Admin yang sudah ada
+        // Ganti email sesuai dengan akun admin Anda
         $user = User::where('email', 'admin@unmaris.ac.id')->first();
-
         if ($user) {
-            // ⭐ Gunakan string role name (lebih stabil)
-            $user->syncRoles(['super_admin']);
+            $user->assignRole($superAdmin);
         }
     }
 }

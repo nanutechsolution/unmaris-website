@@ -1,4 +1,4 @@
-<x-layouts.app :title="$news->title . ' - UNMARIS'" :description="$news->excerpt">
+<x-layouts.app :title="$news->title . ' - UNMARIS'" :description="$news->excerpt" :ogImage="$news->featured_image ? Storage::url($news->featured_image) : null">
     <!-- JSON-LD Schema untuk Artikel (SEO) -->
     <!-- Menggunakan @@ agar Blade tidak menganggapnya sebagai directive PHP -->
     <script type="application/ld+json">

@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'Universitas Stella Maris Sumba - UNMARIS' }}</title>
 
+    <!-- icon -->
+    <link rel="icon" href="{{ asset('images/logo-unmaris.png') }}" type="image/png">
     <!-- Basic SEO Meta Tags -->
     <meta name="description" content="{{ $description ?? 'Universitas Stella Maris Sumba, mencetak generasi unggul, berkarakter, dan berdaya saing global di Nusa Tenggara Timur.' }}">
     <meta name="keywords" content="Universitas di Sumba, Kampus Sumba, Stella Maris Sumba, Kuliah di Sumba, UNMARIS">
@@ -16,7 +18,7 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="{{ $title ?? 'Universitas Stella Maris Sumba' }}">
     <meta property="og:description" content="{{ $description ?? 'Universitas Stella Maris Sumba - Pendidikan Unggul di NTT.' }}">
-    <meta property="og:image" content="{{ $ogImage ?? asset('images/default-og.jpg') }}">
+    <meta property="og:image" content="{{ $ogImage ?? asset('images/logo-unmaris.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles

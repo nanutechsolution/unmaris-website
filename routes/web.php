@@ -19,14 +19,13 @@ Route::get('/', function () {
     $countFakultas = \App\Models\Faculty::count();
     $countBerita = \App\Models\News::where('is_published', true)->count();
     
-    // DATA BARU UNTUK HOME
     // Mengambil 3 fakultas beserta hitungan prodinya
     $featuredFaculties = \App\Models\Faculty::withCount('studyPrograms')->take(3)->get();
     
     // Mengambil 3 pengumuman/agenda terbaru yang aktif
     $recentAnnouncements = \App\Models\Announcement::where('is_active', true)
                                 ->orderBy('start_date', 'desc')
-                                ->take(3)
+                                ->take(4)
                                 ->get();
     
     return view('pages.home', compact(

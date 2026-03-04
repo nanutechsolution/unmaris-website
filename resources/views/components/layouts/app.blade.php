@@ -102,7 +102,7 @@
                 
                 <!-- CTA PMB -->
                 <div class="pl-2">
-                    <a href="https://pmb.unmaris.ac.id" target="_blank" class="inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue px-6 py-2.5 rounded-full font-bold hover:bg-yellow-400 hover:scale-105 transition-all shadow-md">
+                    <a href="https://pmb.unmarissumba.ac.id" target="_blank" class="inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue px-6 py-2.5 rounded-full font-bold hover:bg-yellow-400 hover:scale-105 transition-all shadow-md">
                         Daftar PMB
                     </a>
                 </div>
@@ -147,7 +147,7 @@
                 <a href="{{ route('contact') }}" class="block px-4 py-3 rounded-xl hover:bg-blue-900/50 hover:text-unmaris-yellow transition {{ request()->routeIs('contact') ? 'bg-blue-900/50 text-unmaris-yellow' : '' }}">Hubungi Kami</a>
                 
                 <div class="pt-6 pb-4">
-                    <a href="https://pmb.unmaris.ac.id" target="_blank" class="block w-full text-center bg-unmaris-yellow text-unmaris-blue px-6 py-3.5 rounded-xl font-bold hover:bg-yellow-400 transition shadow-lg text-lg">
+                    <a href="https://pmb.unmarissumba.ac.id" target="_blank" class="block w-full text-center bg-unmaris-yellow text-unmaris-blue px-6 py-3.5 rounded-xl font-bold hover:bg-yellow-400 transition shadow-lg text-lg">
                         Daftar Mahasiswa Baru
                     </a>
                 </div>
@@ -195,7 +195,7 @@
                         <li><a href="{{ route('faculties.index') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Fakultas & Program Studi</a></li>
                         <li><a href="{{ route('akademik.sistem') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Sistem Pembelajaran</a></li>
                         <li><a href="{{ route('akademik.unduhan') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Kalender & Jadwal Kuliah</a></li>
-                        <li><a href="https://pmb.unmaris.ac.id" target="_blank" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Pendaftaran (PMB)</a></li>
+                        <li><a href="https://pmb.unmarissumba.ac.id" target="_blank" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Pendaftaran (PMB)</a></li>
                     </ul>
                 </div>
 
@@ -220,7 +220,7 @@
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-unmaris-yellow mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            <a href="mailto:info@unmaris.ac.id" class="hover:text-unmaris-yellow transition">info@unmaris.ac.id</a>
+                            <a href="mailto:info@unmarissumba.ac.id" class="hover:text-unmaris-yellow transition">info@unmarissumba.ac.id</a>
                         </li>
                         <li class="flex items-center">
                             <svg class="w-5 h-5 text-unmaris-yellow mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>

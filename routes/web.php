@@ -9,6 +9,7 @@ use App\Models\Faculty;
 use App\Models\Leader;
 use App\Models\Page;
 use App\Models\Partner;
+use App\Models\Scholarship;
 
 Route::get('/', function () {
     $sliders = \App\Models\Slider::where('is_active', true)->orderBy('order', 'asc')->get();
@@ -123,3 +124,13 @@ Route::get('/kemitraan', function () {
 
     return view('pages.partnerships', compact('partnersGrouped'));
 })->name('partnerships.index');
+
+Route::get('/kemahasiswaan/beasiswa', function () {
+    // Ambil data beasiswa yang aktif, urutkan yang masih buka di atas
+    $scholarships = Scholarship::where('is_active', true)
+        ->orderByRaw('end_date >= CURDATE() DESC') // Buka di atas
+        ->orderBy('end_date', 'asc') // Yang mau tutup duluan di atas
+        ->get();
+
+    return view('pages.scholarships', compact('scholarships'));
+})->name('scholarships.index');

@@ -8,14 +8,21 @@ use App\Models\Faculty;
 use App\Models\Leader;
 use App\Models\Page;
 use App\Models\Slider;
+use App\Models\StudyProgram;
 
-// Home / Landing Page
 Route::get('/', function () {
+    // Ambil data Slider dan Berita
     $sliders = Slider::where('is_active', true)->orderBy('order', 'asc')->get();
-    $latestNews = News::with('category')->where('is_published', true)->latest('published_at')->take(3)->get();
+    $latestNews = News::with('category')->where('is_published', true)->latest('published_at')->take(4)->get();
 
-    return view('pages.home', compact('sliders', 'latestNews'));
+    // Hitung Statistik Langsung dari Database
+    $countProdi = StudyProgram::count();
+    $countFakultas = Faculty::count();
+    $countBerita = News::where('is_published', true)->count();
+
+    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita'));
 })->name('home');
+
 
 // Profil
 // Route::view('/profil', 'pages.profile')->name('profile');

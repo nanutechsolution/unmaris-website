@@ -2,13 +2,12 @@
 
 use App\Http\Controllers\NewsController;
 use App\Models\Announcement;
+use App\Models\Facility;
 use Illuminate\Support\Facades\Route;
 use App\Models\News;
 use App\Models\Faculty;
 use App\Models\Leader;
 use App\Models\Page;
-use App\Models\Slider;
-use App\Models\StudyProgram;
 
 Route::get('/', function () {
     $sliders = \App\Models\Slider::where('is_active', true)->orderBy('order', 'asc')->get();
@@ -39,6 +38,13 @@ Route::get('/', function () {
     ));
 })->name('home');
 
+
+Route::get('/fasilitas', function () {
+    // Ambil data fasilitas yang aktif dan urutkan
+    $facilities = Facility::where('is_active', true)->orderBy('order', 'asc')->get();
+
+    return view('pages.facilities', compact('facilities'));
+})->name('facilities.index');
 // Profil
 // Route::view('/profil', 'pages.profile')->name('profile');
 Route::get('/profil', function () {

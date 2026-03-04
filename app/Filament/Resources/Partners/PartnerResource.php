@@ -22,6 +22,14 @@ class PartnerResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    // name of the navigation group in sidebar
+    // sort order in navigation group
+    protected static ?int $navigationSort = 3;
+    // name model
+    protected static ?string $label = 'Mitra';
+    protected static ?string $pluralLabel = 'Mitra';
+
+
 
     public static function form(Schema $schema): Schema
     {

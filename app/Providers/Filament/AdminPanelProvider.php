@@ -34,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
+            ->path('makairodewa')
             ->authGuard('web')
             ->login()
             ->colors([
@@ -73,11 +73,15 @@ class AdminPanelProvider extends PanelProvider
                 LatestMessages::class,
             ])
             ->middleware([
-                \Illuminate\Cookie\Middleware\EncryptCookies::class,
-                \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-                \Illuminate\Session\Middleware\StartSession::class,
-                \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-                \Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class,
+                EncryptCookies::class,
+                AddQueuedCookiesToResponse::class,
+                StartSession::class,
+                AuthenticateSession::class,
+                ShareErrorsFromSession::class,
+                VerifyCsrfToken::class,
+                SubstituteBindings::class,
+                DisableBladeIconComponents::class,
+                DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

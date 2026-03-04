@@ -20,10 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::before(function ($user) {
-            if ($user->hasRole('super_admin')) {
-                return true;
-            }
-        });
+         if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
     }
 }

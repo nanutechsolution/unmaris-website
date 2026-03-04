@@ -1,9 +1,8 @@
 <x-layouts.app title="Beranda - Universitas Stella Maris Sumba">
 
-    <!-- Hero Slider Section (Dinamis dengan Pause on Hover) -->
-    @if(isset($sliders) && $sliders->count() > 0)
-    <section class="relative bg-unmaris-blue text-white overflow-hidden"
-        x-data="{ 
+     @if(isset($sliders) && $sliders->count() > 0)
+    <section class="relative bg-unmaris-blue text-white overflow-hidden" 
+             x-data="{ 
                 activeSlide: 0, 
                 totalSlides: {{ $sliders->count() }},
                 paused: false,
@@ -14,15 +13,17 @@
                         }
                     }, 7000)
                 }
-             }"
-        x-init="autoPlay()"
-        @mouseenter="paused = true"
-        @mouseleave="paused = false">
-
+             }" 
+             x-init="autoPlay()"
+             @mouseenter="paused = true"
+             @mouseleave="paused = false"
+             @touchstart="paused = true"
+             @touchend="paused = false">
+        
         <!-- Background Pattern & Global Glow -->
         <div class="absolute inset-0 opacity-10 z-0">
             <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <polygon fill="currentColor" points="0,100 100,0 100,100" />
+                <polygon fill="currentColor" points="0,100 100,0 100,100"/>
             </svg>
         </div>
         <div class="absolute -top-24 -left-24 w-64 h-64 md:w-96 md:h-96 bg-unmaris-yellow rounded-full blur-[80px] md:blur-[120px] opacity-20 z-0"></div>
@@ -30,16 +31,16 @@
         <!-- Slides Container -->
         <div class="relative min-h-[500px] md:min-h-[650px] lg:min-h-[750px] flex items-center">
             @foreach($sliders as $index => $slider)
-            <div x-show="activeSlide === {{ $index }}"
-                x-transition:enter="transition ease-out duration-1000"
-                x-transition:enter-start="opacity-0 translate-x-10 md:translate-x-20"
-                x-transition:enter-end="opacity-100 translate-x-0"
-                x-transition:leave="transition ease-in duration-500"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0 -translate-x-10 md:-translate-x-20"
-                class="container mx-auto px-4 py-12 sm:py-16 md:py-20 relative z-10 flex flex-col-reverse lg:flex-row items-center"
-                x-cloak>
-
+            <div x-show="activeSlide === {{ $index }}" 
+                 x-transition:enter="transition ease-out duration-1000"
+                 x-transition:enter-start="opacity-0 translate-x-10 md:translate-x-20"
+                 x-transition:enter-end="opacity-100 translate-x-0"
+                 x-transition:leave="transition ease-in duration-500"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0 -translate-x-10 md:-translate-x-20"
+                 class="container mx-auto px-4 py-12 sm:py-16 md:py-20 relative z-10 flex flex-col-reverse lg:flex-row items-center"
+                 x-cloak>
+                
                 <!-- Konten Teks -->
                 <div class="w-full lg:w-3/5 text-center lg:text-left lg:pr-10 pt-6 lg:pt-0">
                     @if($slider->label)
@@ -58,8 +59,8 @@
 
                     <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-3 md:gap-4">
                         @if($slider->button_url)
-                        <a href="{{ $slider->button_url }}"
-                            class="w-full sm:w-auto bg-unmaris-yellow text-unmaris-blue px-8 md:px-10 py-3.5 md:py-4 rounded-full font-bold text-sm md:text-lg hover:bg-yellow-400 hover:scale-105 transition-all shadow-xl text-center group">
+                        <a href="{{ $slider->button_url }}" 
+                           class="w-full sm:w-auto bg-unmaris-yellow text-unmaris-blue px-8 md:px-10 py-3.5 md:py-4 rounded-full font-bold text-sm md:text-lg hover:bg-yellow-400 hover:scale-105 transition-all shadow-xl text-center group">
                             {{ $slider->button_text ?? 'Lihat Selengkapnya' }}
                         </a>
                         @endif
@@ -69,20 +70,18 @@
                         </a>
                     </div>
                 </div>
-
+                
                 <!-- Gambar Slider (Lebar dan Landscape di Mobile) -->
                 <div class="w-full lg:w-2/5 mb-8 lg:mb-0">
                     <div class="relative group w-full sm:max-w-md mx-auto lg:max-w-none">
                         <div class="absolute inset-0 bg-unmaris-yellow rounded-3xl blur-2xl opacity-10 transform -rotate-3 scale-105 group-hover:rotate-0 transition-transform duration-700"></div>
                         @if($slider->image)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($slider->image) }}"
-                            alt="{{ strip_tags($slider->title) }}"
-                            class="rounded-3xl shadow-2xl relative z-10 border-4 md:border-8 border-white/10 object-cover aspect-[16/9] lg:aspect-[4/5] transform group-hover:scale-[1.02] transition-transform duration-700 w-full">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($slider->image) }}" 
+                             alt="{{ strip_tags($slider->title) }}" 
+                             class="rounded-3xl shadow-2xl relative z-10 border-4 md:border-8 border-white/10 object-cover aspect-[16/9] lg:aspect-[4/5] transform group-hover:scale-[1.02] transition-transform duration-700 w-full">
                         @else
                         <div class="rounded-3xl shadow-2xl relative z-10 border-4 md:border-8 border-white/10 bg-gray-800 aspect-[16/9] lg:aspect-[4/5] flex items-center justify-center w-full">
-                            <svg class="w-16 h-16 md:w-20 md:h-20 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
+                            <svg class="w-16 h-16 md:w-20 md:h-20 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                         @endif
                     </div>
@@ -93,24 +92,20 @@
             <!-- Slider Navigation Controls -->
             <div class="absolute bottom-6 md:bottom-10 left-0 right-0 z-30 flex justify-center items-center gap-2 md:gap-3">
                 @foreach($sliders as $index => $slider)
-                <button @click="activeSlide = {{ $index }}"
-                    aria-label="Slide {{ $index + 1 }}"
-                    class="h-1.5 md:h-2 rounded-full transition-all duration-300"
-                    :class="activeSlide === {{ $index }} ? 'w-8 md:w-10 bg-unmaris-yellow' : 'w-2 bg-white/30 hover:bg-white/50'"></button>
+                <button @click="activeSlide = {{ $index }}" 
+                        aria-label="Slide {{ $index + 1 }}"
+                        class="h-1.5 md:h-2 rounded-full transition-all duration-300"
+                        :class="activeSlide === {{ $index }} ? 'w-8 md:w-10 bg-unmaris-yellow' : 'w-2 bg-white/30 hover:bg-white/50'"></button>
                 @endforeach
             </div>
-
+            
             <!-- Navigation Arrows (Hidden on very small screens) -->
             <div class="hidden sm:flex absolute inset-x-0 top-1/2 -translate-y-1/2 z-20 justify-between px-4 md:px-10 pointer-events-none">
                 <button @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1" class="pointer-events-auto w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue transition-all">
-                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
                 <button @click="activeSlide = (activeSlide + 1) % totalSlides" class="pointer-events-auto w-10 h-10 md:w-12 md:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue transition-all">
-                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
             </div>
         </div>

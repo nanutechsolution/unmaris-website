@@ -425,7 +425,7 @@
             <p class="text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 font-medium px-4 md:px-0">Jadilah bagian dari Universitas Stella Maris Sumba dan kembangkan potensimu untuk membawa perubahan positif bagi bangsa.</p>
             
             <div class="flex flex-col sm:flex-row justify-center items-center gap-3 md:gap-4 px-4 md:px-0">
-                <a href="https://pmb.unmaris.ac.id" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue font-black text-base md:text-lg px-8 md:px-10 py-4 md:py-5 rounded-full hover:bg-white hover:scale-105 transition-all shadow-[0_10px_30px_rgba(253,224,26,0.3)]">
+                <a href="https://pmb.unmarissumba.ac.id" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue font-black text-base md:text-lg px-8 md:px-10 py-4 md:py-5 rounded-full hover:bg-white hover:scale-105 transition-all shadow-[0_10px_30px_rgba(253,224,26,0.3)]">
                     Daftar Sekarang
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                 </a>

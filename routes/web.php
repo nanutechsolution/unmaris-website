@@ -69,3 +69,9 @@ Route::get('/akademik/sistem-pembelajaran', function () {
     $page = \App\Models\Page::where('slug', 'sistem-pembelajaran')->firstOrFail();
     return view('pages.akademik-sistem', compact('page'));
 })->name('akademik.sistem');
+
+Route::post('/news/{id}/share-increment', function ($id) {
+    $news = News::findOrFail($id);
+    $news->increment('shares');
+    return response()->json(['success' => true, 'total_shares' => $news->shares]);
+})->name('news.share.increment');

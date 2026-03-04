@@ -10,7 +10,7 @@ class News extends Model
 {
     use HasUuids; // Aktifkan Auto UUID
 
-    protected $fillable = ['category_id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'is_published', 'published_at'];
+    protected $fillable = ['category_id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'is_published', 'published_at', 'views', 'shares'];
     protected $casts = ['published_at' => 'datetime', 'is_published' => 'boolean'];
 
     public function category(): BelongsTo

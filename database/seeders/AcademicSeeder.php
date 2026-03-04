@@ -9,134 +9,109 @@ use Illuminate\Support\Str;
 
 class AcademicSeeder extends Seeder
 {
+    /**
+     * Jalankan database seeds untuk data Fakultas & Prodi riil.
+     */
     public function run(): void
     {
+        // Data Riil yang disesuaikan dengan struktur Model UNMARIS
         $data = [
             [
-                'name' => 'Fakultas Keguruan dan Ilmu Pendidikan',
-                'description' => 'Fakultas yang berdedikasi tinggi dalam mencetak tenaga pendidik profesional, berkarakter, dan inovatif untuk memajukan pendidikan di wilayah Sumba dan nasional.',
-                'vision' => 'Menjadi pusat unggulan pendidikan tenaga kependidikan yang menghasilkan lulusan unggul, religius, dan berdaya saing pada tahun 2030.',
-                'mission' => '<ul><li>Menyelenggarakan pendidikan keguruan bermutu.</li><li>Melaksanakan penelitian inovatif di bidang kependidikan.</li><li>Melakukan pengabdian masyarakat berbasis kearifan lokal.</li></ul>',
-                'email' => 'fkip@unmaris.ac.id',
-                'phone' => '0812-3456-001',
+                'name' => 'Fakultas Teknik',
+                'description' => 'Fakultas Teknik berfokus pada pengembangan inovasi teknologi dan rekayasa untuk menjawab kebutuhan industri dan masyarakat modern.',
+                'vision' => 'Menjadi fakultas unggul di bidang rekayasa teknologi informasi dan lingkungan di kawasan timur Indonesia pada tahun 2035.',
+                'mission' => '<ul><li>Menyelenggarakan pendidikan teknik yang berkualitas tinggi.</li><li>Mengembangkan riset terapan di bidang informatika dan lingkungan.</li></ul>',
+                'email' => 'teknik@unmaris.ac.id',
+                'phone' => '0811-0000-0001',
                 'prodis' => [
                     [
-                        'name' => 'Pendidikan Matematika',
-                        'degree' => 'S1',
-                        'accreditation' => 'Baik Sekali',
-                        'description' => 'Mencetak sarjana pendidikan matematika yang menguasai teknologi pembelajaran modern.',
-                        'career_prospects' => '<ul><li>Guru Matematika Sekolah Menengah</li><li>Pengembang Kurikulum</li><li>Peneliti Pendidikan</li><li>Instruktur Bimbel</li></ul>',
+                        'name' => 'Manajemen Informatika',
+                        'degree' => 'D3',
+                        'accreditation' => 'Baik',
+                        'description' => 'Mencetak tenaga ahli madya yang terampil dalam mengelola sistem informasi dan administrasi jaringan komputer institusi.',
+                        'career_prospects' => '<ul><li>Junior Programmer</li><li>Database Administrator</li><li>IT Support / Teknisi Jaringan</li></ul>',
                     ],
-                    [
-                        'name' => 'Pendidikan Guru Sekolah Dasar',
-                        'degree' => 'S1',
-                        'accreditation' => 'Unggul',
-                        'description' => 'Mempersiapkan pendidik sekolah dasar yang kreatif, komunikatif, dan mampu mengelola kelas dengan pendekatan karakter.',
-                        'career_prospects' => '<ul><li>Guru Kelas SD</li><li>Konsultan Pendidikan Anak</li><li>Penulis Buku Pendidikan</li><li>Kepala Sekolah SD</li></ul>',
-                    ]
-                ]
-            ],
-            [
-                'name' => 'Fakultas Sains dan Teknologi',
-                'description' => 'Mengembangkan ilmu pengetahuan alam dan teknologi terapan untuk menjawab tantangan zaman di era industri 4.0.',
-                'vision' => 'Menjadi fakultas sains dan teknologi yang inovatif dalam pengembangan sumber daya alam lokal untuk kemaslahatan masyarakat.',
-                'mission' => '<ul><li>Menyelenggarakan pembelajaran berbasis riset.</li><li>Mengembangkan teknologi tepat guna bagi masyarakat Sumba.</li><li>Membangun jejaring kerja sama industri nasional.</li></ul>',
-                'email' => 'fst@unmaris.ac.id',
-                'phone' => '0812-3456-002',
-                'prodis' => [
                     [
                         'name' => 'Teknik Informatika',
                         'degree' => 'S1',
-                        'accreditation' => 'B',
-                        'description' => 'Fokus pada pengembangan perangkat lunak, keamanan siber, dan kecerdasan buatan.',
-                        'career_prospects' => '<ul><li>Software Engineer</li><li>Data Scientist</li><li>Web & Mobile Developer</li><li>IT Consultant</li></ul>',
+                        'accreditation' => 'Baik Sekali',
+                        'description' => 'Fokus mendalam pada rekayasa perangkat lunak (software engineering), kecerdasan buatan, dan pengembangan sistem cerdas.',
+                        'career_prospects' => '<ul><li>Software Engineer</li><li>System Analyst</li><li>IT Consultant</li></ul>',
                     ],
                     [
-                        'name' => 'Agroteknologi',
+                        'name' => 'Teknik Lingkungan',
                         'degree' => 'S1',
-                        'accreditation' => 'Baik',
-                        'description' => 'Mempelajari optimalisasi lahan kering dan pertanian berkelanjutan di wilayah kepulauan.',
-                        'career_prospects' => '<ul><li>Agronomis</li><li>Pengusaha Pertanian (Agropreneur)</li><li>Peneliti Tanaman</li><li>Penyuluh Pertanian</li></ul>',
-                    ]
+                        'accreditation' => 'Baik Sekali',
+                        'description' => 'Mempelajari solusi rekayasa untuk masalah pelestarian lingkungan seperti pengelolaan air bersih, manajemen limbah, dan tata ruang ekologis.',
+                        'career_prospects' => '<ul><li>HSE Officer (Health, Safety, Environment)</li><li>Konsultan Lingkungan</li><li>Analis AMDAL</li></ul>',
+                    ],
                 ]
             ],
             [
-                'name' => 'Fakultas Ekonomi dan Bisnis',
-                'description' => 'Pusat pengembangan ilmu manajemen dan akuntansi yang berorientasi pada kewirausahaan dan ekonomi digital.',
-                'vision' => 'Mencetak pemimpin bisnis dan akuntan profesional yang berintegritas.',
-                'mission' => '<ul><li>Melaksanakan pendidikan bisnis berbasis etika.</li><li>Mendorong terciptanya startup lokal.</li><li>Meningkatkan literasi keuangan masyarakat.</li></ul>',
+                'name' => 'Fakultas Kesehatan',
+                'description' => 'Mencetak tenaga kesehatan dan manajerial medis yang profesional, kompeten, dan siap mengabdi pada peningkatan taraf kesehatan masyarakat.',
+                'vision' => 'Pusat keunggulan pendidikan administrasi kesehatan dan keselamatan kerja yang inovatif dan berdaya saing.',
+                'mission' => '<ul><li>Menghasilkan tenaga manajerial kesehatan yang profesional dan beretika.</li><li>Menyelenggarakan pengabdian masyarakat secara masif di bidang penyuluhan kesehatan.</li></ul>',
+                'email' => 'kesehatan@unmaris.ac.id',
+                'phone' => '0811-0000-0002',
+                'prodis' => [
+                    [
+                        'name' => 'Keselamatan dan Kesehatan Kerja (K3)',
+                        'degree' => 'S1',
+                        'accreditation' => 'Baik Sekali',
+                        'description' => 'Mempelajari secara komprehensif tentang mitigasi risiko, pencegahan kecelakaan, dan manajemen kesehatan di lingkungan operasional/kerja industri.',
+                        'career_prospects' => '<ul><li>HSE Manager</li><li>Auditor K3</li><li>Konsultan Keselamatan dan Kesehatan Kerja</li></ul>',
+                    ],
+                    [
+                        'name' => 'Administrasi Rumah Sakit',
+                        'degree' => 'S1',
+                        'accreditation' => 'Baik',
+                        'description' => 'Mencetak lulusan ahli dalam tata kelola operasional, sumber daya manusia, asuransi, dan manajemen keuangan pada fasilitas pelayanan medis.',
+                        'career_prospects' => '<ul><li>Manajer Operasional Rumah Sakit</li><li>Staf Ahli Rekam Medis</li><li>Administrator Klinik/Puskesmas</li></ul>',
+                    ],
+                ]
+            ],
+            [
+                'name' => 'Fakultas Keguruan',
+                'description' => 'Berdedikasi tinggi dalam mencetak tenaga pendidik profesional, berkarakter kebangsaan, dan inovatif untuk memajukan pendidikan generasi penerus.',
+                'vision' => 'Menjadi pusat percontohan pendidikan tenaga kependidikan berbasis nilai-nilai karakter luhur dan pemanfaatan teknologi terkini.',
+                'mission' => '<ul><li>Menyelenggarakan pendidikan keguruan bermutu yang adaptif terhadap era digital.</li><li>Melakukan pendampingan dan riset di berbagai ekosistem sekolah daerah.</li></ul>',
+                'email' => 'keguruan@unmaris.ac.id',
+                'phone' => '0811-0000-0003',
+                'prodis' => [
+                    [
+                        'name' => 'Pendidikan Teknologi Informasi',
+                        'degree' => 'S1',
+                        'accreditation' => 'Baik Sekali',
+                        'description' => 'Mempersiapkan tenaga pendidik yang tidak hanya menguasai ilmu pedagogik, tetapi juga ahli dalam bidang teknologi informasi dan komunikasi terapan.',
+                        'career_prospects' => '<ul><li>Guru TIK / Informatika</li><li>Pengembang Kurikulum E-Learning</li><li>Instruktur Komputer & Edutech</li></ul>',
+                    ],
+                ]
+            ],
+            [
+                'name' => 'Fakultas Ekonomi Dan Bisnis',
+                'description' => 'Membangun jiwa wirausaha tangguh dan kemampuan manajerial di tengah pusaran ekonomi digital yang berevolusi dengan sangat dinamis.',
+                'vision' => 'Menjadi fakultas bisnis terkemuka yang diakui dalam mencetak technopreneur dan profesional adaptif.',
+                'mission' => '<ul><li>Mengintegrasikan fundamental ilmu ekonomi dengan model bisnis berbasis teknologi digital.</li><li>Membangun kemitraan strategis dengan entitas industri dan startup.</li></ul>',
                 'email' => 'feb@unmaris.ac.id',
-                'phone' => '0812-3456-003',
+                'phone' => '0811-0000-0004',
                 'prodis' => [
                     [
-                        'name' => 'Manajemen',
-                        'degree' => 'S1',
-                        'accreditation' => 'Baik Sekali',
-                        'description' => 'Mengembangkan keahlian dalam manajemen sumber daya manusia, pemasaran, dan operasional bisnis.',
-                        'career_prospects' => '<ul><li>Manager Perusahaan</li><li>Human Resource Specialist</li><li>Marketing Analyst</li><li>Wirausahawan</li></ul>',
-                    ],
-                    [
-                        'name' => 'Akuntansi',
-                        'degree' => 'S1',
-                        'accreditation' => 'B',
-                        'description' => 'Membentuk tenaga akuntan yang handal dalam audit, perpajakan, dan pelaporan keuangan.',
-                        'career_prospects' => '<ul><li>Akuntan Publik</li><li>Internal Auditor</li><li>Konsultan Pajak</li><li>Financial Analyst</li></ul>',
-                    ]
-                ]
-            ],
-            [
-                'name' => 'Fakultas Ilmu Sosial dan Politik',
-                'description' => 'Mengkaji dinamika sosial dan politik untuk mewujudkan tata kelola publik yang transparan dan adil.',
-                'vision' => 'Menjadi pusat kajian sosial politik yang kritis dan solutif bagi pembangunan daerah.',
-                'mission' => '<ul><li>Menyelenggarakan studi kebijakan publik yang relevan.</li><li>Mengembangkan riset sosiologi pedesaan.</li><li>Mendorong partisipasi politik warga yang sehat.</li></ul>',
-                'email' => 'fisip@unmaris.ac.id',
-                'phone' => '0812-3456-004',
-                'prodis' => [
-                    [
-                        'name' => 'Ilmu Komunikasi',
+                        'name' => 'Bisnis Digital',
                         'degree' => 'S1',
                         'accreditation' => 'Baik',
-                        'description' => 'Mempelajari jurnalistik, hubungan masyarakat, dan komunikasi pemasaran di era digital.',
-                        'career_prospects' => '<ul><li>Public Relations Officer</li><li>Jurnalis / Reporter</li><li>Content Creator</li><li>Media Planner</li></ul>',
+                        'description' => 'Program studi masa depan yang membedah strategi e-commerce, digital marketing terapan, perancangan startup, dan analisis data bisnis.',
+                        'career_prospects' => '<ul><li>Digital Marketing Specialist</li><li>Startup Founder / Entrepreneur</li><li>Business Data Analyst</li></ul>',
                     ],
-                    [
-                        'name' => 'Sosiologi',
-                        'degree' => 'S1',
-                        'accreditation' => 'B',
-                        'description' => 'Menganalisis fenomena sosial masyarakat dan pemberdayaan komunitas lokal.',
-                        'career_prospects' => '<ul><li>Social Worker</li><li>Peneliti Sosial</li><li>LSM / Aktivis Kemanusiaan</li><li>Staff CSR Perusahaan</li></ul>',
-                    ]
-                ]
-            ],
-            [
-                'name' => 'Fakultas Hukum',
-                'description' => 'Fakultas yang mendidik calon penegak hukum yang berintegritas, menjunjung tinggi keadilan, dan hak asasi manusia.',
-                'vision' => 'Menghasilkan sarjana hukum yang profesional dan taat asas kebenaran.',
-                'mission' => '<ul><li>Pendidikan hukum yang berorientasi pada penegakan keadilan.</li><li>Layanan bantuan hukum bagi masyarakat kurang mampu.</li><li>Penelitian tentang hukum adat dan hukum positif.</li></ul>',
-                'email' => 'fh@unmaris.ac.id',
-                'phone' => '0812-3456-005',
-                'prodis' => [
-                    [
-                        'name' => 'Ilmu Hukum',
-                        'degree' => 'S1',
-                        'accreditation' => 'Baik Sekali',
-                        'description' => 'Kajian mendalam mengenai hukum pidana, perdata, tata negara, dan hukum administrasi.',
-                        'career_prospects' => '<ul><li>Hakim / Jaksa</li><li>Advokat / Pengacara</li><li>Legal Corporate</li><li>Notaris</li></ul>',
-                    ],
-                    [
-                        'name' => 'Hukum Bisnis',
-                        'degree' => 'S1',
-                        'accreditation' => 'Baik',
-                        'description' => 'Spesialisasi hukum dalam transaksi dagang, investasi, dan persaingan usaha.',
-                        'career_prospects' => '<ul><li>Legal Consultant</li><li>Arbitrator</li><li>Compliance Officer</li><li>Konsultan Kekayaan Intelektual</li></ul>',
-                    ]
                 ]
             ],
         ];
 
+        // Eksekusi Input Data ke Database
         foreach ($data as $f) {
+            // Simpan Data Fakultas
             $faculty = Faculty::updateOrCreate(
-                ['slug' => Str::slug($f['name'])],
+                ['slug' => Str::slug($f['name'])], // Menjadikan slug sebagai penanda keunikan
                 [
                     'name' => $f['name'],
                     'description' => $f['description'],
@@ -147,9 +122,10 @@ class AcademicSeeder extends Seeder
                 ]
             );
 
+            // Simpan Data Program Studi yang berelasi dengan Fakultas di atas
             foreach ($f['prodis'] as $p) {
                 StudyProgram::updateOrCreate(
-                    ['slug' => Str::slug($p['name'])],
+                    ['slug' => Str::slug($p['name'])], // Menjadikan slug prodi sebagai penanda keunikan
                     [
                         'faculty_id' => $faculty->id,
                         'name' => $p['name'],
@@ -157,11 +133,14 @@ class AcademicSeeder extends Seeder
                         'accreditation' => $p['accreditation'],
                         'description' => $p['description'],
                         'career_prospects' => $p['career_prospects'],
-                        'vision' => $f['vision'], // Default mengikuti fakultas atau bisa disesuaikan
-                        'mission' => $f['mission'],
+                        // Memakai visi/misi khusus prodi, atau turunan dari fakultas jika kosong
+                        'vision' => $p['vision'] ?? $f['vision'], 
+                        'mission' => $p['mission'] ?? $f['mission'], 
                     ]
                 );
             }
         }
+
+        $this->command->info('Data Fakultas dan Program Studi RIIL berhasil digenerate.');
     }
 }

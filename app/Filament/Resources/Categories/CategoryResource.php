@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Categories;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Categories\Pages\CreateCategory;
 use App\Filament\Resources\Categories\Pages\EditCategory;
 use App\Filament\Resources\Categories\Pages\ListCategories;
@@ -23,6 +24,9 @@ class CategoryResource extends Resource
     protected static ?string $recordTitleAttribute = 'Nama Kategori & Deskripsi';
     protected static ?string $modelLabel = 'Kategori';
     protected static ?string $pluralModelLabel = 'Kategori Berita & Pengumuman';
+
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

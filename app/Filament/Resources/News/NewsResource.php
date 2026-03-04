@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\News;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\News\Pages\CreateNews;
 use App\Filament\Resources\News\Pages\EditNews;
 use App\Filament\Resources\News\Pages\ListNews;
@@ -13,6 +14,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class NewsResource extends Resource
 {
@@ -20,10 +22,14 @@ class NewsResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedNewspaper;
 
-    protected static ?string $recordTitleAttribute = 'Judul Berita';
+    protected static ?string $recordTitleAttribute = 'title'; // ✅ pakai nama kolom
+
     protected static ?string $modelLabel = 'Berita';
     protected static ?string $pluralModelLabel = 'Berita & Pengumuman';
+    protected static ?string $navigationLabel = 'Berita';
 
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 1;
     public static function form(Schema $schema): Schema
     {
         return NewsForm::configure($schema);
@@ -36,9 +42,7 @@ class NewsResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

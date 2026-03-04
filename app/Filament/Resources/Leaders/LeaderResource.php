@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Leaders;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Leaders\Pages\CreateLeader;
 use App\Filament\Resources\Leaders\Pages\EditLeader;
 use App\Filament\Resources\Leaders\Pages\ListLeaders;
@@ -23,6 +24,9 @@ class LeaderResource extends Resource
     protected static ?string $recordTitleAttribute = 'Nama & Jabatan';
     protected static ?string $modelLabel = 'Pimpinan';
     protected static ?string $pluralModelLabel = 'Pimpinan & Staf Akademik';
+    protected static ?string $navigationLabel = 'Pimpinan & Staf Akademik';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Akademik;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

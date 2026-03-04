@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\StudyPrograms;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\StudyPrograms\Pages\CreateStudyProgram;
 use App\Filament\Resources\StudyPrograms\Pages\EditStudyProgram;
 use App\Filament\Resources\StudyPrograms\Pages\ListStudyPrograms;
@@ -23,6 +24,9 @@ class StudyProgramResource extends Resource
     protected static ?string $recordTitleAttribute = 'Program Studi';
     protected static ?string $modelLabel = 'Program Studi';
     protected static ?string $pluralModelLabel = 'Program Studi';
+    protected static ?string $navigationLabel = 'Program Studi';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Akademik;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Faculties;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Faculties\Pages\CreateFaculty;
 use App\Filament\Resources\Faculties\Pages\EditFaculty;
 use App\Filament\Resources\Faculties\Pages\ListFaculties;
@@ -23,6 +24,9 @@ class FacultyResource extends Resource
     protected static ?string $recordTitleAttribute = 'Fakultas';
     protected static ?string $modelLabel = 'Fakultas';
     protected static ?string $pluralModelLabel = 'Fakultas & Program Studi';
+    protected static ?string $navigationLabel = 'Fakultas & Prodi';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Akademik;
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {

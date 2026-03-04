@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Messages;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Messages\Pages\CreateMessage;
 use App\Filament\Resources\Messages\Pages\EditMessage;
 use App\Filament\Resources\Messages\Pages\ListMessages;
@@ -23,6 +24,9 @@ class MessageResource extends Resource
     protected static ?string $recordTitleAttribute = 'Nama Pengirim & Subjek Pesan';
     protected static ?string $modelLabel = 'Pesan';
     protected static ?string $pluralModelLabel = 'Pesan Masuk';
+    protected static ?string $navigationLabel = 'Pesan Masuk';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 4;  
 
     public static function form(Schema $schema): Schema
     {

@@ -10,8 +10,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Set;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Set;
 
 use Illuminate\Support\Str;
 
@@ -24,15 +24,20 @@ class NewsForm
                 Select::make('category_id')
                     ->relationship('category', 'name')
                     ->required()
-                    ->label('Kategori'),
-
+                    ->label('Kategori Berita'),
                 TextInput::make('title')
-                    ->required()
+                    ->validationMessages([
+                        'required' => 'Judul tidak boleh kosong.',
+                    ])
                     ->maxLength(255)
                     ->label('Judul Berita')
                     ->live(onBlur: true)
-                    ->afterStateUpdated(fn(string $operation, ?string $state, Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
-
+                    ->afterStateUpdated(
+                        fn(string $operation, ?string $state, Set $set) =>
+                        $operation === 'create' && filled($state)
+                            ? $set('slug', Str::slug($state))
+                            : null
+                    ),
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255)

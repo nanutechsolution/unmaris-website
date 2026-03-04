@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Documents;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Documents\Pages\CreateDocument;
 use App\Filament\Resources\Documents\Pages\EditDocument;
 use App\Filament\Resources\Documents\Pages\ListDocuments;
@@ -23,6 +24,9 @@ class DocumentResource extends Resource
     protected static ?string $recordTitleAttribute = 'Document';
     protected static ?string $modelLabel = 'Dokumen Akademik';
     protected static ?string $pluralModelLabel = 'Pusat Unduhan';
+    protected static ?string $navigationLabel = 'Pusat Unduhan';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 6;
 
     public static function form(Schema $schema): Schema
     {

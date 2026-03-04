@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Announcements;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Announcements\Pages\CreateAnnouncement;
 use App\Filament\Resources\Announcements\Pages\EditAnnouncement;
 use App\Filament\Resources\Announcements\Pages\ListAnnouncements;
@@ -22,6 +23,11 @@ class AnnouncementResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Pengumuman & Agenda';
     protected static ?string $modelLabel = 'Pengumuman & Agenda';
+    protected static ?string $pluralModelLabel = 'Pengumuman & Agenda';
+    protected static ?string $navigationLabel = 'Pengumuman & Agenda';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 3;
+    
     public static function form(Schema $schema): Schema
     {
         return AnnouncementForm::configure($schema);

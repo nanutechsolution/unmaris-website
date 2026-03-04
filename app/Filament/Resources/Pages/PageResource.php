@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Pages;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Pages\Pages\CreatePage;
 use App\Filament\Resources\Pages\Pages\EditPage;
 use App\Filament\Resources\Pages\Pages\ListPages;
@@ -23,6 +24,9 @@ class PageResource extends Resource
     protected static ?string $recordTitleAttribute = 'Judul Halaman';
     protected static ?string $modelLabel = 'Halaman';
     protected static ?string $pluralModelLabel = 'Halaman';
+    protected static ?string $navigationLabel = 'Halaman';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Schema $schema): Schema
     {

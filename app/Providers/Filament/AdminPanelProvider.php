@@ -23,6 +23,9 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Navigation\NavigationGroup as FilamentNavigationGroup;
+use App\Enums\NavigationGroup;
+use Filament\Support\Icons\Heroicon;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -45,7 +48,22 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/logo-unmaris.png'))
             // 4. Navigasi Terlipat secara Default
             ->sidebarCollapsibleOnDesktop()
+            ->collapsedSidebarWidth('9rem')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->navigationGroups([
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::Konten->value)
+                    ->icon(Heroicon::OutlinedNewspaper)
+                    ->collapsed(),
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::Akademik->value)
+                    ->icon(Heroicon::OutlinedAcademicCap)
+                    ->collapsed(),
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::Sistem->value)
+                    ->icon(Heroicon::OutlinedCog6Tooth)
+                    ->collapsed(),
+            ])
             ->widgets([
                 StatsOverview::class,
                 NewsChart::class,

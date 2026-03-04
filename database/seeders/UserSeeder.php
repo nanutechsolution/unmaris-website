@@ -14,23 +14,24 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Memastikan Role 'super_admin' tersedia di database untuk mencegah error RoleDoesNotExist
+        // ===== ROLE =====
         Role::firstOrCreate(['name' => 'super_admin']);
-        // Membuat atau memperbarui akun Super Admin
+        Role::firstOrCreate(['name' => 'editor']);
+        Role::firstOrCreate(['name' => 'akademik']);
+
+        // ===== USER ADMIN =====
         $admin = User::updateOrCreate(
-            ['email' => 'admin@unmaris.ac.id'], // Unik berdasarkan email
+            ['email' => 'admin@unmaris.ac.id'],
             [
                 'name' => 'Super Admin UNMARIS',
-                'password' => Hash::make('password'), // Silakan ganti password ini jika sudah di production
+                'password' => Hash::make('password'),
                 'email_verified_at' => now(),
             ]
         );
 
-        // Memberikan Role 'super_admin' jika user belum memilikinya
-        if (!$admin->hasRole('super_admin')) {
-            $admin->assignRole('super_admin');
-        }
+        // Sync role (stable method)
+        $admin->syncRoles(['super_admin']);
 
-        $this->command->info('User Admin berhasil dibuat dengan email: admin@unmaris.ac.id');
+        $this->command->info('Seeder UNMARIS selesai');
     }
 }

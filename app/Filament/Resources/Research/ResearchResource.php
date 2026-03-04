@@ -18,9 +18,15 @@ class ResearchResource extends Resource
 {
     protected static ?string $model = Research::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
     protected static ?string $recordTitleAttribute = 'name';
+    // name of the navigation group in sidebar
+    // sort order in navigation group
+    protected static ?int $navigationSort = 4;
+    // name model
+    protected static ?string $label = 'Penelitian';
+    protected static ?string $pluralLabel = 'Penelitian';
 
     public static function form(Schema $schema): Schema
     {

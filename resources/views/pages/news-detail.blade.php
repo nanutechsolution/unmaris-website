@@ -1,4 +1,4 @@
-<x-layouts.app :title="$news->title . ' - UNMARIS'" :description="$news->excerpt" :ogImage="$news->featured_image ? asset(Storage::url($news->featured_image)) : null">
+<x-layouts.app :title="$news->title . ' - UNMARIS'" :description="$news->excerpt" :ogImage="$news->featured_image ? url(Storage::url($news->featured_image)) : url('images/logo-unmaris.png')">
     <!-- JSON-LD Schema untuk Artikel (SEO) -->
     <!-- Menggunakan @@ agar Blade tidak menganggapnya sebagai directive PHP -->
     <script type="application/ld+json">
@@ -13,7 +13,7 @@
                 "name": "Universitas Stella Maris Sumba"
             }],
             "description": "{{ addslashes($news->excerpt) }}",
-            "image": "{{ $news->featured_image ? asset(Storage::url($news->featured_image)) : asset('images/logo-unmaris.png') }}"
+            "image": "{{ $news->featured_image ? url(Storage::url($news->featured_image)) : url('images/logo-unmaris.png') }}"
         }
     </script>
 

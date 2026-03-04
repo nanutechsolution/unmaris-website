@@ -16,7 +16,6 @@ class UserSeeder extends Seeder
     {
         // Memastikan Role 'super_admin' tersedia di database untuk mencegah error RoleDoesNotExist
         Role::firstOrCreate(['name' => 'super_admin']);
-
         // Membuat atau memperbarui akun Super Admin
         $admin = User::updateOrCreate(
             ['email' => 'admin@unmaris.ac.id'], // Unik berdasarkan email

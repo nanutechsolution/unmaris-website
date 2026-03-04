@@ -13,24 +13,29 @@ use App\Models\StudyProgram;
 Route::get('/', function () {
     $sliders = \App\Models\Slider::where('is_active', true)->orderBy('order', 'asc')->get();
     $latestNews = \App\Models\News::with('category')->where('is_published', true)->latest('published_at')->take(4)->get();
-    
+
     // Hitungan statistik
     $countProdi = \App\Models\StudyProgram::count();
     $countFakultas = \App\Models\Faculty::count();
     $countBerita = \App\Models\News::where('is_published', true)->count();
-    
-    // Mengambil 3 fakultas beserta hitungan prodinya
-    $featuredFaculties = \App\Models\Faculty::withCount('studyPrograms')->take(3)->get();
-    
+
+    // Mengambil 4 fakultas beserta hitungan prodinya
+    $featuredFaculties = \App\Models\Faculty::withCount('studyPrograms')->take(4)->get();
+
     // Mengambil 3 pengumuman/agenda terbaru yang aktif
     $recentAnnouncements = \App\Models\Announcement::where('is_active', true)
-                                ->orderBy('start_date', 'desc')
-                                ->take(4)
-                                ->get();
-    
+        ->orderBy('start_date', 'desc')
+        ->take(3)
+        ->get();
+
     return view('pages.home', compact(
-        'sliders', 'latestNews', 'countProdi', 'countFakultas', 
-        'countBerita', 'featuredFaculties', 'recentAnnouncements'
+        'sliders',
+        'latestNews',
+        'countProdi',
+        'countFakultas',
+        'countBerita',
+        'featuredFaculties',
+        'recentAnnouncements'
     ));
 })->name('home');
 

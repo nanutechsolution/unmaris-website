@@ -54,12 +54,11 @@ class User extends Authenticatable
         ];
     }
 
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'email', 'roles.name']) // Kolom yang dipantau
-            ->logOnlyDirty() // Hanya catat jika ada perubahan
+            ->logOnly(['name', 'email'])
+            ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
 }

@@ -14,7 +14,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web([
             TrackVisitors::class, // Middleware untuk Melacak Pengunjung
-
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

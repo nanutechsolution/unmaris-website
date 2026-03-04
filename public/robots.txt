@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: [https://unmaris.ac.id/sitemap.xml](https://unmaris.ac.id/sitemap.xml)

@@ -1,40 +1,45 @@
 <x-layouts.app title="Fakultas & Program Studi - UNMARIS">
     
-    <!-- Header Section -->
-    <section class="bg-unmaris-blue text-white py-20 relative overflow-hidden">
-        <!-- Aksen Dekoratif -->
-        <div class="absolute inset-0 opacity-10">
-            <svg class="absolute right-0 top-0 h-full w-1/2" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
-                <polygon points="0,100 100,0 100,100" />
+    <!-- Hero Section (Premium Minimalist) -->
+    <section class="bg-unmaris-blue text-white py-20 md:py-32 relative overflow-hidden">
+        <!-- Background Pattern & Glow -->
+        <div class="absolute inset-0 opacity-5">
+            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
+                <path d="M0 0 L100 0 L100 100 L0 100 Z" />
             </svg>
         </div>
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-unmaris-yellow rounded-full blur-[120px] opacity-20 pointer-events-none z-0"></div>
+        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-400 rounded-full blur-[100px] opacity-20 pointer-events-none z-0"></div>
 
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Fakultas & Program Studi</h1>
-            <p class="text-lg md:text-xl text-gray-200 max-w-3xl mx-auto">Temukan program studi pilihanmu di Universitas Stella Maris Sumba. Kami menawarkan berbagai disiplin ilmu yang dirancang khusus untuk memenuhi kebutuhan industri dan tantangan global masa kini.</p>
+        <div class="container mx-auto px-4 sm:px-6 relative z-10 text-center max-w-4xl">
+            <span class="text-unmaris-yellow font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-4 md:mb-6 block">Jalur Pendidikan & Keilmuan</span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter leading-tight">Fakultas & <span class="text-unmaris-yellow">Prodi</span></h1>
+            <p class="text-gray-300 text-base md:text-lg lg:text-xl leading-relaxed font-medium">Temukan program studi pilihanmu di Universitas Stella Maris Sumba. Kami menawarkan berbagai disiplin ilmu yang dirancang untuk memenuhi kebutuhan industri dan tantangan global masa kini.</p>
         </div>
     </section>
 
     <!-- Content Section -->
-    <section class="py-20 bg-gray-50 min-h-screen relative -mt-8 z-20 rounded-t-3xl">
-        <div class="container mx-auto px-4 max-w-6xl">
+    <section class="py-16 md:py-24 bg-gray-50 min-h-screen relative -mt-10 z-20 rounded-t-[3rem] shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 max-w-7xl">
             
             @if($faculties->isEmpty())
-                <div class="text-center py-20 bg-white rounded-3xl border border-gray-100 shadow-sm">
-                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Data Belum Tersedia</h3>
-                    <p class="text-gray-500 text-lg">Saat ini belum ada data fakultas yang diunggah ke dalam sistem.</p>
+                <div class="text-center py-20 md:py-32 bg-white rounded-[3rem] border border-gray-100 shadow-sm">
+                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Data Belum Tersedia</h3>
+                    <p class="text-gray-500 font-medium">Saat ini belum ada data fakultas yang dipublikasikan ke dalam sistem.</p>
                 </div>
             @else
-                <div class="space-y-16">
+                <div class="space-y-12 md:space-y-20">
                     @foreach($faculties as $faculty)
                         <!-- Card Fakultas (Horizontal Split Layout) -->
-                        <div class="bg-white rounded-3xl shadow-lg hover:shadow-2xl transition-shadow duration-300 border border-gray-100 overflow-hidden flex flex-col lg:flex-row group">
+                        <div class="bg-white rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 overflow-hidden flex flex-col lg:flex-row group">
                             
                             <!-- Bagian Kiri: Gambar Fakultas -->
-                            <div class="lg:w-5/12 relative h-72 lg:h-auto overflow-hidden bg-unmaris-blue shrink-0">
+                            <div class="lg:w-5/12 xl:w-4/12 relative h-64 sm:h-80 lg:h-auto overflow-hidden bg-unmaris-blue shrink-0">
                                 @if($faculty->image)
-                                    <img src="{{ asset('storage/'.$faculty->image) }}" alt="{{ $faculty->name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700">
+                                    <img src="{{ asset('storage/'.$faculty->image) }}" alt="{{ $faculty->name }}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-1000">
                                 @else
                                     <!-- Placeholder Pattern jika gambar kosong -->
                                     <div class="w-full h-full flex items-center justify-center opacity-30 bg-gradient-to-br from-unmaris-blue to-blue-900">
@@ -42,52 +47,55 @@
                                     </div>
                                 @endif
                                 
-                                <!-- Overlay Gradien Bawah -->
-                                <div class="absolute inset-0 bg-gradient-to-t from-unmaris-blue/90 via-unmaris-blue/20 to-transparent"></div>
+                                <!-- Overlay Gradien Bawah & Badge -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent opacity-80"></div>
                                 
-                                <!-- Badge Jumlah Prodi -->
-                                <div class="absolute bottom-6 left-6 text-white">
-                                    <span class="inline-flex items-center bg-unmaris-yellow text-unmaris-blue text-xs font-bold px-4 py-2 rounded-full uppercase tracking-wider shadow-md">
-                                        <svg class="w-4 h-4 mr-1.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"/></svg>
+                                <div class="absolute bottom-6 left-6 md:bottom-8 md:left-8 text-white z-10">
+                                    <span class="inline-flex items-center bg-unmaris-yellow text-unmaris-blue text-[10px] md:text-xs font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-lg">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002 2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                                         {{ $faculty->studyPrograms->count() }} Program Studi
                                     </span>
                                 </div>
                             </div>
 
                             <!-- Bagian Kanan: Konten Informasi -->
-                            <div class="lg:w-7/12 p-8 md:p-10 flex flex-col justify-between">
+                            <div class="lg:w-7/12 xl:w-8/12 p-6 sm:p-8 md:p-12 flex flex-col justify-between relative">
                                 <div>
-                                    <a href="{{ route('faculties.detail', $faculty->slug) }}" class="inline-block mb-4 outline-none">
-                                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 group-hover:text-unmaris-blue transition-colors duration-300 leading-tight">{{ $faculty->name }}</h2>
+                                    <a href="{{ route('faculties.detail', $faculty->slug) }}" class="inline-block mb-4 md:mb-6 outline-none group/title">
+                                        <h2 class="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 group-hover/title:text-unmaris-blue transition-colors duration-300 leading-tight tracking-tighter">{{ $faculty->name }}</h2>
                                     </a>
                                     
                                     @if($faculty->description)
-                                        <p class="text-gray-600 mb-8 line-clamp-3 leading-relaxed text-lg">
+                                        <p class="text-gray-500 mb-8 md:mb-12 line-clamp-3 leading-relaxed text-sm md:text-base lg:text-lg font-medium">
                                             {{ $faculty->description }}
                                         </p>
                                     @endif
 
-                                    <!-- Daftar Program Studi (Chips Layout) -->
+                                    <!-- Daftar Program Studi (Grid Layout yang Rapi) -->
                                     <div class="mb-8">
-                                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">Pilihan Program Studi</h3>
+                                        <h3 class="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-4">
+                                            <span>Pilihan Program Studi</span>
+                                            <div class="h-px flex-grow bg-gray-100"></div>
+                                        </h3>
                                         
                                         @if($faculty->studyPrograms->isEmpty())
-                                            <p class="text-gray-500 italic text-sm">Belum ada program studi di fakultas ini.</p>
+                                            <div class="bg-gray-50 border border-dashed border-gray-200 rounded-2xl p-6 text-center">
+                                                <p class="text-gray-500 italic text-sm font-medium">Belum ada program studi di fakultas ini.</p>
+                                            </div>
                                         @else
-                                            <div class="flex flex-wrap gap-3">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 @foreach($faculty->studyPrograms as $prodi)
-                                                    <div class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3 hover:border-unmaris-blue hover:shadow-sm transition cursor-default group/prodi">
-                                                        <div class="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center text-unmaris-blue font-extrabold text-sm border border-gray-100 group-hover/prodi:bg-unmaris-blue group-hover/prodi:text-white transition-colors">
+                                                    <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-4 flex items-start gap-4 hover:border-unmaris-yellow hover:shadow-md transition-all cursor-default group/prodi">
+                                                        <div class="w-12 h-12 shrink-0 rounded-xl bg-blue-50 text-unmaris-blue flex items-center justify-center font-black text-sm group-hover/prodi:bg-unmaris-yellow transition-colors">
                                                             {{ $prodi->degree }}
                                                         </div>
-                                                        <div>
-                                                            <h4 class="font-bold text-gray-900 text-sm md:text-base leading-tight">{{ $prodi->name }}</h4>
-                                                            <span class="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">
-                                                                Akreditasi: 
-                                                                <span class="{{ in_array($prodi->accreditation, ['Unggul', 'A']) ? 'text-green-600' : (in_array($prodi->accreditation, ['Baik Sekali', 'B']) ? 'text-yellow-600' : 'text-blue-600') }}">
-                                                                    {{ $prodi->accreditation }}
+                                                        <div class="flex-grow pt-0.5">
+                                                            <h4 class="font-extrabold text-gray-900 text-sm md:text-base leading-snug mb-2 group-hover/prodi:text-unmaris-blue transition-colors">{{ $prodi->name }}</h4>
+                                                            <div class="flex items-center">
+                                                                <span class="inline-flex items-center text-[9px] md:text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-lg border {{ in_array($prodi->accreditation, ['Unggul', 'A']) ? 'bg-green-50 text-green-700 border-green-200' : (in_array($prodi->accreditation, ['Baik Sekali', 'B']) ? 'bg-yellow-50 text-yellow-700 border-yellow-200' : 'bg-blue-50 text-blue-700 border-blue-200') }}">
+                                                                    Akreditasi {{ $prodi->accreditation }}
                                                                 </span>
-                                                            </span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 @endforeach
@@ -96,17 +104,16 @@
                                     </div>
                                 </div>
 
-                                <!-- Action Button (Bawah Kanan) -->
-                                <div class="mt-4 pt-6 border-t border-gray-100 flex items-center justify-end">
-                                    <a href="{{ route('faculties.detail', $faculty->slug) }}" class="inline-flex items-center text-unmaris-blue font-bold text-lg hover:text-unmaris-yellow transition group/btn">
-                                        Selengkapnya
-                                        <span class="w-10 h-10 ml-3 rounded-full bg-blue-50 flex items-center justify-center group-hover/btn:bg-unmaris-yellow group-hover/btn:text-unmaris-blue transition-colors">
-                                            <svg class="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                <!-- Action Button -->
+                                <div class="mt-6 pt-6 border-t border-gray-100 flex items-center justify-end">
+                                    <a href="{{ route('faculties.detail', $faculty->slug) }}" class="inline-flex items-center text-unmaris-blue font-black text-xs md:text-sm uppercase tracking-widest hover:text-unmaris-yellow transition group/btn">
+                                        Eksplorasi Fakultas
+                                        <span class="w-10 h-10 ml-4 rounded-full bg-blue-50 flex items-center justify-center group-hover/btn:bg-unmaris-yellow group-hover/btn:text-unmaris-blue transition-colors shadow-sm">
+                                            <svg class="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                         </span>
                                     </a>
                                 </div>
                             </div>
-
                         </div>
                     @endforeach
                 </div>
@@ -116,19 +123,26 @@
     </section>
 
     <!-- Call to Action Section -->
-    <section class="relative bg-unmaris-blue text-white py-20 overflow-hidden border-t-8 border-unmaris-yellow">
+    <section class="relative bg-unmaris-blue text-white py-20 md:py-24 overflow-hidden border-t-8 border-unmaris-yellow">
+        <!-- Dekorasi Background -->
         <div class="absolute inset-0 opacity-10">
             <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <polygon fill="currentColor" points="100,100 0,0 100,0"/>
             </svg>
         </div>
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <h2 class="text-3xl md:text-4xl font-extrabold mb-6">Sudah Menemukan Program Studimu?</h2>
-            <p class="text-xl text-gray-200 mb-10 max-w-2xl mx-auto">Mari wujudkan cita-cita masa depanmu bersama kampus peradaban, Universitas Stella Maris Sumba.</p>
-            <a href="https://pmb.unmaris.ac.id" target="_blank" class="inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue font-extrabold text-lg px-10 py-4 rounded-full hover:bg-yellow-400 hover:scale-105 transition transform shadow-xl">
-                Daftar Mahasiswa Baru
-                <svg class="w-6 h-6 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
-            </a>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-unmaris-yellow rounded-full blur-[150px] opacity-20 pointer-events-none z-0"></div>
+
+        <div class="container mx-auto px-4 text-center relative z-10 max-w-4xl">
+            <span class="inline-block py-1.5 px-5 rounded-full bg-white/10 border border-white/20 text-white text-[10px] md:text-xs font-bold tracking-widest uppercase mb-6 shadow-sm backdrop-blur-sm">Langkah Selanjutnya</span>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">Sudah Menemukan<br>Program Studimu?</h2>
+            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-medium">Mari wujudkan cita-cita masa depanmu bersama kampus peradaban, Universitas Stella Maris Sumba.</p>
+            
+            <div class="flex justify-center">
+                <a href="https://pmb.unmaris.ac.id" target="_blank" class="inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue font-black text-sm md:text-lg uppercase tracking-wider px-8 md:px-12 py-4 md:py-5 rounded-full hover:bg-white hover:scale-105 transition-all transform shadow-[0_10px_40px_rgba(253,224,26,0.3)]">
+                    Daftar Mahasiswa Baru
+                    <svg class="w-5 h-5 md:w-6 md:h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
         </div>
     </section>
 

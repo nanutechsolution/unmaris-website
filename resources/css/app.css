@@ -13,3 +13,9 @@
     /* Kuning Terang (latar segi lima) */
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }
+
+.hero-title strong,
+.hero-title b {
+    color: var(--color-unmaris-yellow);
+    font-weight: inherit;
+}

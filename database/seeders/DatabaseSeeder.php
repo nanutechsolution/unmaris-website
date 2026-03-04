@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             CategorySeeder::class,
             AcademicSeeder::class,
+            SliderSeeder::class,
         ]);
     }
 }

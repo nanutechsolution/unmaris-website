@@ -1,18 +1,20 @@
 <?php
 
+use App\Http\Controllers\NewsController;
 use App\Models\Announcement;
 use Illuminate\Support\Facades\Route;
 use App\Models\News;
 use App\Models\Faculty;
 use App\Models\Leader;
 use App\Models\Page;
+use App\Models\Slider;
 
 // Home / Landing Page
 Route::get('/', function () {
-    // Cache queries yang jarang berubah (1 jam)
-    $faculties = cache()->remember('home_faculties', 3600, fn() => Faculty::all());
+    $sliders = Slider::where('is_active', true)->orderBy('order', 'asc')->get();
     $latestNews = News::with('category')->where('is_published', true)->latest('published_at')->take(3)->get();
-    return view('pages.home', compact('faculties', 'latestNews'));
+
+    return view('pages.home', compact('sliders', 'latestNews'));
 })->name('home');
 
 // Profil
@@ -40,10 +42,8 @@ Route::get('/fakultas/{slug}', function ($slug) {
 Route::get('/berita', \App\Livewire\NewsIndex::class)->name('news.index');
 
 // Berita Detail
-Route::get('/berita/{slug}', function ($slug) {
-    $news = News::with('category')->where('slug', $slug)->firstOrFail();
-    return view('pages.news-detail', compact('news'));
-})->name('news.detail');
+Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('news.detail');
+Route::post('/berita/{news}/share', [NewsController::class, 'incrementShare'])->name('news.share.increment');
 
 // SEO Utilities
 Route::get('/sitemap.xml', [\App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');

@@ -13,6 +13,27 @@ class DocumentCenter extends Component
     public $activeTab = 'semua';
     public $search = '';
 
+    public $categories = [
+        'semua' => 'Semua Dokumen',
+        'kalender_akademik' => 'Kalender Akademik',
+        'jadwal_kuliah' => 'Jadwal Kuliah',
+        'jadwal_ujian' => 'Jadwal Ujian',
+        'buku_pedoman' => 'Buku Pedoman',
+        'kurikulum' => 'Kurikulum',
+        'peraturan_akademik' => 'Peraturan Akademik',
+        'formulir_akademik' => 'Formulir Akademik',
+        'panduan_skripsi' => 'Panduan Skripsi',
+        'panduan_kkn' => 'Panduan KKN',
+        'panduan_pkl' => 'Panduan PKL',
+        'beasiswa' => 'Beasiswa',
+        'kemahasiswaan' => 'Kemahasiswaan',
+        'kerjasama' => 'Kerjasama',
+        'akreditasi' => 'Akreditasi',
+        'laporan' => 'Laporan',
+        'pengumuman_resmi' => 'Pengumuman Resmi',
+        'brosur_pmb' => 'Brosur PMB',
+        'dokumen_umum' => 'Dokumen Umum',
+    ];
     protected $queryString = [
         'activeTab' => ['except' => 'semua'],
         'search' => ['except' => ''],
@@ -44,7 +65,8 @@ class DocumentCenter extends Component
         $documents = $query->latest('updated_at')->paginate(12);
 
         return view('livewire.document-center', [
-            'documents' => $documents
+            'documents' => $documents,
+            'categories' => $this->categories,
         ])->layout('components.layouts.app', ['title' => 'Pusat Unduhan Akademik - UNMARIS']);
     }
 }

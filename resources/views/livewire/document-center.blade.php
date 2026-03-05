@@ -13,10 +13,19 @@
         <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-10 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-20 z-30">
             <!-- Tabs -->
             <div class="flex overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar gap-2">
-                <button wire:click="setTab('semua')" class="whitespace-nowrap px-5 py-2 rounded-full font-bold text-sm transition {{ $activeTab === 'semua' ? 'bg-unmaris-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">Semua Dokumen</button>
-                <button wire:click="setTab('kalender_akademik')" class="whitespace-nowrap px-5 py-2 rounded-full font-bold text-sm transition {{ $activeTab === 'kalender_akademik' ? 'bg-unmaris-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">Kalender Akademik</button>
-                <button wire:click="setTab('jadwal_kuliah')" class="whitespace-nowrap px-5 py-2 rounded-full font-bold text-sm transition {{ $activeTab === 'jadwal_kuliah' ? 'bg-unmaris-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">Jadwal Kuliah</button>
-                <button wire:click="setTab('buku_pedoman')" class="whitespace-nowrap px-5 py-2 rounded-full font-bold text-sm transition {{ $activeTab === 'buku_pedoman' ? 'bg-unmaris-blue text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">Buku Pedoman</button>
+                @foreach($categories as $key => $label)
+                <button
+                    wire:click="setTab('{{ $key }}')"
+                    class="whitespace-nowrap px-5 py-2 rounded-full font-bold text-sm transition
+    {{ $activeTab === $key
+        ? 'bg-unmaris-blue text-white'
+        : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+
+                    {{ $label }}
+
+                </button>
+
+                @endforeach
             </div>
 
             <!-- Search -->

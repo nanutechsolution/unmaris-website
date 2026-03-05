@@ -27,8 +27,6 @@ class PopupPromoForm
                     ->image()
                     ->disk('public')
                     ->directory('popups')
-                    ->imageCropAspectRatio('16:9')
-                    ->imageResizeMode('cover')
                     ->columnSpanFull(),
                 RichEditor::make('description')
                     ->label('Deskripsi Promo')

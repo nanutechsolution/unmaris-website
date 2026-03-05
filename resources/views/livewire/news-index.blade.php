@@ -39,44 +39,76 @@
                     <svg class="w-4 h-4 md:w-5 md:h-5 text-gray-400 absolute left-3.5 md:left-4 top-3 md:top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
             </div>
+
+            <!-- Indikator Filter Tagar (Hanya Muncul Jika Sedang Memfilter Tag) -->
+            @if($tag)
+            <div class="mt-5 pt-4 border-t border-gray-100 flex items-center flex-wrap gap-3">
+                <span class="text-sm font-medium text-gray-500">Menampilkan hasil untuk tagar:</span>
+                <span class="inline-flex items-center bg-unmaris-yellow text-unmaris-blue px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest shadow-sm">
+                    #{{ $tag }}
+                    <button wire:click="clearTag" class="ml-2 hover:text-red-600 focus:outline-none transition-colors" title="Hapus Filter Tagar">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </span>
+            </div>
+            @endif
         </div>
 
         <!-- 1. FEATURED HERO NEWS (Hanya di Halaman 1 & Tanpa Filter) -->
-        @if($featuredNews && $news->onFirstPage() && !$search && !$selectedCategory)
+        @if($featuredNews && $news->onFirstPage() && !$search && !$selectedCategory && !$tag)
             <div class="mb-12 md:mb-20 group">
-                <article class="relative min-h-[400px] sm:min-h-[450px] md:min-h-[600px] rounded-3xl md:rounded-[3rem] overflow-hidden shadow-2xl flex flex-col justify-end p-6 sm:p-8 md:p-12 lg:p-16 transition-transform duration-700 hover:scale-[0.99]">
+                <article class="bg-gray-900 rounded-3xl md:rounded-[3rem] overflow-hidden shadow-2xl flex flex-col md:flex-row md:items-end relative transition-transform duration-700 hover:scale-[0.99] md:min-h-[500px] lg:min-h-[600px]">
+                    
                     <!-- Image Layer -->
-                    <div class="absolute inset-0 z-0">
+                    <div class="relative h-72 sm:h-80 md:absolute md:inset-0 md:h-full z-0 w-full overflow-hidden shrink-0">
                         @if($featuredNews->featured_image)
-                            <img src="{{ \Illuminate\Support\Facades\Storage::url($featuredNews->featured_image) }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="{{ $featuredNews->title }}">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($featuredNews->featured_image) }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="{{ $featuredNews->title }}">
                         @else
-                            <div class="w-full h-full bg-unmaris-blue"></div>
+                        <div class="w-full h-full bg-unmaris-blue"></div>
                         @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 md:via-gray-900/50 to-transparent"></div>
+                        
+                        <!-- Efek Gradasi Bawah (Mobile & Desktop) -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent md:via-gray-900/40"></div>
+                        
+                        <!-- Efek Gradasi Samping (Khusus Desktop agar teks selalu terbaca sempurna) -->
+                        <div class="hidden md:block absolute inset-0 bg-gradient-to-r from-gray-900/90 via-gray-900/30 to-transparent"></div>
                     </div>
 
                     <!-- Content Layer -->
-                    <div class="relative z-10 max-w-4xl">
-                        <div class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6">
-                            <span class="bg-unmaris-yellow text-unmaris-blue text-[9px] md:text-[10px] font-black px-3 md:px-5 py-1 md:py-2 rounded-full uppercase tracking-widest shadow-lg">
+                    <div class="relative z-10 p-6 sm:p-8 md:p-12 lg:p-16 flex flex-col justify-end w-full md:w-11/12 lg:w-4/5 -mt-24 sm:-mt-20 md:mt-0">
+                        
+                        <!-- Kategori & Tanggal -->
+                        <div class="flex flex-wrap items-center gap-3 md:gap-4 mb-4 md:mb-6">
+                            <span class="bg-unmaris-yellow text-unmaris-blue text-[10px] md:text-[11px] font-black px-4 md:px-5 py-1.5 md:py-2 rounded-full uppercase tracking-widest shadow-lg">
                                 {{ $featuredNews->category->name }}
                             </span>
-                            <span class="text-white/80 text-[10px] md:text-xs font-bold uppercase tracking-widest">{{ $featuredNews->published_at->format('d M Y') }}</span>
+                            <span class="text-gray-300 text-[10px] md:text-xs font-bold uppercase tracking-widest flex items-center">
+                                <svg class="w-3.5 h-3.5 mr-1.5 md:w-4 md:h-4 md:mr-2 text-unmaris-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                {{ $featuredNews->published_at->format('d M Y') }}
+                            </span>
                         </div>
-                        <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[1.15] md:leading-[1.1] mb-4 md:mb-8 group-hover:text-unmaris-yellow transition-colors duration-300">
+
+                        <!-- Judul Utama -->
+                        <h2 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-black text-white leading-[1.3] md:leading-[1.1] mb-4 md:mb-8 group-hover:text-unmaris-yellow transition-colors duration-300 drop-shadow-md">
                             <a href="{{ route('news.detail', $featuredNews->slug) }}">
                                 {{ $featuredNews->title }}
                             </a>
                         </h2>
-                        <p class="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl line-clamp-3 md:line-clamp-2 mb-6 md:mb-10 leading-relaxed font-medium">
+
+                        <!-- Excerpt -->
+                        <p class="text-gray-300 text-sm sm:text-base md:text-lg lg:text-xl line-clamp-3 md:line-clamp-2 mb-8 md:mb-10 leading-relaxed font-medium">
                             {{ $featuredNews->excerpt }}
                         </p>
-                        <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-                            <a href="{{ route('news.detail', $featuredNews->slug) }}" class="w-full sm:w-auto text-center bg-white text-unmaris-blue px-8 md:px-10 py-3 md:py-4 rounded-full font-black text-xs md:text-sm uppercase tracking-widest hover:bg-unmaris-yellow transition-all shadow-xl">
-                                Baca Artikel
+
+                        <!-- Aksi & Meta Stats -->
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 mt-auto md:mt-0">
+                            <a href="{{ route('news.detail', $featuredNews->slug) }}" class="w-full sm:w-auto text-center bg-white text-unmaris-blue px-8 md:px-10 py-3.5 md:py-4 rounded-full font-black text-xs md:text-sm uppercase tracking-widest hover:bg-unmaris-yellow transition-all shadow-xl flex items-center justify-center">
+                                Baca Artikel <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </a>
-                            <div class="flex items-center justify-center sm:justify-start text-white/60 text-[10px] md:text-xs gap-4 font-bold">
+                            
+                            <div class="flex items-center justify-center sm:justify-start text-gray-400 text-[10px] md:text-xs gap-5 font-bold uppercase tracking-widest">
                                 <span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg> {{ number_format($featuredNews->views) }} Tayangan</span>
+                                <div class="w-1 h-1 bg-gray-600 rounded-full"></div>
                                 <span class="flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg> {{ number_format($featuredNews->shares) }} Dibagikan</span>
                             </div>
                         </div>

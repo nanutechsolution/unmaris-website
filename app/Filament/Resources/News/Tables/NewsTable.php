@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -22,8 +23,11 @@ class NewsTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
+                SpatieTagsColumn::make('tags')
+                    ->label('Tagar')
+                    ->searchable(),
                 ImageColumn::make('featured_image')
-                    ->disk('public') 
+                    ->disk('public')
                     ->visibility('public')
                     ->label('Gambar'),
                 IconColumn::make('is_published')

@@ -13,11 +13,13 @@ class NewsIndex extends Component
 
     public $selectedCategory = null;
     public $search = '';
+    public $tag = '';
 
     // Sinkronisasi filter dengan URL agar user bisa membagikan link hasil filter
     protected $queryString = [
         'selectedCategory' => ['except' => ''],
         'search' => ['except' => ''],
+        'tag' => ['except' => ''],
     ];
 
     /**
@@ -26,6 +28,16 @@ class NewsIndex extends Component
     public function filterCategory($categoryId = null)
     {
         $this->selectedCategory = $categoryId;
+        $this->tag = ''; // Reset tag saat kategori diubah
+        $this->resetPage();
+    }
+
+    /**
+     * Membersihkan filter tagar
+     */
+    public function clearTag()
+    {
+        $this->tag = '';
         $this->resetPage();
     }
 
@@ -47,6 +59,7 @@ class NewsIndex extends Component
             ->where('is_published', true)
             ->when($this->selectedCategory, fn($q) => $q->where('category_id', $this->selectedCategory))
             ->when($this->search, fn($q) => $q->where('title', 'like', '%' . $this->search . '%'))
+            ->when($this->tag, fn($q) => $q->withAnyTags([$this->tag]))
             ->latest('published_at');
 
         // 3. Ambil Berita Utama (Hero/Featured)
@@ -54,8 +67,8 @@ class NewsIndex extends Component
         $featuredNews = null;
         $excludedIds = [];
 
-        // Hero hanya tampil di halaman 1, tanpa pencarian, dan tanpa filter kategori
-        if ($this->getPage() === 1 && !$this->search && !$this->selectedCategory) {
+        // Hero hanya tampil di halaman 1, tanpa pencarian, tanpa tag, dan tanpa filter kategori
+        if ($this->getPage() === 1 && !$this->search && !$this->selectedCategory && !$this->tag) {
             $featuredNews = (clone $query)->first();
             if ($featuredNews) {
                 $excludedIds[] = $featuredNews->id;

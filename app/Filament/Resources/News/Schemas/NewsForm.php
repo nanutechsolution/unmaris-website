@@ -12,7 +12,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Utilities\Set;
-
+use Filament\Forms\Components\SpatieTagsInput;
 use Illuminate\Support\Str;
 
 class NewsForm
@@ -53,6 +53,11 @@ class NewsForm
                     ->columnSpanFull()
                     ->fileAttachmentsDirectory('news/attachments')
                     ->label('Konten Berita'),
+                SpatieTagsInput::make('tags')
+                    ->label('Tagar (Keywords)')
+                    ->placeholder('Ketik tagar lalu tekan Enter')
+                    ->splitKeys(['Tab', ','])
+                    ->columnSpanFull(),
                 FileUpload::make('featured_image')
                     ->image()
                     ->disk('public')
@@ -63,13 +68,19 @@ class NewsForm
                     ->downloadable()
                     ->label('Gambar Utama')
                     ->columnSpanFull(),
+                TextInput::make('video_url')
+                    ->label('Tautan Video (Opsional)')
+                    ->placeholder('https://www.youtube.com/watch?v=...')
+                    ->helperText('Tempel link YouTube di sini. Jika diisi, video akan memutar menggantikan gambar sampul di halaman detail.')
+                    ->url(),
+
+                DateTimePicker::make('published_at')
+                    ->label('Tanggal Publikasi')
+                    ->default(now()),
                 Toggle::make('is_published')
                     ->required()
                     ->default(true)
                     ->label('Publikasikan?'),
-                DateTimePicker::make('published_at')
-                    ->label('Tanggal Publikasi')
-                    ->default(now()),
             ]);
     }
 }

@@ -24,7 +24,8 @@ class NewsController extends Controller
         }
 
         // Ambil berita terkait
-        $relatedNews = News::where('category_id', $news->category_id)
+        $relatedNews = News::with(['category', 'tags'])
+            ->where('category_id', $news->category_id)
             ->where('id', '!=', $news->id)
             ->where('is_published', true)
             ->latest('published_at')

@@ -7,11 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Tags\HasTags;
 
 class News extends Model
 {
-    use HasUuids, LogsActivity;  
+    use HasUuids, LogsActivity, HasTags;
 
+    // /**
+    //  * @return array<string, string>
+    //  */
+    // protected function casts(): array
+    // {
+    //     return [
+    //         'tags' => 'array',
+    //     ];
+    // }
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -21,7 +31,7 @@ class News extends Model
             ->useLogName('Berita');
     }
 
-    protected $fillable = ['category_id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'is_published', 'published_at', 'views', 'shares'];
+    protected $fillable = ['category_id', 'title', 'slug', 'excerpt', 'content', 'featured_image', 'video_url', 'is_published', 'published_at', 'views', 'shares'];
     protected $casts = ['published_at' => 'datetime', 'is_published' => 'boolean'];
 
     public function category(): BelongsTo

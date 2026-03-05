@@ -298,7 +298,7 @@
 
                     <!-- Newsletter or Call to Action in Sidebar -->
                     <div class="mt-12 md:mt-16 bg-gray-900 rounded-3xl md:rounded-[2.5rem] p-6 md:p-8 text-white relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-unmaris-yellow/10 rounded-full blur-2xl"></div>
+                        <div class="absolute -right-10 -top-10 w-   32 h-32 bg-unmaris-yellow/10 rounded-full blur-2xl"></div>
                         <h3 class="text-lg md:text-xl font-black mb-3 md:mb-4 relative z-10">Dapatkan Pembaruan.</h3>
                         <p class="text-gray-400 text-xs md:text-sm mb-5 md:mb-6 relative z-10 leading-relaxed">Dapatkan informasi riset dan berita akademik terkini langsung di kotak masuk Anda.</p>
                         <a href="{{ route('contact') }}" class="inline-block w-full text-center bg-unmaris-yellow text-unmaris-blue py-3 md:py-3.5 rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-white transition-all">

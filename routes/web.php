@@ -9,38 +9,27 @@ use App\Models\Faculty;
 use App\Models\Leader;
 use App\Models\Page;
 use App\Models\Partner;
+use App\Models\PopupPromo;
 use App\Models\Scholarship;
+use App\Models\Slider;
 use App\Models\StudentOrganization;
+use App\Models\StudyProgram;
 
 Route::get('/', function () {
-    $sliders = \App\Models\Slider::where('is_active', true)->orderBy('order', 'asc')->get();
-    $latestNews = \App\Models\News::with('category')->where('is_published', true)->latest('published_at')->take(4)->get();
+    // Ambil data Slider dan Berita
+    $sliders = Slider::where('is_active', true)->orderBy('order', 'asc')->get();
+    $latestNews = News::with('category')->where('is_published', true)->latest('published_at')->take(4)->get();
 
-    // Hitungan statistik
-    $countProdi = \App\Models\StudyProgram::count();
-    $countFakultas = \App\Models\Faculty::count();
-    $countBerita = \App\Models\News::where('is_published', true)->count();
+    // Ambil Pop-up Promo yang sedang aktif (paling baru)
+    $popupPromo = PopupPromo::where('is_active', true)->latest()->first();
 
-    // Mengambil 4 fakultas beserta hitungan prodinya
-    $featuredFaculties = \App\Models\Faculty::withCount('studyPrograms')->take(4)->get();
+    // Hitung Statistik Langsung dari Database
+    $countProdi = StudyProgram::count();
+    $countFakultas = Faculty::count();
+    $countBerita = News::where('is_published', true)->count();
 
-    // Mengambil 3 pengumuman/agenda terbaru yang aktif
-    $recentAnnouncements = \App\Models\Announcement::where('is_active', true)
-        ->orderBy('start_date', 'desc')
-        ->take(3)
-        ->get();
-
-    return view('pages.home', compact(
-        'sliders',
-        'latestNews',
-        'countProdi',
-        'countFakultas',
-        'countBerita',
-        'featuredFaculties',
-        'recentAnnouncements'
-    ));
+    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo'));
 })->name('home');
-
 
 Route::get('/fasilitas', function () {
     // Ambil data fasilitas yang aktif dan urutkan

@@ -332,8 +332,27 @@
     </footer>
 
 
+<div x-data="{ waOpen: false, showTooltip: false }"
+         x-init="setTimeout(() => showTooltip = true, 3000); setTimeout(() => showTooltip = false, 12000)"
+         class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
 
-    <div x-data="{ waOpen: false }" class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
+        <!-- Tooltip Pop-up "Butuh Bantuan?" -->
+        <div x-show="showTooltip && !waOpen"
+             x-transition:enter="transition ease-out duration-700"
+             x-transition:enter-start="opacity-0 translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             class="absolute right-full mr-5 bottom-2.5 bg-white px-5 py-3 rounded-2xl shadow-2xl border border-gray-100 text-sm font-bold text-gray-800 whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors"
+             @click="waOpen = true; showTooltip = false"
+             style="display: none;">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">👋</span> Ada yang bisa dibantu?
+            </div>
+            <!-- Segitiga Panah ke kanan -->
+            <div class="absolute top-1/2 -right-2 -translate-y-1/2 w-4 h-4 bg-white transform rotate-45 border-r border-t border-gray-100 rounded-sm"></div>
+        </div>
 
         <!-- Chat Box Popup -->
         <div x-show="waOpen"
@@ -366,7 +385,7 @@
             <!-- Body / Contacts -->
             <div class="p-5 space-y-3 bg-gray-50">
                 <!-- Kontak 1: CS PMB -->
-                <a href="https://wa.me/62812-1615-6883?text=Halo%20Admin%20PMB%20UNMARIS,%20saya%20ingin%20bertanya%20seputar%20informasi%20pendaftaran%20mahasiswa%20baru." target="_blank" class="flex items-center gap-3 p-3 bg-white rounded-xl hover:shadow-lg transition-all border border-gray-100 group transform hover:-translate-y-0.5">
+                <a href="https://wa.me/6281216156883?text=Halo%20Admin%20PMB%20UNMARIS,%20saya%20ingin%20bertanya%20seputar%20informasi%20pendaftaran%20mahasiswa%20baru." target="_blank" class="flex items-center gap-3 p-3 bg-white rounded-xl hover:shadow-lg transition-all border border-gray-100 group transform hover:-translate-y-0.5">
                     <div class="w-10 h-10 bg-blue-50 text-unmaris-blue rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#25D366] group-hover:text-white transition-colors shadow-sm">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
@@ -379,7 +398,7 @@
                 </a>
 
                 <!-- Kontak 2: CS Akademik -->
-                <a href="https://wa.me/62852-3980-3210?text=Halo%20Admin%20Akademik%20UNMARIS,%20saya%20ingin%20bertanya%20seputar%20perkuliahan%20dan%20fakultas." target="_blank" class="flex items-center gap-3 p-3 bg-white rounded-xl hover:shadow-lg transition-all border border-gray-100 group transform hover:-translate-y-0.5">
+                <a href="https://wa.me/6285239803210?text=Halo%20Admin%20Akademik%20UNMARIS,%20saya%20ingin%20bertanya%20seputar%20perkuliahan%20dan%20fakultas." target="_blank" class="flex items-center gap-3 p-3 bg-white rounded-xl hover:shadow-lg transition-all border border-gray-100 group transform hover:-translate-y-0.5">
                     <div class="w-10 h-10 bg-yellow-50 text-yellow-600 rounded-full flex items-center justify-center shrink-0 group-hover:bg-[#25D366] group-hover:text-white transition-colors shadow-sm">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
@@ -394,10 +413,13 @@
         </div>
 
         <!-- WA Toggle Button (Floating) -->
-        <button @click="waOpen = !waOpen" class="w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(37,211,102,0.4)] hover:scale-110 hover:bg-[#20bd5a] transition-all duration-300 relative group">
+        <button @click="waOpen = !waOpen; showTooltip = false" class="w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(37,211,102,0.4)] hover:scale-110 hover:bg-[#20bd5a] transition-all duration-300 relative group">
 
-            <!-- Efek Ping (Berdenyut) agar lebih mencolok -->
-            <div class="absolute inset-0 bg-[#25D366] rounded-full animate-ping opacity-60" x-show="!waOpen"></div>
+            <!-- NOTIFICATION BADGE (Titik Merah Pengganti Ping Keseluruhan) -->
+            <span class="absolute top-0 right-0 flex h-4 w-4 md:h-5 md:w-5" x-show="!waOpen">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-4 w-4 md:h-5 md:w-5 bg-red-500 border-2 border-white"></span>
+            </span>
 
             <!-- Icon WA (Tampil jika popup tertutup) -->
             <svg x-show="!waOpen" class="w-8 h-8 relative z-10" fill="currentColor" viewBox="0 0 24 24">
@@ -410,7 +432,6 @@
             </svg>
         </button>
     </div>
-
     @livewireScripts
     @stack('scripts')
 </body>

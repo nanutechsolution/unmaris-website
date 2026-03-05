@@ -433,6 +433,7 @@
     @endif
 
     <!-- 6. TESTIMONI ALUMNI (UI DRAFT - Modul Akan Dibuat) -->
+    @if(isset($testimonials) && $testimonials->count() > 0)
     <section class="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-1/3 h-full bg-unmaris-blue opacity-5 rounded-l-full blur-3xl pointer-events-none"></div>
         <div class="container mx-auto px-4 max-w-7xl relative z-10">
@@ -442,82 +443,58 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <!-- Card Dummy 1 -->
-                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group">
+                @foreach($testimonials as $testi)
+                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group flex flex-col h-full">
                     <div class="absolute top-8 right-8 text-gray-100 group-hover:text-unmaris-yellow transition-colors opacity-50">
                         <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                         </svg>
                     </div>
-                    <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 relative z-10 font-medium italic">"Belajar di UNMARIS bukan hanya tentang teori, tapi pembentukan karakter dan etos kerja. Ilmu Bisnis Digital yang saya pelajari sangat relevan dengan industri saat ini."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://ui-avatars.com/api/?name=Alumni+Satu&background=1B1464&color=FDE01A" alt="Alumni" class="w-12 h-12 rounded-full border-2 border-gray-100">
+                    <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 relative z-10 font-medium italic flex-grow">"{{ $testi->message }}"</p>
+                    <div class="flex items-center gap-4 mt-auto relative z-10">
+                        @if($testi->image)
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($testi->image) }}" alt="{{ $testi->name }}" class="w-12 h-12 rounded-full border-2 border-gray-100 object-cover">
+                        @else
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testi->name) }}&background=1B1464&color=FDE01A" alt="{{ $testi->name }}" class="w-12 h-12 rounded-full border-2 border-gray-100">
+                        @endif
                         <div>
-                            <h4 class="font-bold text-gray-900 text-sm">Maria Ina Kii</h4>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">Digital Marketer di Bank NTT</p>
+                            <h4 class="font-bold text-gray-900 text-sm">{{ $testi->name }}</h4>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                                {{ $testi->job_title }} {{ $testi->company ? 'di ' . $testi->company : '' }}
+                            </p>
                         </div>
                     </div>
                 </div>
-
-                <!-- Card Dummy 2 -->
-                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group">
-                    <div class="absolute top-8 right-8 text-gray-100 group-hover:text-unmaris-yellow transition-colors opacity-50">
-                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                        </svg>
-                    </div>
-                    <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 relative z-10 font-medium italic">"Fasilitas laboratorium yang memadai dan dosen yang suportif membuat saya percaya diri bersaing di kancah nasional."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://ui-avatars.com/api/?name=Alumni+Dua&background=10b981&color=ffffff" alt="Alumni" class="w-12 h-12 rounded-full border-2 border-gray-100">
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-sm">Yohanes Bili</h4>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">HSE Officer Pertambangan</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card Dummy 3 -->
-                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group">
-                    <div class="absolute top-8 right-8 text-gray-100 group-hover:text-unmaris-yellow transition-colors opacity-50">
-                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                        </svg>
-                    </div>
-                    <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 relative z-10 font-medium italic">"Koneksi yang saya dapatkan selama kuliah sangat membantu percepatan karir saya sebagai pendidik di era modern."</p>
-                    <div class="flex items-center gap-4">
-                        <img src="https://ui-avatars.com/api/?name=Alumni+Tiga&background=ef4444&color=ffffff" alt="Alumni" class="w-12 h-12 rounded-full border-2 border-gray-100">
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-sm">Kristina Rambu</h4>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">PNS Pemda Sumba Barat</p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
+    @endif
+
 
     <!-- 7. MITRA / PARTNERS (Marquee Simpel) -->
+    @if(isset($partners) && $partners->count() > 0)
     <section class="py-10 border-t border-b border-gray-100 bg-white overflow-hidden">
         <div class="container mx-auto px-4 text-center mb-6">
             <p class="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-widest">Telah Dipercaya Oleh Berbagai Institusi</p>
         </div>
         <!-- Infinite Scroll Animation Wrapper (Tailwind util class needed in app.css, or just simple flex wrap for now) -->
         <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 max-w-5xl mx-auto px-4">
-            <!-- Dummy Logos (Bisa diganti data dinamis nanti) -->
-            <div class="text-xl font-black text-gray-400 flex items-center gap-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            @foreach($partners as $partner)
+            <div class="text-xl font-black text-gray-400 flex items-center gap-2">
+                @if($partner->logo)
+                <img src="{{ \Illuminate\Support\Facades\Storage::url($partner->logo) }}" alt="{{ $partner->name }}" class="h-8 object-contain">
+                @else
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg> Bank NTT</div>
-            <div class="text-xl font-black text-gray-400 flex items-center gap-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg> Telkom</div>
-            <div class="text-xl font-black text-gray-400 flex items-center gap-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg> Pemda Sumba</div>
-            <div class="text-xl font-black text-gray-400 flex items-center gap-2"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg> Kemdikbudristek</div>
+                </svg>
+                @endif
+                {{ $partner->name }}
+            </div>
+            @endforeach
         </div>
     </section>
+    @endif
 
     <!-- 8. MENGAPA MEMILIH KAMI -->
     <section class="py-16 md:py-24 bg-white">

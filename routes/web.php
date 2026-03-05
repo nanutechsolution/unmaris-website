@@ -14,6 +14,7 @@ use App\Models\Scholarship;
 use App\Models\Slider;
 use App\Models\StudentOrganization;
 use App\Models\StudyProgram;
+use App\Models\Testimonial;
 
 Route::get('/', function () {
     // Ambil data Slider dan Berita
@@ -27,8 +28,11 @@ Route::get('/', function () {
     $countProdi = StudyProgram::count();
     $countFakultas = Faculty::count();
     $countBerita = News::where('is_published', true)->count();
+    $testimonials = Testimonial::where('is_active', true)->orderBy('order', 'asc')->take(6)->get();
+    $partner = Partner::where('is_active', true)->orderBy('order', 'asc')->get();
 
-    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo'));
+
+    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo', 'testimonials', 'partner'));
 })->name('home');
 
 Route::get('/fasilitas', function () {

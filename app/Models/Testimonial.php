@@ -5,18 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
-class Partner extends Model
+class Testimonial extends Model
 {
     use HasUuids;
 
     protected $fillable = [
-        'name',
-        'type',
-        'logo',
-        'website_url',
-        'description',
-        'order',
-        'is_active'
+        'name', 'job_title', 'company', 'message', 'image', 'order', 'is_active'
     ];
 
     protected $casts = [

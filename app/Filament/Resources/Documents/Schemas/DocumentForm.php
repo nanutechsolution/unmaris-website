@@ -31,7 +31,21 @@ class DocumentForm
                     ->options([
                         'kalender_akademik' => 'Kalender Akademik',
                         'jadwal_kuliah' => 'Jadwal Kuliah',
-                        'buku_pedoman' => 'Buku Pedoman',
+                        'jadwal_ujian' => 'Jadwal Ujian',
+                        'buku_pedoman' => 'Buku Pedoman Akademik',
+                        'kurikulum' => 'Kurikulum',
+                        'peraturan_akademik' => 'Peraturan Akademik',
+                        'formulir_akademik' => 'Formulir Akademik',
+                        'panduan_skripsi' => 'Panduan Skripsi / Tugas Akhir',
+                        'panduan_kkn' => 'Panduan KKN',
+                        'panduan_pkl' => 'Panduan PKL / Magang',
+                        'beasiswa' => 'Informasi Beasiswa',
+                        'kemahasiswaan' => 'Dokumen Kemahasiswaan',
+                        'kerjasama' => 'Dokumen Kerjasama',
+                        'akreditasi' => 'Dokumen Akreditasi',
+                        'laporan' => 'Laporan Institusi',
+                        'pengumuman_resmi' => 'Pengumuman Resmi',
+                        'brosur_pmb' => 'Brosur PMB',
                         'dokumen_umum' => 'Dokumen Umum / Lainnya',
                     ])
                     ->required()

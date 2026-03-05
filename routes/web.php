@@ -31,8 +31,8 @@ Route::get('/', function () {
     $testimonials = Testimonial::where('is_active', true)->orderBy('order', 'asc')->take(6)->get();
     $partner = Partner::where('is_active', true)->orderBy('order', 'asc')->get();
 
-
-    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo', 'testimonials', 'partner'));
+    $faculties = Faculty::with('studyPrograms')->get();
+    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo', 'testimonials', 'partner', 'faculties'));
 })->name('home');
 
 Route::get('/fasilitas', function () {

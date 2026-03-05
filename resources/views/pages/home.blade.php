@@ -293,7 +293,7 @@
                     </svg>
                 </button>
                 <template x-if="videoOpen">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/watch?v=00QXNXx3rws" title="Video Profil" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe class="w-full h-full" src="https://www.youtube.com/watch?v=QPd6QsoQaPA" title="Video Profil" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </template>
             </div>
         </div>

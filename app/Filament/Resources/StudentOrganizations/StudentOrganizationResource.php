@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\StudentOrganizations;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\StudentOrganizations\Pages\CreateStudentOrganization;
 use App\Filament\Resources\StudentOrganizations\Pages\EditStudentOrganization;
 use App\Filament\Resources\StudentOrganizations\Pages\ListStudentOrganizations;
@@ -23,6 +24,10 @@ class StudentOrganizationResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $modelLabel = 'Organisasi Mahasiswa';
     protected static ?string $pluralModelLabel = 'Organisasi Mahasiswa';
+    protected static ?string $navigationLabel = 'Organisasi Mahasiswa';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Kemahasiswaan;
+    protected static ?int $navigationSort = 1;
+   
 
     public static function form(Schema $schema): Schema
     {

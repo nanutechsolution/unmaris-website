@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Partners;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Partners\Pages\CreatePartner;
 use App\Filament\Resources\Partners\Pages\EditPartner;
 use App\Filament\Resources\Partners\Pages\ListPartners;
@@ -21,11 +22,12 @@ class PartnerResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedViewfinderCircle;
 
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Mitra';
+    protected static ?string $pluralModelLabel = 'Mitra';
+    protected static ?string $navigationLabel = 'Mitra';
 
-    // name of the navigation group in sidebar
-    // sort order in navigation group
-    protected static ?int $navigationSort = 3;
-    // name model
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Kemitraan;
+    protected static ?int $navigationSort = 1;
     protected static ?string $label = 'Mitra';
     protected static ?string $pluralLabel = 'Mitra';
 

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\PopupPromos;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\PopupPromos\Pages\CreatePopupPromo;
 use App\Filament\Resources\PopupPromos\Pages\EditPopupPromo;
 use App\Filament\Resources\PopupPromos\Pages\ListPopupPromos;
@@ -20,7 +21,14 @@ class PopupPromoResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSparkles;
 
+    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $modelLabel = 'Popup Promo';
+    protected static ?string $pluralModelLabel = 'Popup Promos';
+    protected static ?string $navigationLabel = 'Popup Promos';
 
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 1;
+   
     public static function form(Schema $schema): Schema
     {
         return PopupPromoForm::configure($schema);

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Research;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Research\Pages\CreateResearch;
 use App\Filament\Resources\Research\Pages\EditResearch;
 use App\Filament\Resources\Research\Pages\ListResearch;
@@ -19,14 +20,12 @@ class ResearchResource extends Resource
     protected static ?string $model = Research::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-
     protected static ?string $recordTitleAttribute = 'name';
-    // name of the navigation group in sidebar
-    // sort order in navigation group
+    protected static ?string $modelLabel = 'Penelitian';
+    protected static ?string $pluralModelLabel = 'Penelitian';
+    protected static ?string $navigationLabel = 'Penelitian';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Akademik;
     protected static ?int $navigationSort = 4;
-    // name model
-    protected static ?string $label = 'Penelitian';
-    protected static ?string $pluralLabel = 'Penelitian';
 
     public static function form(Schema $schema): Schema
     {

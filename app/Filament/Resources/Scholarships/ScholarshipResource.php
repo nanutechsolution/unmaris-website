@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Scholarships;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Scholarships\Pages\CreateScholarship;
 use App\Filament\Resources\Scholarships\Pages\EditScholarship;
 use App\Filament\Resources\Scholarships\Pages\ListScholarships;
@@ -19,14 +20,13 @@ class ScholarshipResource extends Resource
     protected static ?string $model = Scholarship::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
-
     protected static ?string $recordTitleAttribute = 'name';
-    // name of the navigation group in sidebar
-    // sort order in navigation group
-    protected static ?int $navigationSort = 5;
-    // name model
-    protected static ?string $label = 'Informasi Beasiswa';
-    protected static ?string $pluralLabel = 'Informasi Beasiswa';
+    protected static ?string $modelLabel = 'Beasiswa';
+    protected static ?string $pluralModelLabel = 'Beasiswa';
+    protected static ?string $navigationLabel = 'Beasiswa';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Akademik;
+    protected static ?int $navigationSort = 4;
+
 
     public static function form(Schema $schema): Schema
     {

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Testimonials;
 
+use App\Enums\NavigationGroup;
 use App\Filament\Resources\Testimonials\Pages\CreateTestimonial;
 use App\Filament\Resources\Testimonials\Pages\EditTestimonial;
 use App\Filament\Resources\Testimonials\Pages\ListTestimonials;
@@ -21,6 +22,9 @@ class TestimonialResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftEllipsis;
     protected static ?string $modelLabel = 'Testimoni Alumni';
     protected static ?string $pluralModelLabel = 'Testimoni Alumni';
+    protected static ?string $navigationLabel = 'Testimoni Alumni';
+    protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
+    protected static ?int $navigationSort = 99;
 
 
     public static function form(Schema $schema): Schema

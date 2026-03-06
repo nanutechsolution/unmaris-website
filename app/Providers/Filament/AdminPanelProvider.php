@@ -61,6 +61,14 @@ class AdminPanelProvider extends PanelProvider
                     ->icon(Heroicon::OutlinedAcademicCap)
                     ->collapsed(),
                 FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::Kemahasiswaan->value)
+                    ->icon(Heroicon::OutlinedUserGroup)
+                    ->collapsed(),
+                FilamentNavigationGroup::make()
+                    ->label(NavigationGroup::Kemitraan->value)
+                    ->icon(Heroicon::OutlinedBuildingOffice)
+                    ->collapsed(),
+                FilamentNavigationGroup::make()
                     ->label(NavigationGroup::Sistem->value)
                     ->icon(Heroicon::OutlinedCog6Tooth)
                     ->collapsed(),

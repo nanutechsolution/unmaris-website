@@ -32,7 +32,7 @@
                         class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-100">
 
                         <!-- Tombol Close (X) di pojok kanan atas -->
-                        <button @click="promoOpen = false; sessionStorage.setItem('promo_closed_{{ $popupPromo->id }}', 'true')" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/20 hover:bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all shadow-sm">
+                        <button  type="button" aria-label="Tutup popup promosi" @click="promoOpen = false; sessionStorage.setItem('promo_closed_{{ $popupPromo->id }}', 'true')" class="absolute top-4 right-4 z-20 w-10 h-10 bg-black/20 hover:bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center text-white transition-all shadow-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>

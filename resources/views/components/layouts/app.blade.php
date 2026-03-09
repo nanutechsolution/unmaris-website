@@ -8,17 +8,29 @@
 
     <!-- icon -->
     <link rel="icon" href="{{ asset('images/logo-unmaris.png') }}" type="image/png">
-    <!-- Basic SEO Meta Tags -->
+
+    <!-- Basic SEO -->
     <meta name="description" content="{{ $description ?? 'Universitas Stella Maris Sumba, mencetak generasi unggul, berkarakter, dan berdaya saing global di Nusa Tenggara Timur.' }}">
     <meta name="keywords" content="Universitas di Sumba, Kampus Sumba, Stella Maris Sumba, Kuliah di Sumba, UNMARIS">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="Universitas Stella Maris Sumba">
 
-    <!-- Open Graph / Facebook -->
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="{{ $title ?? 'Universitas Stella Maris Sumba' }}">
     <meta property="og:description" content="{{ $description ?? 'Universitas Stella Maris Sumba - Pendidikan Unggul di NTT.' }}">
     <meta property="og:image" content="{{ $ogImage ?? asset('images/logo-unmaris.png') }}">
+    <meta property="og:site_name" content="Universitas Stella Maris Sumba">
+    <meta property="og:locale" content="id_ID">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title ?? 'Universitas Stella Maris Sumba' }}">
+    <meta name="twitter:description" content="{{ $description ?? 'Universitas Stella Maris Sumba - Pendidikan Unggul di NTT.' }}">
+    <meta name="twitter:image" content="{{ $ogImage ?? asset('images/logo-unmaris.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
@@ -332,21 +344,21 @@
     </footer>
 
 
-<div x-data="{ waOpen: false, showTooltip: false }"
-         x-init="setTimeout(() => showTooltip = true, 3000); setTimeout(() => showTooltip = false, 12000)"
-         class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
+    <div x-data="{ waOpen: false, showTooltip: false }"
+        x-init="setTimeout(() => showTooltip = true, 3000); setTimeout(() => showTooltip = false, 12000)"
+        class="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
 
         <!-- Tooltip Pop-up "Butuh Bantuan?" -->
         <div x-show="showTooltip && !waOpen"
-             x-transition:enter="transition ease-out duration-700"
-             x-transition:enter-start="opacity-0 translate-y-4"
-             x-transition:enter-end="opacity-100 translate-y-0"
-             x-transition:leave="transition ease-in duration-300"
-             x-transition:leave-start="opacity-100"
-             x-transition:leave-end="opacity-0"
-             class="absolute right-full mr-5 bottom-2.5 bg-white px-5 py-3 rounded-2xl shadow-2xl border border-gray-100 text-sm font-bold text-gray-800 whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors"
-             @click="waOpen = true; showTooltip = false"
-             style="display: none;">
+            x-transition:enter="transition ease-out duration-700"
+            x-transition:enter-start="opacity-0 translate-y-4"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="absolute right-full mr-5 bottom-2.5 bg-white px-5 py-3 rounded-2xl shadow-2xl border border-gray-100 text-sm font-bold text-gray-800 whitespace-nowrap cursor-pointer hover:bg-gray-50 transition-colors"
+            @click="waOpen = true; showTooltip = false"
+            style="display: none;">
             <div class="flex items-center gap-2">
                 <span class="text-xl">👋</span> Ada yang bisa dibantu?
             </div>

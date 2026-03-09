@@ -5,7 +5,7 @@
     <div x-data="{ promoOpen: false }"
         x-init="setTimeout(() => { if(!sessionStorage.getItem('promo_closed_{{ $popupPromo->id }}')) promoOpen = true }, 2000)">
 
-        <div x-show="promoOpen" style="display: none;" class="relative z-[100]" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div id="modal-title" x-show="promoOpen" style="display: none;" class="relative z-[100]" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <!-- Background gelap (Backdrop) -->
             <div x-show="promoOpen"
                 x-transition:enter="ease-out duration-500"

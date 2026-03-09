@@ -145,60 +145,60 @@
             x-transition:leave="transition-opacity ease-in duration-1000"
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
-            class="absolute inset-0 w-full h-full flex flex-col md:block"
+            class="absolute inset-0 w-full h-full flex flex-col md:flex-row"
             x-cloak>
 
-            <!-- 1. AREA GAMBAR (Tengah atas pada Mobile, Full layar pada Desktop) -->
-            <div class="relative w-full h-[45%] sm:h-[50%] md:h-full md:absolute md:inset-0 bg-gray-100 overflow-hidden">
+            <!-- 1. AREA GAMBAR (Atas pada Mobile, Kanan pada Desktop) -->
+            <!-- Class md:order-2 memindahkan area ini ke sebelah kanan pada layar besar -->
+            <div class="relative w-full h-[45%] sm:h-[50%] md:h-full md:w-1/2 md:order-2 bg-gray-100 overflow-hidden">
                 @if($slider->image)
                 <img src="{{ \Illuminate\Support\Facades\Storage::url($slider->image) }}"
                     alt="{{ strip_tags($slider->title) }}"
                     class="w-full h-full object-cover transform transition-transform duration-[20000ms] ease-out origin-center"
                     :class="activeSlide === {{ $index }} ? 'scale-110' : 'scale-100'">
                 @else
-                <div class="absolute inset-0 bg-unmaris-blue"></div>
+                <div class="absolute inset-0 bg-gray-200"></div>
                 @endif
-
-                <!-- Overlay gelap HANYA muncul di Desktop agar teks terbaca -->
-                <div class="hidden md:block absolute inset-0 bg-black/20"></div>
+                
+                <!-- Overlay dihapus total agar gambar 100% jelas karena teks sudah punya background sendiri -->
             </div>
 
-            <!-- 2. AREA KONTEN / TEKS (Solid di bawah pada Mobile, Melayang pada Desktop) -->
-            <div class="relative w-full h-[55%] sm:h-[50%] md:h-full bg-unmaris-blue md:bg-transparent flex flex-col justify-center md:container md:mx-auto px-6 md:px-8 z-10">
+            <!-- 2. AREA KONTEN / TEKS (Bawah pada Mobile, Kiri pada Desktop) -->
+            <!-- Class md:order-1 memastikan area ini di sebelah kiri pada layar besar -->
+            <div class="relative w-full h-[55%] sm:h-[50%] md:h-full md:w-1/2 bg-unmaris-blue flex flex-col justify-center px-6 md:px-12 lg:px-20 z-10 md:order-1 overflow-hidden">
                 
-                <!-- Kotak Solid (Mobile) atau Kaca (Desktop) -->
-                <div class="w-full md:max-w-2xl md:bg-black/40 md:backdrop-blur-md md:border md:border-white/20 md:p-10 md:rounded-3xl md:shadow-2xl relative overflow-hidden"
+                <!-- Elemen Dekorasi Titik-titik (Dot Pattern) -->
+                <div class="absolute right-0 bottom-0 md:-right-10 md:bottom-10 opacity-10 md:opacity-20 pointer-events-none">
+                    <svg width="200" height="200" fill="none" viewBox="0 0 100 100">
+                        <pattern id="dots" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <circle cx="2" cy="2" r="1.5" fill="currentColor" class="text-white"></circle>
+                        </pattern>
+                        <rect width="100" height="100" fill="url(#dots)"></rect>
+                    </svg>
+                </div>
+
+                <div class="w-full max-w-xl relative"
                     x-show="activeSlide === {{ $index }}"
                     x-transition:enter="transition ease-out duration-1000 delay-300"
                     x-transition:enter-start="opacity-0 translate-y-12"
                     x-transition:enter-end="opacity-100 translate-y-0">
 
-                    <!-- Elemen Dekorasi Titik-titik (Mirip Gambar Referensi) -->
-                    <div class="absolute right-0 bottom-4 opacity-10 md:opacity-20 pointer-events-none">
-                        <svg width="100" height="100" fill="none" viewBox="0 0 100 100">
-                            <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                                <circle cx="2" cy="2" r="2" fill="currentColor" class="text-white"></circle>
-                            </pattern>
-                            <rect width="100" height="100" fill="url(#dots)"></rect>
-                        </svg>
-                    </div>
-
                     <!-- Label (Jika Ada) -->
                     @if($slider->label)
-                    <div class="mb-3 md:mb-4 relative z-10">
-                        <span class="inline-flex items-center px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-unmaris-yellow/20 md:bg-unmaris-yellow text-unmaris-yellow md:text-unmaris-blue text-[10px] md:text-xs font-black uppercase tracking-[0.2em] shadow-sm">
+                    <div class="mb-3 md:mb-5 relative z-10">
+                        <span class="inline-flex items-center px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-white/10 text-unmaris-yellow border border-white/20 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] shadow-sm">
                             {{ $slider->label }}
                         </span>
                     </div>
                     @endif
 
                     <!-- Judul Slider -->
-                    <h1 class="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white mb-3 md:mb-4 leading-tight drop-shadow-lg relative z-10">
+                    <h1 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg relative z-10">
                         {!! $slider->title !!}
                     </h1>
 
                     <!-- Deskripsi -->
-                    <p class="text-sm md:text-base lg:text-lg text-gray-200 mb-6 md:mb-8 max-w-xl leading-relaxed drop-shadow-md relative z-10 line-clamp-3 md:line-clamp-none">
+                    <p class="text-sm md:text-base lg:text-lg text-gray-200 mb-8 md:mb-10 max-w-lg leading-relaxed drop-shadow-md relative z-10 line-clamp-3 md:line-clamp-none">
                         {{ $slider->description }}
                     </p>
 
@@ -206,7 +206,7 @@
                     <div class="flex items-center relative z-10 pb-8 md:pb-0">
                         @if($slider->button_url)
                         <a href="{{ $slider->button_url }}"
-                            class="inline-flex justify-center items-center bg-unmaris-yellow text-unmaris-blue px-6 py-3 md:px-8 md:py-3.5 rounded-full font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-lg">
+                            class="inline-flex justify-center items-center bg-unmaris-yellow text-unmaris-blue px-6 py-3 md:px-8 md:py-4 rounded-full font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-lg">
                             {{ $slider->button_text ?? 'Jelajahi' }}
                         </a>
                         @endif
@@ -216,21 +216,21 @@
         </div>
         @endforeach
 
-        <!-- Slider Navigation Controls (Dots) - Disesuaikan posisinya -->
-        <div class="absolute bottom-6 md:bottom-12 left-6 md:left-0 right-0 z-30 flex justify-start md:justify-center items-center gap-2 md:gap-3">
+        <!-- Slider Navigation Controls (Dots) - Diposisikan di kiri area biru -->
+        <div class="absolute bottom-6 md:bottom-12 left-6 md:left-12 lg:left-20 z-30 flex justify-start items-center gap-2 md:gap-3">
             @foreach($sliders as $index => $slider)
-            <button @click="activeSlide = {{ $index }}" class="h-1.5 rounded-full transition-all duration-500 overflow-hidden relative" :class="activeSlide === {{ $index }} ? 'w-12 md:w-16 bg-white/40' : 'w-2 md:w-3 bg-white/30 hover:bg-white/70'">
+            <button @click="activeSlide = {{ $index }}" class="h-1.5 rounded-full transition-all duration-500 overflow-hidden relative" :class="activeSlide === {{ $index }} ? 'w-12 md:w-16 bg-white/40' : 'w-2 md:w-3 bg-white/20 hover:bg-white/50'">
                 <div x-show="activeSlide === {{ $index }}" class="absolute top-0 left-0 bottom-0 bg-unmaris-yellow" x-transition:enter="transition-all ease-linear duration-[8000ms]" x-transition:enter-start="w-0" x-transition:enter-end="w-full"></div>
             </button>
             @endforeach
         </div>
 
-        <!-- Navigation Arrows (Khusus Desktop) -->
-        <div class="hidden md:flex absolute inset-y-0 right-4 lg:right-10 z-20 flex-col justify-center gap-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <button @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1" class="pointer-events-auto w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue transition-all shadow-lg transform hover:-translate-x-1">
+        <!-- Navigation Arrows (Khusus Desktop) - Posisi mengapit ujung layar -->
+        <div class="hidden md:flex absolute inset-y-0 left-4 right-4 z-20 justify-between items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <button @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1" class="pointer-events-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:-translate-x-1">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
             </button>
-            <button @click="activeSlide = (activeSlide + 1) % totalSlides" class="pointer-events-auto w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue transition-all shadow-lg transform hover:translate-x-1">
+            <button @click="activeSlide = (activeSlide + 1) % totalSlides" class="pointer-events-auto w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:translate-x-1">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
             </button>
         </div>

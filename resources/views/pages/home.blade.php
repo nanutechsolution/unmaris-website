@@ -88,7 +88,7 @@
         </div>
     </div>
     @endif
-   <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
+    <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
     @if(isset($sliders) && $sliders->count() > 0)
     <section class="relative w-full h-[90vh] min-h-[650px] md:h-[85vh] lg:min-h-[750px] bg-unmaris-blue overflow-hidden group"
         x-data="{ 
@@ -159,14 +159,14 @@
                 @else
                 <div class="absolute inset-0 bg-gray-200"></div>
                 @endif
-                
+
                 <!-- Overlay dihapus total agar gambar 100% jelas karena teks sudah punya background sendiri -->
             </div>
 
             <!-- 2. AREA KONTEN / TEKS (Bawah pada Mobile, Kiri pada Desktop) -->
             <!-- Class md:order-1 memastikan area ini di sebelah kiri pada layar besar -->
             <div class="relative w-full h-[55%] sm:h-[50%] md:h-full md:w-1/2 bg-unmaris-blue flex flex-col justify-center px-6 md:px-12 lg:px-20 z-10 md:order-1 overflow-hidden">
-                
+
                 <!-- Elemen Dekorasi Titik-titik (Dot Pattern) -->
                 <div class="absolute right-0 bottom-0 md:-right-10 md:bottom-10 opacity-10 md:opacity-20 pointer-events-none">
                     <svg width="200" height="200" fill="none" viewBox="0 0 100 100">
@@ -228,10 +228,14 @@
         <!-- Navigation Arrows (Khusus Desktop) - Posisi mengapit ujung layar -->
         <div class="hidden md:flex absolute inset-y-0 left-4 right-4 z-20 justify-between items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <button @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1" class="pointer-events-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:-translate-x-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
             </button>
             <button @click="activeSlide = (activeSlide + 1) % totalSlides" class="pointer-events-auto w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:translate-x-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
             </button>
         </div>
     </section>
@@ -319,64 +323,7 @@
         </div>
     </section>
 
-    <!-- 4. FAKULTAS & PROGRAM STUDI -->
-    <section class="py-16 md:py-24 bg-gray-50">
-        <div class="container mx-auto px-4 max-w-7xl">
-            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-16 gap-6">
-                <div class="text-center md:text-left">
-                    <span class="text-unmaris-blue font-black tracking-widest uppercase text-[10px] md:text-xs mb-2 md:mb-3 block">Jalur Keilmuan</span>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 border-b-4 border-unmaris-yellow inline-block pb-2">Fakultas Pilihan</h2>
-                </div>
-                <a href="{{ route('faculties.index') }}" class="hidden md:inline-flex items-center bg-white border border-gray-200 px-6 py-3 rounded-full text-unmaris-blue font-bold hover:bg-unmaris-blue hover:text-white transition-all shadow-sm">
-                    Lihat Semua Fakultas <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                    </svg>
-                </a>
-            </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                @if(isset($faculties) && $faculties->count() > 0)
-                @foreach($faculties->take(3) as $faculty)
-                <a href="{{ route('faculties.detail', $faculty->slug) }}" class="group bg-white rounded-2xl md:rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden flex flex-col h-full transform hover:-translate-y-2">
-                    <div class="h-48 md:h-56 bg-unmaris-blue relative overflow-hidden">
-                        @if($faculty->image)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($faculty->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="{{ $faculty->name }}">
-                        @else
-                        <div class="w-full h-full opacity-30 bg-gradient-to-br from-unmaris-blue to-blue-900 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                            </svg>
-                        </div>
-                        @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent"></div>
-                        <h3 class="absolute bottom-4 md:bottom-5 left-5 md:left-6 right-5 md:right-6 text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-unmaris-yellow transition-colors">{{ $faculty->name }}</h3>
-                    </div>
-                    <div class="p-5 md:p-6 flex-grow flex flex-col justify-between">
-                        <p class="text-gray-500 text-sm md:text-base mb-6 line-clamp-3 leading-relaxed font-medium">{{ $faculty->description ?? 'Pendidikan tinggi berkualitas untuk mencetak lulusan unggul, profesional, dan berkarakter.' }}</p>
-                        <div class="flex items-center justify-between text-unmaris-blue font-bold text-[10px] md:text-xs uppercase tracking-widest mt-auto border-t border-gray-50 pt-4 group-hover:text-unmaris-yellow transition-colors">
-                            <span class="flex items-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002 2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                                </svg>
-                                {{ $faculty->studyPrograms ? $faculty->studyPrograms->count() : 0 }} Program Studi
-                            </span>
-                            <svg class="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-                @endforeach
-                @endif
-            </div>
-
-            <div class="mt-8 text-center md:hidden">
-                <a href="{{ route('faculties.index') }}" class="inline-flex items-center justify-center w-full bg-unmaris-blue text-white px-6 py-4 rounded-full font-bold hover:bg-unmaris-yellow hover:text-unmaris-blue transition shadow-md">
-                    Lihat Semua Fakultas
-                </a>
-            </div>
-        </div>
-    </section>
 
     <!-- 5. BERITA & UPDATE TERBARU (PENAMBAHAN BARU) -->
     @if(isset($latestNews) && $latestNews->count() > 0)
@@ -452,7 +399,64 @@
     </section>
     @endif
 
-    <!-- 6. TESTIMONI ALUMNI (UI DRAFT - Modul Akan Dibuat) -->
+    <!-- 4. FAKULTAS & PROGRAM STUDI -->
+    <section class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-16 gap-6">
+                <div class="text-center md:text-left">
+                    <span class="text-unmaris-blue font-black tracking-widest uppercase text-[10px] md:text-xs mb-2 md:mb-3 block">Jalur Keilmuan</span>
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 border-b-4 border-unmaris-yellow inline-block pb-2">Fakultas Pilihan</h2>
+                </div>
+                <a href="{{ route('faculties.index') }}" class="hidden md:inline-flex items-center bg-white border border-gray-200 px-6 py-3 rounded-full text-unmaris-blue font-bold hover:bg-unmaris-blue hover:text-white transition-all shadow-sm">
+                    Lihat Semua Fakultas <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                @if(isset($faculties) && $faculties->count() > 0)
+                @foreach($faculties->take(3) as $faculty)
+                <a href="{{ route('faculties.detail', $faculty->slug) }}" class="group bg-white rounded-2xl md:rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden flex flex-col h-full transform hover:-translate-y-2">
+                    <div class="h-48 md:h-56 bg-unmaris-blue relative overflow-hidden">
+                        @if($faculty->image)
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($faculty->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="{{ $faculty->name }}">
+                        @else
+                        <div class="w-full h-full opacity-30 bg-gradient-to-br from-unmaris-blue to-blue-900 flex items-center justify-center">
+                            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        @endif
+                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent"></div>
+                        <h3 class="absolute bottom-4 md:bottom-5 left-5 md:left-6 right-5 md:right-6 text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-unmaris-yellow transition-colors">{{ $faculty->name }}</h3>
+                    </div>
+                    <div class="p-5 md:p-6 flex-grow flex flex-col justify-between">
+                        <p class="text-gray-500 text-sm md:text-base mb-6 line-clamp-3 leading-relaxed font-medium">{{ $faculty->description ?? 'Pendidikan tinggi berkualitas untuk mencetak lulusan unggul, profesional, dan berkarakter.' }}</p>
+                        <div class="flex items-center justify-between text-unmaris-blue font-bold text-[10px] md:text-xs uppercase tracking-widest mt-auto border-t border-gray-50 pt-4 group-hover:text-unmaris-yellow transition-colors">
+                            <span class="flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002 2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                                {{ $faculty->studyPrograms ? $faculty->studyPrograms->count() : 0 }} Program Studi
+                            </span>
+                            <svg class="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </a>
+                @endforeach
+                @endif
+            </div>
+
+            <div class="mt-8 text-center md:hidden">
+                <a href="{{ route('faculties.index') }}" class="inline-flex items-center justify-center w-full bg-unmaris-blue text-white px-6 py-4 rounded-full font-bold hover:bg-unmaris-yellow hover:text-unmaris-blue transition shadow-md">
+                    Lihat Semua Fakultas
+                </a>
+            </div>
+        </div>
+    </section>
     @if(isset($testimonials) && $testimonials->count() > 0)
     <section class="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-1/3 h-full bg-unmaris-blue opacity-5 rounded-l-full blur-3xl pointer-events-none"></div>

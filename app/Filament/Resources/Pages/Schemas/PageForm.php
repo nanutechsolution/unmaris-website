@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Pages\Schemas;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\FileUpload; // Tambahkan ini untuk upload gambar
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
@@ -47,10 +48,37 @@ class PageForm
                 ->toolbarButtons(['bulletList', 'orderedList', 'bold', 'italic'])
                 ->columnSpanFull()
                 ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+
+            // Form Baru: Tujuan
+            RichEditor::make('content.tujuan')
+                ->label('Tujuan Institusi')
+                ->columnSpanFull()
+                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+
+            // Form Baru: Ciri Khas KASIH
+            RichEditor::make('content.ciri_khas_kasih')
+                ->label('Ciri Khas "KASIH"')
+                ->columnSpanFull()
+                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+
+            // Form Baru: Sasaran & Strategi
+            RichEditor::make('content.sasaran_strategi')
+                ->label('Sasaran & Strategi')
+                ->columnSpanFull()
+                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
                 
             RichEditor::make('content.sejarah')
                 ->label('Sejarah Singkat')
                 ->columnSpanFull()
+                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+
+            // Form Baru: Upload Gambar Struktur Organisasi (Dari File PDF yang Anda Berikan)
+            FileUpload::make('content.struktur_organisasi')
+                ->label('Gambar Bagan Struktur Organisasi')
+                ->image() // Validasi hanya gambar (PNG, JPG)
+                ->directory('pages/struktur') // Disimpan di folder storage/app/public/pages/struktur
+                ->columnSpanFull()
+                ->helperText('Unggah gambar struktur organisasi kampus (Ekspor PDF Struktur Anda ke format JPG/PNG).')
                 ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
 
             // --- KELOMPOK FORM KONTAK ---

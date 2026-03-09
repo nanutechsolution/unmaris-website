@@ -65,7 +65,7 @@
                     <p class="text-gray-600 text-sm sm:text-base leading-relaxed">Masuk ke portal pembelajaran daring terpadu untuk mengakses materi perkuliahan, mengikuti kuis, dan mengumpulkan tugas mata kuliah Anda secara digital.</p>
                 </div>
                 <!-- Ganti href dengan URL portal e-learning kampus Anda nantinya -->
-                <a href="https://elearning.unmarissumba.ac.id" target="_blank" class="w-full md:w-auto shrink-0 flex items-center justify-center bg-unmaris-blue text-white px-8 md:px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs md:text-sm hover:bg-unmaris-yellow hover:text-unmaris-blue transition-all shadow-lg group-hover:scale-105">
+                <a href="#" target="_blank" class="w-full md:w-auto shrink-0 flex items-center justify-center bg-unmaris-blue text-white px-8 md:px-10 py-4 rounded-full font-bold uppercase tracking-widest text-xs md:text-sm hover:bg-unmaris-yellow hover:text-unmaris-blue transition-all shadow-lg group-hover:scale-105">
                     <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
                     </svg>

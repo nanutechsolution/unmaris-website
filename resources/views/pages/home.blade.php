@@ -88,60 +88,61 @@
         </div>
     </div>
     @endif
-   <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
+    <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
+    <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
     @if(isset($sliders) && $sliders->count() > 0)
     <section class="relative w-full h-[90vh] min-h-[650px] md:h-[85vh] lg:min-h-[750px] bg-unmaris-blue overflow-hidden group"
         aria-roledescription="carousel"
         aria-label="Sorotan Kampus UNMARIS"
         x-data="{ 
-                activeSlide: 0, 
-                totalSlides: {{ $sliders->count() }},
-                paused: false,
-                touchStartX: 0,
-                touchEndX: 0,
-                
-                autoPlay() {
-                    setInterval(() => {
-                        if (!this.paused) {
-                            this.nextSlide();
-                        }
-                    }, 8000)
-                },
-                nextSlide() {
-                    this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
-                },
-                prevSlide() {
-                    this.activeSlide = this.activeSlide === 0 ? this.totalSlides - 1 : this.activeSlide - 1;
-                },
-                handleTouchStart(e) {
-                    this.touchStartX = e.changedTouches[0].screenX;
-                    this.paused = true;
-                },
-                handleTouchEnd(e) {
-                    this.touchEndX = e.changedTouches[0].screenX;
-                    this.paused = false;
-                    this.handleSwipe();
-                },
-                handleSwipe() {
-                    const swipeThreshold = 50;
-                    if (this.touchStartX - this.touchEndX > swipeThreshold) {
-                        this.nextSlide(); // Swipe Kiri
-                    }
-                    if (this.touchEndX - this.touchStartX > swipeThreshold) {
-                        this.prevSlide(); // Swipe Kanan
-                    }
-                },
-                // Tambahan fungsi untuk navigasi keyboard
-                handleKeydown(e) {
-                    if (e.key === 'ArrowRight') {
-                        e.preventDefault();
+            activeSlide: 0, 
+            totalSlides: {{ $sliders->count() }},
+            paused: false,
+            touchStartX: 0,
+            touchEndX: 0,
+            
+            autoPlay() {
+                setInterval(() => {
+                    if (!this.paused) {
                         this.nextSlide();
-                    } else if (e.key === 'ArrowLeft') {
-                        e.preventDefault();
-                        this.prevSlide();
                     }
+                }, 8000)
+            },
+            nextSlide() {
+                this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
+            },
+            prevSlide() {
+                this.activeSlide = this.activeSlide === 0 ? this.totalSlides - 1 : this.activeSlide - 1;
+            },
+            handleTouchStart(e) {
+                this.touchStartX = e.changedTouches[0].screenX;
+                this.paused = true;
+            },
+            handleTouchEnd(e) {
+                this.touchEndX = e.changedTouches[0].screenX;
+                this.paused = false;
+                this.handleSwipe();
+            },
+            handleSwipe() {
+                const swipeThreshold = 50;
+                if (this.touchStartX - this.touchEndX > swipeThreshold) {
+                    this.nextSlide(); // Swipe Kiri
                 }
-             }"
+                if (this.touchEndX - this.touchStartX > swipeThreshold) {
+                    this.prevSlide(); // Swipe Kanan
+                }
+            },
+            // Tambahan fungsi untuk navigasi keyboard
+            handleKeydown(e) {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.prevSlide();
+                }
+            }
+         }"
         x-init="autoPlay()"
         @mouseenter="paused = true"
         @mouseleave="paused = false"
@@ -189,7 +190,7 @@
 
             <!-- 2. AREA KONTEN / TEKS -->
             <div class="relative w-full h-[55%] sm:h-[50%] md:h-full md:w-1/2 bg-unmaris-blue flex flex-col justify-center px-6 md:px-12 lg:px-20 z-10 md:order-1 overflow-hidden">
-                
+
                 <!-- Elemen Dekorasi Titik-titik -->
                 <div class="absolute right-0 bottom-0 md:-right-10 md:bottom-10 opacity-10 md:opacity-20 pointer-events-none" aria-hidden="true">
                     <svg width="200" height="200" fill="none" viewBox="0 0 100 100">
@@ -216,7 +217,6 @@
                     @endif
 
                     <!-- Judul Slider -->
-                    <!-- Menggunakan id dinamis untuk dihubungkan dengan aria-labelledby jika diperlukan -->
                     <h2 id="slide-title-{{ $index }}" class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg relative z-10">
                         {!! $slider->title !!}
                     </h2>
@@ -244,12 +244,12 @@
         <!-- Slider Navigation Controls (Dots) -->
         <div class="absolute bottom-6 md:bottom-12 left-6 md:left-12 lg:left-20 z-30 flex justify-start items-center gap-2 md:gap-3" role="tablist" aria-label="Pilih slide">
             @foreach($sliders as $index => $slider)
-            <button @click="activeSlide = {{ $index }}" 
+            <button @click="activeSlide = {{ $index }}"
                 role="tab"
                 :aria-selected="activeSlide === {{ $index }}"
                 aria-controls="slide-panel-{{ $index }}"
                 aria-label="Tampilkan slide {{ $index + 1 }} dari {{ $sliders->count() }}"
-                class="h-1.5 rounded-full transition-all duration-500 overflow-hidden relative focus:outline-none focus:ring-2 focus:ring-unmaris-yellow focus:ring-offset-2 focus:ring-offset-unmaris-blue" 
+                class="h-1.5 rounded-full transition-all duration-500 overflow-hidden relative focus:outline-none focus:ring-2 focus:ring-unmaris-yellow focus:ring-offset-2 focus:ring-offset-unmaris-blue"
                 :class="activeSlide === {{ $index }} ? 'w-12 md:w-16 bg-white/40' : 'w-2 md:w-3 bg-white/20 hover:bg-white/50'">
                 <div x-show="activeSlide === {{ $index }}" class="absolute top-0 left-0 bottom-0 bg-unmaris-yellow" x-transition:enter="transition-all ease-linear duration-[8000ms]" x-transition:enter-start="w-0" x-transition:enter-end="w-full"></div>
             </button>
@@ -258,97 +258,24 @@
 
         <!-- Navigation Arrows (Khusus Desktop) -->
         <div class="hidden md:flex absolute inset-y-0 left-4 right-4 z-20 justify-between items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <button @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1" 
+            <button @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1"
                 aria-label="Slide sebelumnya"
                 class="pointer-events-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:-translate-x-1 focus:outline-none focus:ring-4 focus:ring-unmaris-yellow">
-                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
             </button>
-            <button @click="activeSlide = (activeSlide + 1) % totalSlides" 
+            <button @click="activeSlide = (activeSlide + 1) % totalSlides"
                 aria-label="Slide selanjutnya"
                 class="pointer-events-auto w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:translate-x-1 focus:outline-none focus:ring-4 focus:ring-unmaris-yellow">
-                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                <svg aria-hidden="true" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
             </button>
         </div>
     </section>
     <!-- Anchor untuk link "Lewati bagian slider" -->
     <div id="setelah-slider" tabindex="-1"></div>
-    @endif
-                
-                <!-- Overlay dihapus total agar gambar 100% jelas karena teks sudah punya background sendiri -->
-            </div>
-
-            <!-- 2. AREA KONTEN / TEKS (Bawah pada Mobile, Kiri pada Desktop) -->
-            <!-- Class md:order-1 memastikan area ini di sebelah kiri pada layar besar -->
-            <div class="relative w-full h-[55%] sm:h-[50%] md:h-full md:w-1/2 bg-unmaris-blue flex flex-col justify-center px-6 md:px-12 lg:px-20 z-10 md:order-1 overflow-hidden">
-                
-                <!-- Elemen Dekorasi Titik-titik (Dot Pattern) -->
-                <div class="absolute right-0 bottom-0 md:-right-10 md:bottom-10 opacity-10 md:opacity-20 pointer-events-none">
-                    <svg width="200" height="200" fill="none" viewBox="0 0 100 100">
-                        <pattern id="dots" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                            <circle cx="2" cy="2" r="1.5" fill="currentColor" class="text-white"></circle>
-                        </pattern>
-                        <rect width="100" height="100" fill="url(#dots)"></rect>
-                    </svg>
-                </div>
-
-                <div class="w-full max-w-xl relative"
-                    x-show="activeSlide === {{ $index }}"
-                    x-transition:enter="transition ease-out duration-1000 delay-300"
-                    x-transition:enter-start="opacity-0 translate-y-12"
-                    x-transition:enter-end="opacity-100 translate-y-0">
-
-                    <!-- Label (Jika Ada) -->
-                    @if($slider->label)
-                    <div class="mb-3 md:mb-5 relative z-10">
-                        <span class="inline-flex items-center px-3 py-1 md:px-4 md:py-1.5 rounded-full bg-white/10 text-unmaris-yellow border border-white/20 text-[10px] md:text-xs font-black uppercase tracking-[0.2em] shadow-sm">
-                            {{ $slider->label }}
-                        </span>
-                    </div>
-                    @endif
-
-                    <!-- Judul Slider -->
-                    <h1 class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg relative z-10">
-                        {!! $slider->title !!}
-                    </h1>
-
-                    <!-- Deskripsi -->
-                    <p class="text-sm md:text-base lg:text-lg text-gray-200 mb-8 md:mb-10 max-w-lg leading-relaxed drop-shadow-md relative z-10 line-clamp-3 md:line-clamp-none">
-                        {{ $slider->description }}
-                    </p>
-
-                    <!-- Tombol Aksi -->
-                    <div class="flex items-center relative z-10 pb-8 md:pb-0">
-                        @if($slider->button_url)
-                        <a href="{{ $slider->button_url }}"
-                            class="inline-flex justify-center items-center bg-unmaris-yellow text-unmaris-blue px-6 py-3 md:px-8 md:py-4 rounded-full font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-lg">
-                            {{ $slider->button_text ?? 'Jelajahi' }}
-                        </a>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endforeach
-
-        <!-- Slider Navigation Controls (Dots) - Diposisikan di kiri area biru -->
-        <div class="absolute bottom-6 md:bottom-12 left-6 md:left-12 lg:left-20 z-30 flex justify-start items-center gap-2 md:gap-3">
-            @foreach($sliders as $index => $slider)
-            <button @click="activeSlide = {{ $index }}" class="h-1.5 rounded-full transition-all duration-500 overflow-hidden relative" :class="activeSlide === {{ $index }} ? 'w-12 md:w-16 bg-white/40' : 'w-2 md:w-3 bg-white/20 hover:bg-white/50'">
-                <div x-show="activeSlide === {{ $index }}" class="absolute top-0 left-0 bottom-0 bg-unmaris-yellow" x-transition:enter="transition-all ease-linear duration-[8000ms]" x-transition:enter-start="w-0" x-transition:enter-end="w-full"></div>
-            </button>
-            @endforeach
-        </div>
-
-        <!-- Navigation Arrows (Khusus Desktop) - Posisi mengapit ujung layar -->
-        <div class="hidden md:flex absolute inset-y-0 left-4 right-4 z-20 justify-between items-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-            <button @click="activeSlide = activeSlide === 0 ? totalSlides - 1 : activeSlide - 1" class="pointer-events-auto w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:-translate-x-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            </button>
-            <button @click="activeSlide = (activeSlide + 1) % totalSlides" class="pointer-events-auto w-12 h-12 rounded-full bg-black/20 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow transition-all shadow-lg transform hover:translate-x-1">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-            </button>
-        </div>
-    </section>
     @endif
 
     <!-- 2. STATISTIK KAMPUS -->

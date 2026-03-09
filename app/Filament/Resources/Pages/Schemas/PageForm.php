@@ -5,7 +5,7 @@ namespace App\Filament\Resources\Pages\Schemas;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
-use Filament\Forms\Set;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
@@ -75,8 +75,7 @@ class PageForm
                 ->rows(3)
                 ->columnSpanFull()
                 ->visible(fn ($get): bool => $get('slug') === 'kontak'),
-
-            // --- KELOMPOK FORM UMUM / DEFAULT (BARU) ---
+                
             // Form ini akan muncul untuk SEMUA halaman SELAIN profil dan kontak
             RichEditor::make('content.umum')
                 ->label('Konten Halaman')

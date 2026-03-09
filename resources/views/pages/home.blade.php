@@ -227,7 +227,7 @@
             @foreach($sliders as $index => $slider)
             <button type="button"
                 aria-controls="hero-slider"
-                :aria-current="activeSlide === {{ $index }}"
+                :aria-current="activeSlide === {{ $index }} ? 'true' : 'false'"
                 aria-label="Tampilkan slide {{ $index + 1 }}"
                 @click="activeSlide = {{ $index }}" class="h-1.5 rounded-full transition-all duration-500 overflow-hidden relative" :class="activeSlide === {{ $index }} ? 'w-12 md:w-16 bg-white/40' : 'w-2 md:w-3 bg-white/20 hover:bg-white/50'">
                 <div x-show="activeSlide === {{ $index }}" class="absolute top-0 left-0 bottom-0 bg-unmaris-yellow" x-transition:enter="transition-all ease-linear duration-[8000ms]" x-transition:enter-start="w-0" x-transition:enter-end="w-full"></div>

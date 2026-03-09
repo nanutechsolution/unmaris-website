@@ -2,44 +2,30 @@
     <!-- JSON-LD Schema untuk Artikel (SEO) -->
     <script type="application/ld+json">
         {
-            "@context": "https://schema.org",
-            "@type": "NewsArticle",
-            "mainEntityOfPage": {
-                "@type": "WebPage",
-                "@id": "{{ url()->current() }}"
-            },
+            "@@context": "https://schema.org",
+            "@@type": "Article",
             "headline": "{{ addslashes($news->title) }}",
-            "description": "{{ addslashes($news->excerpt) }}",
-            "image": [
-                "{{ $news->featured_image ? url(Storage::url($news->featured_image)) : url('images/logo-unmaris.png') }}"
-            ],
             "datePublished": "{{ $news->published_at ? $news->published_at->toIso8601String() : '' }}",
             "dateModified": "{{ $news->updated_at->toIso8601String() }}",
-            "author": {
-                "@type": "Organization",
+            "author": [{
+                "@@type": "Organization",
                 "name": "Universitas Stella Maris Sumba"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "Universitas Stella Maris Sumba",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "{{ url('images/logo-unmaris.png') }}"
-                }
-            }
+            }],
+            "description": "{{ addslashes($news->excerpt) }}",
+            "image": "{{ $news->featured_image ? url(Storage::url($news->featured_image)) : url('images/logo-unmaris.png') }}"
         }
     </script>
 
     <!-- Reading Progress Bar -->
     <div class="fixed top-0 left-0 w-full h-1.5 z-[60] pointer-events-none"
-        x-data="{ scrollProgress: 0 }"
-        x-on:scroll.window="
+         x-data="{ scrollProgress: 0 }"
+         x-on:scroll.window="
             let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
             let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             scrollProgress = (winScroll / height) * 100;
          ">
         <div class="h-full bg-unmaris-yellow transition-all duration-150 shadow-[0_0_10px_rgba(253,224,26,0.8)]"
-            :style="`width: ${scrollProgress}%`"></div>
+             :style="`width: ${scrollProgress}%`"></div>
     </div>
 
     <div class="bg-gray-50 min-h-screen pb-24">
@@ -98,17 +84,17 @@
                 <!-- Sisi Kiri: Artikel Utama -->
                 <div class="lg:col-span-8">
                     <article class="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-gray-100/50 overflow-hidden transform transition-transform duration-500 hover:-translate-y-1">
-
+                        
                         <!-- Gambar Sampul (Lebih premium dengan gradient yang diperbaiki) -->
                         <div class="aspect-video w-full overflow-hidden relative group bg-gray-100">
                             @if($news->featured_image)
-                            <img src="{{ Storage::url($news->featured_image) }}" alt="{{ $news->title }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                                <img src="{{ Storage::url($news->featured_image) }}" alt="{{ $news->title }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                             @else
-                            <div class="w-full h-full flex items-center justify-center bg-unmaris-blue">
-                                <svg class="w-20 h-20 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                </svg>
-                            </div>
+                                <div class="w-full h-full flex items-center justify-center bg-unmaris-blue">
+                                    <svg class="w-20 h-20 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                </div>
                             @endif
                             <!-- Gradient lebih pekat untuk menjamin estetika walau gambar terang -->
                             <div class="absolute inset-0 bg-gradient-to-t from-gray-900/40 via-gray-900/10 to-transparent pointer-events-none"></div>
@@ -122,37 +108,37 @@
 
                             <!-- Video Pendukung (Tampil Jika Ada) -->
                             @if($news->video_url)
-                            @php
-                            $rawUrl = $news->video_url;
-                            $embedUrl = $rawUrl;
-                            $videoType = 'youtube'; // Default
+                                @php
+                                    $rawUrl = $news->video_url;
+                                    $embedUrl = $rawUrl;
+                                    $videoType = 'youtube'; // Default
 
-                            if (str_contains($rawUrl, 'youtube.com/watch?v=')) {
-                            $embedUrl = str_replace('watch?v=', 'embed/', $rawUrl);
-                            $embedUrl = explode('&', $embedUrl)[0];
-                            } elseif (str_contains($rawUrl, 'youtu.be/')) {
-                            $embedUrl = str_replace('youtu.be/', 'www.youtube.com/embed/', $rawUrl);
-                            $embedUrl = explode('?', $embedUrl)[0];
-                            } elseif (str_contains($rawUrl, 'tiktok.com')) {
-                            $videoType = 'tiktok';
-                            preg_match('/video\/(\d+)/', $rawUrl, $matches);
-                            if (isset($matches[1])) {
-                            $embedUrl = 'https://www.tiktok.com/embed/v2/' . $matches[1];
-                            }
-                            } elseif (str_contains($rawUrl, 'facebook.com') || str_contains($rawUrl, 'fb.watch')) {
-                            $videoType = 'facebook';
-                            $embedUrl = 'https://www.facebook.com/plugins/video.php?href=' . urlencode($rawUrl) . '&show_text=false&width=auto';
-                            }
-                            @endphp
-
-                            <div class="mb-10 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-gray-100 relative {{ $videoType === 'tiktok' ? 'max-w-sm mx-auto' : '' }}">
-                                <div class="absolute top-0 left-0 bg-unmaris-yellow text-unmaris-blue text-[9px] md:text-[10px] font-black px-4 py-1.5 rounded-br-2xl z-10 uppercase tracking-widest shadow-sm">
-                                    Liputan Media
+                                    if (str_contains($rawUrl, 'youtube.com/watch?v=')) {
+                                        $embedUrl = str_replace('watch?v=', 'embed/', $rawUrl);
+                                        $embedUrl = explode('&', $embedUrl)[0];
+                                    } elseif (str_contains($rawUrl, 'youtu.be/')) {
+                                        $embedUrl = str_replace('youtu.be/', 'www.youtube.com/embed/', $rawUrl);
+                                        $embedUrl = explode('?', $embedUrl)[0];
+                                    } elseif (str_contains($rawUrl, 'tiktok.com')) {
+                                        $videoType = 'tiktok';
+                                        preg_match('/video\/(\d+)/', $rawUrl, $matches);
+                                        if (isset($matches[1])) {
+                                            $embedUrl = 'https://www.tiktok.com/embed/v2/' . $matches[1];
+                                        }
+                                    } elseif (str_contains($rawUrl, 'facebook.com') || str_contains($rawUrl, 'fb.watch')) {
+                                        $videoType = 'facebook';
+                                        $embedUrl = 'https://www.facebook.com/plugins/video.php?href=' . urlencode($rawUrl) . '&show_text=false&width=auto';
+                                    }
+                                @endphp
+                                
+                                <div class="mb-10 rounded-2xl md:rounded-3xl overflow-hidden shadow-xl border border-gray-100 relative {{ $videoType === 'tiktok' ? 'max-w-sm mx-auto' : '' }}">
+                                    <div class="absolute top-0 left-0 bg-unmaris-yellow text-unmaris-blue text-[9px] md:text-[10px] font-black px-4 py-1.5 rounded-br-2xl z-10 uppercase tracking-widest shadow-sm">
+                                        Liputan Media
+                                    </div>
+                                    <div class="w-full bg-black {{ $videoType === 'tiktok' ? 'aspect-[9/16]' : 'aspect-video' }}">
+                                        <iframe class="w-full h-full" src="{{ $embedUrl }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    </div>
                                 </div>
-                                <div class="w-full bg-black {{ $videoType === 'tiktok' ? 'aspect-[9/16]' : 'aspect-video' }}">
-                                    <iframe class="w-full h-full" src="{{ $embedUrl }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                </div>
-                            </div>
                             @endif
 
                             <!-- Content Body (Penambahan Fitur DROP CAP Editorial) -->
@@ -178,9 +164,9 @@
                             <div class="mt-12 flex flex-wrap items-center gap-2">
                                 <span class="text-[10px] md:text-xs font-black text-gray-400 mr-2 uppercase tracking-widest">Topik Terkait:</span>
                                 @foreach($news->tags as $tag)
-                                <a href="{{ route('news.index', ['tag' => $tag->name]) }}" class="inline-flex items-center px-4 py-2 bg-gray-50 border border-gray-200 text-gray-600 hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow rounded-xl text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">
-                                    #{{ $tag->name }}
-                                </a>
+                                    <a href="{{ route('news.index', ['tag' => $tag->name]) }}" class="inline-flex items-center px-4 py-2 bg-gray-50 border border-gray-200 text-gray-600 hover:bg-unmaris-yellow hover:text-unmaris-blue hover:border-unmaris-yellow rounded-xl text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">
+                                        #{{ $tag->name }}
+                                    </a>
                                 @endforeach
                             </div>
                             @endif
@@ -192,25 +178,20 @@
                                 <div class="text-center md:text-left relative z-10">
                                     <h4 class="text-lg md:text-xl font-black text-unmaris-blue mb-1">Bagikan Artikel Ini</h4>
                                     <p class="text-xs md:text-sm text-gray-500 font-medium">Bantu sebarkan maklumat ini ke jaringan anda.</p>
-
+                                    
                                     <div class="flex items-center justify-center md:justify-start gap-4 text-[9px] md:text-[10px] font-black text-gray-400 uppercase tracking-widest mt-4">
                                         <span class="flex items-center text-unmaris-blue/70">
-                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                            </svg>
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             {{ number_format($news->views) }} Tayangan
                                         </span>
                                         <div class="w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
                                         <span class="flex items-center text-unmaris-blue/70">
-                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path>
-                                            </svg>
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
                                             {{ number_format($news->shares) }} Dibagikan
                                         </span>
                                     </div>
                                 </div>
-
+                                
                                 <!-- Logika Share Alpine.js dengan State yang diperbaiki -->
                                 <div class="flex flex-wrap justify-center gap-3 relative z-10 w-full md:w-auto" x-data="{
                                     copied: false,
@@ -256,22 +237,12 @@
                                         }
                                     }
                                 }">
-                                    <button x-on:click="shareArticle('facebook')" type="button" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-[#1877F2] hover:bg-[#1877F2] hover:text-white font-bold text-sm transition-all shadow-sm hover:shadow-md hover:-translate-y-1 border border-gray-100"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                                        </svg><span class="hidden lg:block">Facebook</span></button>
-                                    <button x-on:click="shareArticle('x')" type="button" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-black hover:bg-black hover:text-white font-bold text-sm transition-all shadow-sm hover:shadow-md hover:-translate-y-1 border border-gray-100"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z" />
-                                        </svg><span class="hidden lg:block">X</span></button>
-                                    <button x-on:click="shareArticle('whatsapp')" type="button" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold text-sm transition-all shadow-sm hover:shadow-md hover:-translate-y-1 border border-gray-100"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                                        </svg><span class="hidden lg:block">WhatsApp</span></button>
+                                    <button x-on:click="shareArticle('facebook')" type="button" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-[#1877F2] hover:bg-[#1877F2] hover:text-white font-bold text-sm transition-all shadow-sm hover:shadow-md hover:-translate-y-1 border border-gray-100"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg><span class="hidden lg:block">Facebook</span></button>
+                                    <button x-on:click="shareArticle('x')" type="button" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-black hover:bg-black hover:text-white font-bold text-sm transition-all shadow-sm hover:shadow-md hover:-translate-y-1 border border-gray-100"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z"/></svg><span class="hidden lg:block">X</span></button>
+                                    <button x-on:click="shareArticle('whatsapp')" type="button" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-[#25D366] hover:bg-[#25D366] hover:text-white font-bold text-sm transition-all shadow-sm hover:shadow-md hover:-translate-y-1 border border-gray-100"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg><span class="hidden lg:block">WhatsApp</span></button>
                                     <button x-on:click="shareArticle('copy')" type="button" :class="copied ? 'bg-green-500 text-white border-green-500 hover:bg-green-600' : 'bg-white text-gray-600 border-gray-100 hover:bg-unmaris-blue hover:text-white'" class="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-sm transition-all shadow-sm hover:shadow-md hover:-translate-y-1 border">
-                                        <svg x-show="!copied" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                            <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                                        </svg>
-                                        <svg x-show="copied" style="display: none;" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
-                                        </svg>
+                                        <svg x-show="!copied" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                                        <svg x-show="copied" style="display: none;" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
                                         <span x-text="copyText" class="hidden lg:block">Salin</span>
                                     </button>
                                 </div>
@@ -304,51 +275,45 @@
 
                         <div class="space-y-6">
                             @forelse($relatedNews as $rel)
-                            <article class="group flex gap-4 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
-                                <div class="w-20 h-20 shrink-0 rounded-xl overflow-hidden relative bg-gray-50">
-                                    @if($rel->featured_image)
-                                    <img src="{{ Storage::url($rel->featured_image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
-                                    @else
-                                    <div class="w-full h-full flex items-center justify-center">
-                                        <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                        </svg>
+                                <article class="group flex gap-4 bg-white p-3 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                                    <div class="w-20 h-20 shrink-0 rounded-xl overflow-hidden relative bg-gray-50">
+                                        @if($rel->featured_image)
+                                            <img src="{{ Storage::url($rel->featured_image) }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                        @else
+                                            <div class="w-full h-full flex items-center justify-center">
+                                                <svg class="w-6 h-6 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                            </div>
+                                        @endif
+                                        
+                                        <!-- Indikator Video -->
+                                        @if($rel->video_url)
+                                            <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+                                                <div class="w-7 h-7 bg-white/40 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 shadow-sm">
+                                                    <svg class="w-3 h-3 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        
+                                        <div class="absolute inset-0 bg-unmaris-blue/0 group-hover:bg-unmaris-blue/10 transition-colors pointer-events-none"></div>
                                     </div>
-                                    @endif
-
-                                    <!-- Indikator Video -->
-                                    @if($rel->video_url)
-                                    <div class="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                                        <div class="w-7 h-7 bg-white/40 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/50 shadow-sm">
-                                            <svg class="w-3 h-3 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                                                <path d="M8 5v14l11-7z" />
-                                            </svg>
-                                        </div>
+                                    <div class="flex flex-col justify-center">
+                                        <span class="text-[8px] font-black text-unmaris-blue uppercase mb-1 tracking-widest">{{ $rel->category->name }}</span>
+                                        <h4 class="text-xs md:text-sm font-bold text-gray-900 leading-snug group-hover:text-unmaris-blue transition-colors">
+                                            <a href="{{ route('news.detail', $rel->slug) }}">{{ Str::limit($rel->title, 50) }}</a>
+                                        </h4>
                                     </div>
-                                    @endif
-
-                                    <div class="absolute inset-0 bg-unmaris-blue/0 group-hover:bg-unmaris-blue/10 transition-colors pointer-events-none"></div>
-                                </div>
-                                <div class="flex flex-col justify-center">
-                                    <span class="text-[8px] font-black text-unmaris-blue uppercase mb-1 tracking-widest">{{ $rel->category->name }}</span>
-                                    <h4 class="text-xs md:text-sm font-bold text-gray-900 leading-snug group-hover:text-unmaris-blue transition-colors">
-                                        <a href="{{ route('news.detail', $rel->slug) }}">{{ Str::limit($rel->title, 50) }}</a>
-                                    </h4>
-                                </div>
-                            </article>
+                                </article>
                             @empty
-                            <div class="bg-gray-50 p-6 rounded-2xl border border-dashed border-gray-200 text-center">
-                                <p class="text-gray-400 text-xs font-medium uppercase tracking-widest">Belum ada berita terkait</p>
-                            </div>
+                                <div class="bg-gray-50 p-6 rounded-2xl border border-dashed border-gray-200 text-center">
+                                    <p class="text-gray-400 text-xs font-medium uppercase tracking-widest">Belum ada berita terkait</p>
+                                </div>
                             @endforelse
                         </div>
 
                         <!-- Back Button -->
                         <div class="mt-10">
                             <a href="{{ route('news.index') }}" class="inline-flex items-center justify-center w-full bg-white border border-gray-200 text-gray-600 px-6 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest hover:bg-unmaris-blue hover:text-white transition-all shadow-sm group">
-                                <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                                </svg>
+                                <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                                 Indeks Berita
                             </a>
                         </div>

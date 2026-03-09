@@ -21,12 +21,12 @@ class PageForm
                 ->required()
                 ->live(onBlur: true)
                 ->afterStateUpdated(fn($state, Set $set) => $set('slug', Str::slug($state))),
-                
+
             TextInput::make('slug')
                 ->label('Slug / Tautan URL')
                 ->required()
                 ->live(), // Trigger reaktivitas
-                
+
             Textarea::make('meta_description')
                 ->label('Deskripsi SEO')
                 ->placeholder('Muncul di hasil pencarian Google')
@@ -36,41 +36,41 @@ class PageForm
             RichEditor::make('content.sambutan')
                 ->label('Sambutan Rektor')
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
-                
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
+
             RichEditor::make('content.visi')
                 ->label('Visi Universitas')
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
-                
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
+
             RichEditor::make('content.misi')
                 ->label('Misi Universitas (Gunakan Bullet Points)')
                 ->toolbarButtons(['bulletList', 'orderedList', 'bold', 'italic'])
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
 
             // Form Baru: Tujuan
             RichEditor::make('content.tujuan')
                 ->label('Tujuan Institusi')
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
 
             // Form Baru: Ciri Khas KASIH
             RichEditor::make('content.ciri_khas_kasih')
                 ->label('Ciri Khas "KASIH"')
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
 
             // Form Baru: Sasaran & Strategi
             RichEditor::make('content.sasaran_strategi')
                 ->label('Sasaran & Strategi')
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
-                
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
+
             RichEditor::make('content.sejarah')
                 ->label('Sejarah Singkat')
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
 
             // Form Baru: Upload Gambar Struktur Organisasi (Dari File PDF yang Anda Berikan)
             FileUpload::make('content.struktur_organisasi')
@@ -78,39 +78,40 @@ class PageForm
                 ->image() // Validasi hanya gambar (PNG, JPG)
                 ->directory('pages/struktur') // Disimpan di folder storage/app/public/pages/struktur
                 ->columnSpanFull()
+                ->visibility('public')
                 ->helperText('Unggah gambar struktur organisasi kampus (Ekspor PDF Struktur Anda ke format JPG/PNG).')
-                ->visible(fn ($get): bool => $get('slug') === 'profil-universitas'),
+                ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),
 
             // --- KELOMPOK FORM KONTAK ---
             TextInput::make('content.email')
                 ->label('Email Resmi')
                 ->email()
-                ->visible(fn ($get): bool => $get('slug') === 'kontak'),
-                
+                ->visible(fn($get): bool => $get('slug') === 'kontak'),
+
             TextInput::make('content.telepon')
                 ->label('Nomor Telepon / WhatsApp')
-                ->visible(fn ($get): bool => $get('slug') === 'kontak'),
-                
+                ->visible(fn($get): bool => $get('slug') === 'kontak'),
+
             Textarea::make('content.alamat')
                 ->label('Alamat Lengkap Kampus')
                 ->rows(2)
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'kontak'),
-                
+                ->visible(fn($get): bool => $get('slug') === 'kontak'),
+
             Textarea::make('content.peta_embed')
                 ->label('URL Titik Google Maps')
                 ->helperText('Buka Google Maps > Bagikan > Sematkan Peta > Salin isi dari src="..."')
                 ->rows(3)
                 ->columnSpanFull()
-                ->visible(fn ($get): bool => $get('slug') === 'kontak'),
-                
+                ->visible(fn($get): bool => $get('slug') === 'kontak'),
+
             // Form ini akan muncul untuk SEMUA halaman SELAIN profil dan kontak
             RichEditor::make('content.umum')
                 ->label('Konten Halaman')
                 ->columnSpanFull()
                 ->fileAttachmentsDirectory('pages/umum')
-                ->visible(fn ($get): bool => ! in_array($get('slug'), ['profil-universitas', 'kontak'])),
-            
+                ->visible(fn($get): bool => ! in_array($get('slug'), ['profil-universitas', 'kontak'])),
+
         ]);
     }
 }

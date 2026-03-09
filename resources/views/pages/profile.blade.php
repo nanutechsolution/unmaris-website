@@ -77,15 +77,50 @@
                         <svg class="w-8 h-8 text-unmaris-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
                         Misi
                     </h3>
-                    <!-- Class bawaan Tailwind (list-disc dll) agar bullet point rapi -->
-                    <div class="text-gray-700 text-lg space-y-3 pl-5 [&>ul]:list-disc [&>ul]:space-y-3 [&>ol]:list-decimal [&>ol]:space-y-3 marker:text-unmaris-yellow marker:font-bold">
+                    <div class="text-gray-700 text-lg space-y-3 pl-5 [&>ul]:list-disc [&>ul]:space-y-3 marker:text-unmaris-yellow marker:font-bold">
                         {!! $page->content['misi'] !!}
                     </div>
                 </div>
                 @endif
             </div>
 
-            <!-- Sejarah Singkat -->
+            <!-- Tujuan Institusi -->
+            @if(!empty($page->content['tujuan']))
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Tujuan Institusi</h2>
+                <!-- Styling khusus untuk list bersarang (ol > li > ol > li) -->
+                <div class="text-gray-700 text-lg leading-relaxed space-y-4 [&>ol]:list-decimal [&>ol]:pl-5 [&>ol>li]:mb-4 [&>ol>li>ol]:list-[lower-alpha] [&>ol>li>ol]:pl-6 [&>ol>li>ol>li]:mt-2 [&>p]:mb-4 marker:font-bold marker:text-unmaris-blue">
+                    {!! $page->content['tujuan'] !!}
+                </div>
+            </div>
+            @endif
+
+            <!-- Ciri Khas "KASIH" -->
+            @if(!empty($page->content['ciri_khas_kasih']))
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Ciri Khas "KASIH"</h2>
+                <div class="bg-gray-50 p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100 border-l-8 border-unmaris-blue transform transition hover:-translate-y-1">
+                    <div class="text-gray-700 text-lg space-y-4 pl-2 [&>ul]:space-y-4 [&>ul>li>strong]:text-unmaris-blue [&>ul>li>strong]:text-xl [&>ul>li>strong]:mr-2">
+                        {!! $page->content['ciri_khas_kasih'] !!}
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- Sasaran & Strategi -->
+            @if(!empty($page->content['sasaran_strategi']))
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Sasaran & Strategi</h2>
+                <div class="bg-unmaris-blue text-white p-8 md:p-10 rounded-3xl shadow-lg relative overflow-hidden transform transition hover:-translate-y-1">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-unmaris-yellow rounded-full opacity-10 blur-2xl"></div>
+                    <div class="text-gray-100 text-lg space-y-3 pl-5 [&>ul]:list-disc [&>ul]:space-y-4 marker:text-unmaris-yellow">
+                        {!! $page->content['sasaran_strategi'] !!}
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <!-- Sejarah Singkat (Ditampilkan Jika Ada di Database) -->
             @if(!empty($page->content['sejarah']))
             <div class="mb-10">
                 <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Sejarah Singkat</h2>

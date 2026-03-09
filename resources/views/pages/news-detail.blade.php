@@ -9,7 +9,8 @@
             "dateModified": "{{ $news->updated_at->toIso8601String() }}",
             "author": [{
                 "@@type": "Organization",
-                "name": "Universitas Stella Maris Sumba"
+                "name": "Universitas Stella Maris Sumba",
+                 "url": "{{ url('images/logo-unmaris.png') }}"
             }],
             "description": "{{ addslashes($news->excerpt) }}",
             "image": "{{ $news->featured_image ? url(Storage::url($news->featured_image)) : url('images/logo-unmaris.png') }}"

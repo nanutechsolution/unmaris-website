@@ -230,7 +230,7 @@
                     <div class="flex items-center relative z-10 pb-8 md:pb-0">
                         @if($slider->button_url)
                         <a href="{{ $slider->button_url }}"
-                            tabindex="{{ activeSlide === $index ? '0' : '-1' }}"
+                            :tabindex="activeSlide === {{ $index }} ? '0' : '-1'"
                             class="inline-flex justify-center items-center bg-unmaris-yellow text-unmaris-blue px-6 py-3 md:px-8 md:py-4 rounded-full font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50">
                             {{ $slider->button_text ?? 'Jelajahi' }}
                         </a>

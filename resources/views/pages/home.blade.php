@@ -88,26 +88,59 @@
         </div>
     </div>
     @endif
-    <!-- 1. HERO SLIDER SECTION (Premium Cinematic Layout) -->
-    @if(isset($sliders) && $sliders->count() > 0)
-    <section class="relative w-full h-[85vh] min-h-[600px] lg:min-h-[750px] bg-unmaris-blue overflow-hidden group"
+   @if(isset($sliders) && $sliders->count() > 0)
+    <section class="relative w-full h-[85vh] min-h-[600px] lg:min-h-[750px] bg-gray-900 overflow-hidden group"
         x-data="{ 
                 activeSlide: 0, 
                 totalSlides: {{ $sliders->count() }},
                 paused: false,
+                touchStartX: 0,
+                touchEndX: 0,
+                
                 autoPlay() {
                     setInterval(() => {
                         if (!this.paused) {
-                            this.activeSlide = (this.activeSlide + 1) % this.totalSlides
+                            this.nextSlide();
                         }
                     }, 8000)
+                },
+                nextSlide() {
+                    this.activeSlide = (this.activeSlide + 1) % this.totalSlides;
+                },
+                prevSlide() {
+                    this.activeSlide = this.activeSlide === 0 ? this.totalSlides - 1 : this.activeSlide - 1;
+                },
+                
+                // Fungsi untuk menangkap sentuhan awal jari
+                handleTouchStart(e) {
+                    this.touchStartX = e.changedTouches[0].screenX;
+                    this.paused = true; // Hentikan autoplay saat disentuh
+                },
+                
+                // Fungsi untuk menangkap saat jari dilepas
+                handleTouchEnd(e) {
+                    this.touchEndX = e.changedTouches[0].screenX;
+                    this.paused = false; // Lanjutkan autoplay
+                    this.handleSwipe();
+                },
+                
+                // Logika kalkulasi geseran (Swipe)
+                handleSwipe() {
+                    const swipeThreshold = 50; // Jarak minimal tarikan jari (dalam pixel)
+                    
+                    if (this.touchStartX - this.touchEndX > swipeThreshold) {
+                        this.nextSlide(); // Geser ke kiri -> Slide selanjutnya
+                    }
+                    if (this.touchEndX - this.touchStartX > swipeThreshold) {
+                        this.prevSlide(); // Geser ke kanan -> Slide sebelumnya
+                    }
                 }
              }"
         x-init="autoPlay()"
         @mouseenter="paused = true"
         @mouseleave="paused = false"
-        @touchstart="paused = true"
-        @touchend="paused = false">
+        @touchstart="handleTouchStart($event)"
+        @touchend="handleTouchEnd($event)">
 
         <!-- Slides Container -->
         @foreach($sliders as $index => $slider)

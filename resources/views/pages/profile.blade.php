@@ -120,15 +120,35 @@
             </div>
             @endif
 
-            <!-- Sejarah Singkat (Ditampilkan Jika Ada di Database) -->
+            <!-- Sejarah Singkat -->
             @if(!empty($page->content['sejarah']))
-            <div class="mb-10">
+            <div class="mb-16">
                 <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Sejarah Singkat</h2>
                 <div class="text-gray-700 text-lg leading-relaxed space-y-6 [&>p]:mb-4 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-unmaris-blue [&>h2]:mt-8 [&>h2]:mb-4 [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-gray-800">
                     {!! $page->content['sejarah'] !!}
                 </div>
             </div>
             @endif
+
+            <!-- BAGAN STRUKTUR ORGANISASI (Dari JSON Content Page) -->
+            <div class="mb-10">
+                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Struktur Organisasi</h2>
+                <div class="bg-gray-50 p-4 md:p-8 rounded-3xl shadow-sm border border-gray-100 flex justify-center items-center min-h-[300px]">
+                    @if(!empty($page->content['struktur_organisasi']))
+                        <!-- Jika Admin sudah upload gambar bagan organisasi -->
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($page->content['struktur_organisasi']) }}" alt="Bagan Struktur Organisasi UNMARIS" class="max-w-full h-auto rounded-xl shadow-sm">
+                    @else
+                        <!-- Placeholder jika Admin belum upload gambar -->
+                        <div class="text-center py-10">
+                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002 2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            <p class="text-gray-500 font-medium">Bagan Struktur Organisasi belum diunggah.</p>
+                            <p class="text-sm text-gray-400 mt-2">Gambar bagan dapat diperbarui melalui panel admin.</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
 
         </div>
     </section>
@@ -138,7 +158,7 @@
     <section class="py-16 md:py-24 bg-gray-50">
         <div class="container mx-auto px-4 max-w-6xl">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-unmaris-blue inline-block border-b-4 border-unmaris-yellow pb-2">Struktur Kepemimpinan</h2>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-unmaris-blue inline-block border-b-4 border-unmaris-yellow pb-2">Jajaran Pimpinan</h2>
                 <p class="text-gray-500 mt-4 text-lg">Pimpinan Universitas Stella Maris Sumba yang berdedikasi tinggi membangun generasi penerus bangsa.</p>
             </div>
 

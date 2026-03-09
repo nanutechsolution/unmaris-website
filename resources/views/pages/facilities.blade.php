@@ -23,7 +23,18 @@
                 <div class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 group flex flex-col h-full transform hover:-translate-y-2">
                     <!-- Image Container -->
                     <div class="relative h-64 overflow-hidden">
+                        @if($facility->image)
+                        <!-- Tampil jika gambar ada di database -->
                         <img src="{{ \Illuminate\Support\Facades\Storage::url($facility->image) }}" alt="{{ $facility->name }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        @else
+                        <!-- Tampil sebagai PENGGANTI jika gambar kosong/tidak ada -->
+                        <div class="w-full h-full bg-unmaris-blue/10 flex items-center justify-center transition-transform duration-700 group-hover:scale-110">
+                            <svg class="w-16 h-16 text-unmaris-blue/30" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z" />
+                            </svg>
+                        </div>
+                        @endif
+
                         <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
                         <div class="absolute bottom-0 left-0 p-6 w-full">
                             <h3 class="text-2xl font-bold text-white leading-tight group-hover:text-unmaris-yellow transition-colors">{{ $facility->name }}</h3>
@@ -48,7 +59,7 @@
                 <h3 class="text-2xl font-bold text-gray-800 mb-2">Belum Ada Data Fasilitas</h3>
                 <p class="text-gray-500">Data galeri fasilitas kampus sedang diperbarui oleh tim admin.</p>
             </div>
-            @endif  
+            @endif
 
         </div>
     </section>

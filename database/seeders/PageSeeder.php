@@ -10,20 +10,55 @@ class PageSeeder extends Seeder
     public function run(): void
     {
         // Data Halaman Profil Universitas (Data Lama)
-        Page::updateOrCreate(
+   Page::updateOrCreate(
             ['slug' => 'profil-universitas'],
             [
                 'title' => 'Profil Universitas Stella Maris Sumba',
-                'meta_description' => 'Mengenal lebih dekat visi, misi, dan sejarah Universitas Stella Maris Sumba (UNMARIS).',
+                'meta_description' => 'Mengenal lebih dekat Visi, Misi, Tujuan, Ciri Khas (KASIH), serta Sasaran dan Strategi Universitas Stella Maris Sumba (UNMARIS).',
                 'content' => [
                     'sambutan' => 'Selamat datang di kampus peradaban. Kami berkomitmen untuk tidak hanya mencetak lulusan yang cerdas secara akademik, tetapi juga memiliki karakter dan integritas yang tinggi untuk membangun Sumba dan Indonesia.',
-                    'visi' => 'Menjadi universitas unggul dan berdaya saing global yang berlandaskan nilai-nilai karakter dalam menghasilkan lulusan yang inovatif dan profesional pada tahun 2035.',
-                    'misi' => '<ul><li>Menyelenggarakan pendidikan dan pengajaran yang bermutu.</li><li>Melaksanakan penelitian terapan.</li><li>Melaksanakan pengabdian kepada masyarakat.</li><li>Membangun tata kelola universitas yang baik.</li></ul>',
-                    'sejarah' => '<h2>Membangun Peradaban dari Timur</h2><p>Universitas Stella Maris Sumba (UNMARIS) didirikan sebagai respons terhadap tingginya kebutuhan akan pendidikan tinggi yang berkualitas di wilayah Sumba Barat Daya dan sekitarnya.</p>'
+                    'visi' => 'Menjadi Pusat Pengembangan Ilmu Pengetahuan dan Teknologi yang Unggul, Beriman, Humanis dan Berdaya Saing.',
+                    
+                    'misi' => '<ul>
+                        <li>Menyelenggarakan tridarma pendidikan berbasis SN-DIKTI.</li>
+                        <li>Menyelenggarakan pendidikan yang bermutu, komprehensif, dan progresif di bidang pendidikan, bisnis, teknik dan kesehatan.</li>
+                        <li>Menyelenggarakan pendidikan yang menghasilkan sumber daya manusia yang sesuai dengan kebutuhan pembangunan berdasarkan standar.</li>
+                        <li>Menjalin hubungan kerjasama dengan stakeholder untuk menunjang pelaksanaan Tri Dharma Perguruan Tinggi dengan mengedepankan nilai humanisme, inovasi, unggul dan berdaya saing.</li>
+                        <li>Mengembangkan organisasi, kepemimpinan dan manajemen UNMARIS guna beradaptasi dengan perubahan.</li>
+                    </ul>',
+                    
+                    'tujuan' => '<p>Menyelenggarakan dan mengembangkan program pendidikan, bisnis, teknik dan kesehatan yang menghasilkan lulusan yang beretika dan mampu :</p>
+                    <ol>
+                        <li>
+                            <ol type="a">
+                                <li>Menerapkan pengetahuan dan keterampilan teknologi dalam pelayanan kesehatan di masyarakat.</li>
+                                <li>Menguasai dasar-dasar ilmu pengetahuan dan teknologi sehingga mampu menemukan, memahami, menjelaskan dan merumuskan cara penyelesaian masalah sesuai dengan bidang keahlian.</li>
+                                <li>Menguasai dasar-dasar ilmiah sehingga mampu berpikir, bersikap, dan bertindak sebagai ilmuwan.</li>
+                                <li>Mengikuti perkembangan pengetahuan dan teknologi.</li>
+                            </ol>
+                        </li>
+                        <li>Menyelenggarakan, mengembangkan dan membina kehidupan masyarakat akademik melalui sistem pendidikan tinggi yang profesional.</li>
+                        <li>Menyelenggarakan dan mengembangkan penelitian, dan inovasi teknologi guna memanfaatkan sumber daya lokal secara optimal dan berkelanjutan sehingga dapat mempercepat proses pembaharuan, pengembangan dan penerapan IPTEKS.</li>
+                        <li>Mengembangkan fasilitas penunjang pendidikan yang optimal untuk mendukung terselenggaranya pendidikan dan pengembangan IPTEKS.</li>
+                        <li>Mengembangkan dan membina kerja sama kemitraan pada tingkat regional, nasional dan internasional.</li>
+                    </ol>',
+
+                    'ciri_khas_kasih' => '<ul>
+                        <li><strong>Kompetitif:</strong> Menjadi UNMARIS sebagai PT yang mampu bersaing secara global.</li>
+                        <li><strong>Adaptasi:</strong> Menyesuaikan diri dengan perkembangan IPTEKS untuk mencapai Visi dan Misi UNMARIS.</li>
+                        <li><strong>Sinergis:</strong> Setiap stakeholder bekerja komplementatif, saling membantu menggerakkan organisasi menuju capaian Visi dan Misi UNMARIS.</li>
+                        <li><strong>Iman:</strong> Menyelenggarakan pendidikan berdasarkan keyakinan kepada Allah.</li>
+                        <li><strong>Humanis:</strong> Mengaktualisasi diri sesuai dengan nilai dan norma.</li>
+                    </ul>',
+
+                    'sasaran_strategi' => '<ul>
+                        <li>Terwujudnya pelaksanaan dan hasil Tridarma PT yang bermutu dan relevan dengan kepentingan masyarakat melalui strategi penerapan sistem penjaminan mutu dan akreditasi.</li>
+                        <li>Terwujudnya sistem manajemen dan pelayanan UNMARIS yang andal dan terpercaya melalui strategi penerapan prinsip-prinsip tata kelola perguruan tinggi yang baik (good university governance).</li>
+                        <li>Terwujudnya keberlanjutan eksistensi dan relevansi sosial UNMARIS melalui strategi pengembangan kerjasama kelembagaan.</li>
+                    </ul>'
                 ],
             ]
         );
-
         // Data Halaman Kontak (Data Baru)
         Page::updateOrCreate(
             ['slug' => 'kontak'],

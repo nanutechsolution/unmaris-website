@@ -78,6 +78,7 @@ class PageForm
                 ->image() // Validasi hanya gambar (PNG, JPG)
                 ->directory('pages/struktur') // Disimpan di folder storage/app/public/pages/struktur
                 ->columnSpanFull()
+                ->disk('public')
                 ->visibility('public')
                 ->helperText('Unggah gambar struktur organisasi kampus (Ekspor PDF Struktur Anda ke format JPG/PNG).')
                 ->visible(fn($get): bool => $get('slug') === 'profil-universitas'),

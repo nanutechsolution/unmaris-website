@@ -41,7 +41,7 @@
                 </div>
                 <div class="w-full md:w-2/3">
                     <h2 class="text-2xl font-bold text-unmaris-blue mb-4 flex items-center gap-2">
-                        Sambutan Rektor
+                        Sambutan Plt. Rektor
                     </h2>
                     <div class="text-gray-600 mb-4 italic text-lg leading-relaxed">
                         "{!! strip_tags($page->content['sambutan']) !!}"

@@ -8,4 +8,5 @@ enum NavigationGroup: string
     case Akademik = 'Akademik';
     case Kemahasiswaan = 'Kemahasiswaan';
     case Sistem = 'Sistem';
+    case Kemitraan= 'Kemitraan';
 }

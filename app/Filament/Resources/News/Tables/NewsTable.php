@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\News\Tables;
 
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -91,6 +93,12 @@ class NewsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                Action::make('preview_website')
+                    ->label('Preview Web')
+                    ->icon('heroicon-o-globe-alt')
+                    ->color('info')
+                    ->url(fn ($record): string => url('/berita/' . $record->slug)) // Sesuaikan URL ini dengan route frontend Anda
+                    ->openUrlInNewTab(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

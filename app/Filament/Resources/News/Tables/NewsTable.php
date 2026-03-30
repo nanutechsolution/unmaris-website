@@ -11,6 +11,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\RecordActionsPosition;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Filters\SelectFilter;
@@ -97,9 +98,9 @@ class NewsTable
                     ->label('Preview Web')
                     ->icon('heroicon-o-globe-alt')
                     ->color('info')
-                    ->url(fn ($record): string => url('/berita/' . $record->slug)) // Sesuaikan URL ini dengan route frontend Anda
+                    ->url(fn($record): string => url('/berita/' . $record->slug)) // Sesuaikan URL ini dengan route frontend Anda
                     ->openUrlInNewTab(),
-            ])
+            ], position: RecordActionsPosition::BeforeCells)
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),

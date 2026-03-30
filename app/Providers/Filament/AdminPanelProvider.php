@@ -25,6 +25,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationGroup as FilamentNavigationGroup;
 use App\Enums\NavigationGroup;
+use App\Filament\Pages\Auth\EditProfile;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Support\Icons\Heroicon;
 
@@ -49,6 +50,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make()->navigationGroup("Role & Permission"),
             ])
+            ->profile(EditProfile::class)
             ->brandName('Admin UNMARIS')
             ->favicon(asset('images/logo-unmaris.png'))
             // 4. Navigasi Terlipat secara Default

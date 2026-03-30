@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
@@ -13,6 +14,14 @@ class UserForm
     {
         return $schema
             ->components([
+                FileUpload::make('avatar_url')
+                    ->label('Avatar Profil')
+                    ->avatar()          // Membuat preview berbentuk lingkaran
+                    ->imageEditor()     // Mengizinkan user memotong/mengedit gambar sebelum diupload
+                    ->circleCropper()   // Memastikan cropper berbentuk lingkaran
+                    ->disk('public')      // Menyimpan di disk 'public' (storage/app/public)
+                    ->directory('avatars') // Folder penyimpanan di storage/app/public/avatars
+                    ->maxSize(2048),
                 TextInput::make('name')
                     ->label('Nama Lengkap')
                     ->required()

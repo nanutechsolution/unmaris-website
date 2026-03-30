@@ -17,17 +17,15 @@ class NewsTable
     {
         return $table
             ->columns([
-                TextColumn::make('title')
-                    ->searchable(),
-                TextColumn::make('slug')
-                    ->searchable(),
-                SpatieTagsColumn::make('tags')
-                    ->label('Tagar')
-                    ->searchable(),
                 ImageColumn::make('featured_image')
                     ->disk('public')
                     ->visibility('public')
+                    ->square()
                     ->label('Gambar'),
+                TextColumn::make('category.name')
+                    ->searchable(),
+                TextColumn::make('title')
+                    ->searchable(),
                 IconColumn::make('is_published')
                     ->boolean(),
             ])->defaultSort('published_at', 'desc')

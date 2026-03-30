@@ -17,8 +17,6 @@ class NewsTable
     {
         return $table
             ->columns([
-                TextColumn::make('category.name')
-                    ->searchable(),
                 TextColumn::make('title')
                     ->searchable(),
                 TextColumn::make('slug')
@@ -32,17 +30,6 @@ class NewsTable
                     ->label('Gambar'),
                 IconColumn::make('is_published')
                     ->boolean(),
-                TextColumn::make('published_at')
-                    ->dateTime()
-                    ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])->defaultSort('published_at', 'desc')
             ->filters([
                 //

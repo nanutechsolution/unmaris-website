@@ -4,11 +4,13 @@ namespace App\Filament\Widgets;
 
 use App\Models\News;
 use App\Models\Visitor;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class VisitorStats extends BaseWidget
 {
+    use HasWidgetShield;
     protected static ?int $sort = 0; // Tampil paling atas
 
     protected function getStats(): array

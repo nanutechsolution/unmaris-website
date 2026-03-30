@@ -27,7 +27,7 @@ class AnnouncementResource extends Resource
     protected static ?string $navigationLabel = 'Pengumuman & Agenda';
     protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Konten;
     protected static ?int $navigationSort = 3;
-    
+
     public static function form(Schema $schema): Schema
     {
         return AnnouncementForm::configure($schema);

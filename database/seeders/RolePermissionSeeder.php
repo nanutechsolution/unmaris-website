@@ -17,7 +17,7 @@ class RolePermissionSeeder extends Seeder
 
         // 2. Berikan Role ke User Admin yang sudah ada
         // Ganti email sesuai dengan akun admin Anda
-        $user = User::where('email', 'admin@unmaris.ac.id')->first();
+        $user = User::where('email', 'admin@unmarissumba.ac.id')->first();
         if ($user) {
             $user->assignRole($superAdmin);
         }

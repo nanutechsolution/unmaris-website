@@ -3,10 +3,12 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Faculty;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 
 class ProdiChart extends ChartWidget
 {
+    use HasWidgetShield;
     protected  ?string $heading = 'Distribusi Program Studi';
     protected static ?int $sort = 3;
     protected  string $color = 'warning';

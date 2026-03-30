@@ -25,6 +25,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Navigation\NavigationGroup as FilamentNavigationGroup;
 use App\Enums\NavigationGroup;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Support\Icons\Heroicon;
 
 class AdminPanelProvider extends PanelProvider
@@ -44,6 +45,9 @@ class AdminPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
                 Dashboard::class,
+            ])
+            ->plugins([
+                FilamentShieldPlugin::make()->navigationGroup("Role & Permission"),
             ])
             ->brandName('Admin UNMARIS')
             ->favicon(asset('images/logo-unmaris.png'))

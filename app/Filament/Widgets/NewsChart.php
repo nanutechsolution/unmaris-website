@@ -3,12 +3,14 @@
 namespace App\Filament\Widgets;
 
 use App\Models\News;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
 class NewsChart extends ChartWidget
 {
+    use HasWidgetShield;
     // Menghapus 'static' karena di class induk ChartWidget properti ini bersifat non-statis
     protected ?string $heading = 'Tren Publikasi Berita';
     

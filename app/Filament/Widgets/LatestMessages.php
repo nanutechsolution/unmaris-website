@@ -3,6 +3,7 @@
 namespace App\Filament\Widgets;
 
 use App\Models\Message;
+use BezhanSalleh\FilamentShield\Traits\HasWidgetShield;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -11,6 +12,7 @@ use Filament\Widgets\TableWidget;
 
 class LatestMessages extends TableWidget
 {
+    use HasWidgetShield;
     protected static ?int $sort = 4;
 
     protected int | string | array $columnSpan = 'full';

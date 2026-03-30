@@ -43,7 +43,7 @@ class NewsTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-            ])
+            ])->defaultSort('published_at', 'desc')
             ->filters([
                 //
             ])

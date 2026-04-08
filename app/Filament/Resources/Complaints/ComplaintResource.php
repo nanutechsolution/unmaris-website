@@ -24,9 +24,9 @@ class ComplaintResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedChatBubbleLeftRight;
     
     protected static string | \UnitEnum | null $navigationGroup = NavigationGroup::Kemahasiswaan;
-    protected static ?string $modelLabel = 'Komplain';
-    protected static ?string $pluralModelLabel = 'Komplain';
-    protected static ?string $navigationLabel = 'Komplain';
+    protected static ?string $modelLabel = 'Pengaduan';
+    protected static ?string $pluralModelLabel = 'Pengaduan';
+    protected static ?string $navigationLabel = 'Pengaduan';
     protected static ?string $recordTitleAttribute = 'name';
 
     public static function form(Schema $schema): Schema

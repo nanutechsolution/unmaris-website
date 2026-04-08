@@ -30,14 +30,31 @@ class Complaint extends Model
         'admin_response',
     ];
 
-    /**
-     * Boot function untuk men-generate Ticket Number secara otomatis
-     */
     protected static function booted()
     {
         static::creating(function ($complaint) {
-            // Contoh format: ADU-20260408-XXXX
+            // Generate Ticket Number
             $complaint->ticket_number = 'ADU-' . date('Ymd') . '-' . strtoupper(Str::random(4));
+        });
+
+        static::updating(function ($complaint) {
+            $original = $complaint->getOriginal();
+
+            // Field yang tidak boleh diubah oleh admin
+            $lockedFields = [
+                'ticket_number',
+                'name',
+                'email',
+                'phone',
+                'category',
+                'subject',
+                'content',
+                'attachment',
+            ];
+
+            foreach ($lockedFields as $field) {
+                $complaint->$field = $original[$field];
+            }
         });
     }
 

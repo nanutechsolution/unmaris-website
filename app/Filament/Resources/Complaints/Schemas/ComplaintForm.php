@@ -38,6 +38,7 @@ class ComplaintForm
                                     ])
                                     ->native(false)
                                     ->required()
+                                    ->disabledOn('edit')
                                     ->default('pending'),
 
                                 Select::make('category')
@@ -50,6 +51,8 @@ class ComplaintForm
                                         'lainnya' => 'Lainnya',
                                     ])
                                     ->native(false)
+                                    ->disabled()
+
                                     ->required(),
                             ]),
 
@@ -60,22 +63,28 @@ class ComplaintForm
                                     ->schema([
                                         TextInput::make('name')
                                             ->label('Nama Pelapor')
+                                            ->disabled()
                                             ->required(),
                                         TextInput::make('email')
                                             ->label('Alamat Email')
                                             ->email()
+                                            ->disabled()
                                             ->required(),
                                         TextInput::make('phone')
                                             ->label('Nomor HP')
+                                            ->disabled()
+                                            ->required()
                                             ->tel(),
                                         TextInput::make('subject')
                                             ->label('Subjek/Perihal')
+                                            ->disabled()
                                             ->required(),
                                     ]),
 
                                 Textarea::make('content')
                                     ->label('Isi Pengaduan')
                                     ->rows(5)
+                                    ->disabled()
                                     ->required(),
 
                                 FileUpload::make('attachment')

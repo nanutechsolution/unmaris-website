@@ -103,6 +103,7 @@
                     </button>
                     <div x-show="openMahasiswa" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-1" class="absolute top-full left-0 w-60 bg-white rounded-xl shadow-xl py-2 text-gray-800 border-t-4 border-unmaris-yellow overflow-hidden" style="display: none;">
                         <a href="{{ route('scholarships.index') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Informasi Beasiswa</a>
+
                         <a href="{{ route('organizations.index') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Organisasi (BEM & UKM)</a>
                         <!-- <a href="#" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Layanan & Konseling</a> -->
                     </div>
@@ -136,7 +137,7 @@
                 </div>
 
                 <a href="{{ route('contact') }}" class="px-2 py-2 hover:text-unmaris-yellow transition {{ request()->routeIs('contact') ? 'text-unmaris-yellow border-b-2 border-unmaris-yellow' : '' }}">Kontak</a>
-
+                <a href="{{ route('complaint.index') }}" class="px-2 py-2 hover:text-unmaris-yellow transition {{ request()->routeIs('complaint.index') ? 'text-unmaris-yellow border-b-2 border-unmaris-yellow' : '' }}">Pengaduan</a>
                 <!-- CTA PMB -->
                 <div class="pl-2">
                     <a href="https://pmb.unmarissumba.ac.id" target="_blank" class="inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue px-6 py-2.5 rounded-full font-black hover:bg-yellow-400 hover:scale-105 transition-all shadow-md tracking-wider">
@@ -225,7 +226,7 @@
                 </div>
 
                 <a href="{{ route('contact') }}" class="block px-4 py-3 rounded-xl hover:bg-blue-900/50 hover:text-unmaris-yellow transition {{ request()->routeIs('contact') ? 'bg-blue-900/50 text-unmaris-yellow' : '' }}">Kontak Kami</a>
-
+                <a href="{{ route('complaint.index') }}" class="block px-4 py-3 rounded-xl hover:bg-blue-900/50 hover:text-unmaris-yellow transition {{ request()->routeIs('complaint.index') ? 'bg-blue-900/50 text-unmaris-yellow' : '' }}">Layanan Pengaduan</a>
                 <div class="pt-6 pb-4">
                     <a href="https://pmb.unmarissumba.ac.id" target="_blank" class="block w-full text-center bg-unmaris-yellow text-unmaris-blue px-6 py-3.5 rounded-xl font-black hover:bg-yellow-400 transition shadow-lg text-base tracking-wider uppercase">
                         Daftar Mahasiswa Baru
@@ -288,6 +289,7 @@
                 <div class="xl:col-span-1">
                     <h4 class="text-white font-bold mb-6 text-lg border-b-2 border-gray-700 inline-block pb-2">Layanan & Informasi</h4>
                     <ul class="space-y-3 text-sm">
+                        <li><a href="{{ route('complaint.index') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Layanan Pengaduan & Aspirasi</a></li>
                         <li><a href="{{ route('facilities.index') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Galeri Fasilitas Kampus</a></li>
                         <li><a href="{{ route('scholarships.index') }}" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Informasi Beasiswa</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-unmaris-yellow hover:translate-x-1 inline-block transition transform duration-200">Organisasi Mahasiswa (BEM/UKM)</a></li>

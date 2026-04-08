@@ -23,7 +23,7 @@ return new class extends Migration
         $table->timestamp('published_at')->nullable();
         $table->timestamps();
         
-        $table->index('published_at'); // Optimasi query pengurutan berita
+        $table->index('published_at'); 
     });
 }
 

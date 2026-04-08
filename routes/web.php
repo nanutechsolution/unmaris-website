@@ -140,3 +140,6 @@ Route::get('/kemahasiswaan/organisasi', function () {
 
     return view('pages.student-organizations', compact('organizationsGrouped'));
 })->name('organizations.index');
+
+
+Route::get('/pengaduan', \App\Livewire\ComplaintPage::class)->name('complaint.index');

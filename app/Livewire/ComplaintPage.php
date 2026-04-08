@@ -3,6 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Complaint;
+use App\Models\User;
+use Filament\Actions\Action as ActionsAction;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
@@ -113,7 +117,10 @@ class ComplaintPage extends Component
             'attachment' => $filePath,
         ]);
 
-        // Kirim Notifikasi Email
+        // 1. Kirim Notifikasi ke Database Admin Filament
+        $this->notifyAdmins($complaint);
+
+        // 2. Kirim Notifikasi Email
         $this->sendEmailNotifications($complaint);
 
         // Set state success untuk merubah UI
@@ -125,6 +132,26 @@ class ComplaintPage extends Component
         
         // Acak angka captcha untuk pengguna selanjutnya
         $this->generateCaptcha();
+    }
+
+    protected function notifyAdmins(Complaint $complaint)
+    {
+        // Mengambil semua user admin
+        // Jika Anda memiliki sistem role, bisa difilter seperti: User::role('admin')->get()
+        $admins = User::all();
+
+        Notification::make()
+            ->title('Pengaduan Baru Masuk')
+            ->icon('heroicon-o-chat-bubble-left-right')
+            ->iconColor('warning')
+            ->body("**{$complaint->name}** mengirim pengaduan: *{$complaint->subject}*")
+            ->actions([
+                ActionsAction::make('view')
+                    ->label('Lihat Detail')
+                    ->url(route('filament.admin.resources.complaints.view', $complaint))
+                    ->button(),
+            ])
+            ->sendToDatabase($admins);
     }
 
     protected function sendEmailNotifications(Complaint $complaint)
@@ -160,7 +187,6 @@ class ComplaintPage extends Component
             );
         } catch (\Exception $e) {
             // Jika SMTP error (belum disetting di .env dll), log errornya saja
-            // Proses submit pengaduan ke database tetap berjalan sukses
             Log::error('Gagal mengirim email notifikasi pengaduan: ' . $e->getMessage());
         }
     }

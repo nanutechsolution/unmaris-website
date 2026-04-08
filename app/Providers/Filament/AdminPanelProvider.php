@@ -55,6 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/logo-unmaris.png'))
             // 4. Navigasi Terlipat secara Default
             ->sidebarCollapsibleOnDesktop()
+            ->databaseNotifications()
             ->collapsedSidebarWidth('9rem')
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->navigationGroups([

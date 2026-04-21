@@ -25,6 +25,8 @@
     <meta property="og:image" content="{{ $ogImage ?? asset('images/logo-unmaris.png') }}">
     <meta property="og:site_name" content="Universitas Stella Maris Sumba">
     <meta property="og:locale" content="id_ID">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">

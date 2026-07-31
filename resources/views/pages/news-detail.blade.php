@@ -103,11 +103,6 @@
                         </div>
 
                         <div class="p-6 sm:p-8 md:p-12 lg:p-16">
-                            <!-- Intro Excerpt -->
-                            <div class="text-lg md:text-xl lg:text-2xl font-bold text-gray-800 mb-10 leading-relaxed border-l-[6px] border-unmaris-yellow pl-6 md:pl-8 italic text-justify md:text-left">
-                                "{{ $news->excerpt }}"
-                            </div>
-
                             <!-- Video Pendukung (Tampil Jika Ada) -->
                             @if($news->video_url)
                             @php

@@ -71,14 +71,36 @@ function parseTuple(line) {
 
     if (fields.length !== 5) return null;
 
-    const [code, name, , , rawPath] = fields;
+    const [code, name, rawLat, rawLng, rawPath] = fields;
     if (!isValidCode(code) || !name) return null;
 
+    const latitude = Number(rawLat);
+    const longitude = Number(rawLng);
+
     try {
-        return { code, name, path: swapLatLng(JSON.parse(rawPath)) };
+        return {
+            code,
+            name,
+            latitude: isValidCentroid(latitude, longitude) ? latitude : null,
+            longitude: isValidCentroid(latitude, longitude) ? longitude : null,
+            path: swapLatLng(JSON.parse(rawPath)),
+        };
     } catch {
         return null;
     }
+}
+
+/**
+ * Administrative centroid only; validates that the source point is a finite
+ * coordinate inside Indonesia's bounding box. Never derived from student data.
+ */
+function isValidCentroid(latitude, longitude) {
+    return Number.isFinite(latitude)
+        && Number.isFinite(longitude)
+        && latitude >= -11.5
+        && latitude <= 6.5
+        && longitude >= 94
+        && longitude <= 143;
 }
 
 /** Source stores [lat, lng]; GeoJSON/Leaflet require [lng, lat]. */
@@ -114,7 +136,11 @@ for (const file of files) {
 
         features[levels[level]].push({
             type: 'Feature',
-            properties: { code: tuple.code, name: tuple.name },
+            properties: {
+                code: tuple.code,
+                name: tuple.name,
+                ...(tuple.latitude !== null ? { latitude: tuple.latitude, longitude: tuple.longitude } : {}),
+            },
             geometry: detectGeometry(tuple.path),
         });
     }

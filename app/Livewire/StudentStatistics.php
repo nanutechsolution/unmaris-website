@@ -101,6 +101,7 @@ class StudentStatistics extends Component
             'topRows' => $topRows,
             'nextLevel' => $this->childLevel($this->current()['level']),
             'canGoBack' => count($this->stack) > 1,
+            'markerBands' => config('siakad.marker_bands', []),
         ])->layout('components.layouts.app', [
             'title' => 'GIS Statistik Mahasiswa - UNMARIS',
             'description' => 'Peta persebaran mahasiswa UNMARIS per wilayah, disajikan secara agregat.',
@@ -131,7 +132,17 @@ class StudentStatistics extends Component
             $this->loading = false;
         }
 
-        $this->dispatch('student-statistics-updated', rows: $this->rows, level: $current['level'], parent: $current['code'], nextLevel: $this->childLevel($current['level']));
+        $this->dispatch(
+            'student-statistics-updated',
+            rows: $this->rows,
+            level: $current['level'],
+            parent: $current['code'],
+            parentName: $current['name'],
+            breadcrumbs: $this->stack,
+            bands: config('siakad.marker_bands', []),
+            nextLevel: $this->childLevel($current['level']),
+            status: $this->status,
+        );
     }
 
     private function current(): array

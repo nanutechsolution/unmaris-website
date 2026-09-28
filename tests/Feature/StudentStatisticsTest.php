@@ -50,6 +50,53 @@ class StudentStatisticsTest extends TestCase
             ->assertDontSee('Contoh Mahasiswa');
     }
 
+    public function test_marker_is_the_default_map_mode_with_wilayah_fallback(): void
+    {
+        $this->fakeStatistics();
+        $this->withoutVite();
+
+        $response = $this->get(route('kemahasiswaan.statistik'));
+
+        $response->assertOk()
+            ->assertSee('data-gis-mode="marker"', false)
+            ->assertSee('gis-mode-button is-active', false)
+            ->assertSee('data-gis-mode="region"', false)
+            // Heatmap is staged but not shipped with unverified performance.
+            ->assertSee('disabled title="Segera hadir"', false);
+    }
+
+    public function test_marker_thresholds_come_from_configuration_not_hardcoded_ui(): void
+    {
+        $this->fakeStatistics();
+        $this->withoutVite();
+
+        $response = $this->get(route('kemahasiswaan.statistik'));
+        $this->assertNotEmpty(config('siakad.marker_bands'));
+
+        $response->assertOk();
+
+        // Thresholds must be present in the payload the renderer consumes.
+        // The data-* attribute is HTML-escaped, so look for the encoded form.
+        foreach ([0, 10, 50, 100] as $max) {
+            $this->assertStringContainsString(sprintf('&quot;max&quot;:%d,', $max), $response->getContent());
+        }
+    }
+
+    public function test_unsupported_year_program_campus_filters_are_not_advertised(): void
+    {
+        $this->fakeStatistics();
+        $this->withoutVite();
+
+        $response = $this->get(route('kemahasiswaan.statistik'));
+
+        // SIAKAD ignores these parameters; the UI must not imply otherwise.
+        $response->assertOk()
+            ->assertDontSee('name="tahun"')
+            ->assertDontSee('name="prodi"')
+            ->assertDontSee('name="kampus"')
+            ->assertDontSee('Prodi terbanyak');
+    }
+
     public function test_livewire_can_drill_down_and_return(): void
     {
         $this->fakeStatistics();

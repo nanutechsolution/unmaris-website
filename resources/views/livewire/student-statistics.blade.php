@@ -72,34 +72,46 @@
                     <!-- Peta -->
                     <div class="xl:col-span-2 bg-white rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
                         <div class="p-5 md:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                            <h2 class="font-black text-lg md:text-xl text-unmaris-blue">Peta Persebaran</h2>
-                            <span class="text-xs text-gray-500">
-                                @if($nextLevel)
-                                    Klik wilayah untuk melihat {{ $nextLevel }}
-                                @else
-                                    Tingkat terakhir: desa/kelurahan
-                                @endif
-                            </span>
+                            <div>
+                                <h2 class="font-black text-lg md:text-xl text-unmaris-blue">Peta Persebaran</h2>
+                                <p class="text-xs text-gray-500 mt-1">{{ $current['name'] }} · {{ ucfirst($current['level']) }}</p>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Mode peta">
+                                <button type="button" data-gis-mode="marker" class="gis-mode-button is-active">● Marker</button>
+                                <button type="button" data-gis-mode="heat" class="gis-mode-button" disabled title="Segera hadir">🔥 Heatmap</button>
+                                <button type="button" data-gis-mode="region" class="gis-mode-button">🗺️ Wilayah</button>
+                            </div>
                         </div>
 
-                        <div wire:ignore class="p-3 md:p-6">
+                        <div wire:ignore class="relative p-3 md:p-6">
                             <div
                                 id="student-statistics-map"
                                 data-stats="{{ json_encode([
                                     'rows' => $rows,
                                     'level' => $current['level'],
                                     'parent' => $current['code'],
+                                    'parentName' => $current['name'],
+                                    'breadcrumbs' => $stack,
                                     'nextLevel' => $nextLevel,
+                                    'mode' => 'marker',
+                                    'bands' => $markerBands,
                                 ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG) }}"
-                                class="h-[360px] md:h-[520px] rounded-2xl bg-gray-100 overflow-hidden relative z-0"
+                                class="h-[360px] md:h-[520px] rounded-2xl overflow-hidden relative z-0 border border-gray-200"
                             ></div>
+                            <div id="student-statistics-loading" style="display:none" class="absolute inset-0 m-3 md:m-6 rounded-2xl bg-white/70 backdrop-blur-[2px] z-[1000] flex items-center justify-center pointer-events-none">
+                                <div class="flex items-center gap-3 rounded-full bg-white px-5 py-3 shadow-lg border border-gray-100 text-xs font-bold text-unmaris-blue">
+                                    <span class="w-4 h-4 rounded-full border-2 border-unmaris-blue/20 border-t-unmaris-blue animate-spin"></span>
+                                    Memuat peta…
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="px-5 md:px-6 pb-5 md:pb-6 flex flex-wrap items-center gap-4 text-xs text-gray-500">
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-[#EEF1FB] border border-gray-200"></span> 0</span>
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-[#7C88C6]"></span> Sedang</span>
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-[#1B1464]"></span> Banyak</span>
-                            <span class="flex items-center gap-2"><span class="w-4 h-4 rounded bg-[#E5E7EB]"></span> Tanpa data wilayah</span>
+                        <div class="px-5 md:px-6 pb-5 md:pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-gray-500">
+                                <span class="font-bold uppercase tracking-wider text-gray-400">Jumlah mahasiswa · klik marker untuk detail</span>
+                                <div id="student-statistics-legend" class="flex flex-wrap items-center gap-x-3 gap-y-2" aria-label="Legenda jumlah mahasiswa"></div>
+                            </div>
+                            <span class="text-[11px] text-gray-400">Sumber batas wilayah: GeoJSON administratif</span>
                         </div>
                     </div>
 

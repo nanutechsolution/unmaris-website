@@ -1,25 +1,30 @@
 # Wilayah GeoJSON assets
 
-These files are generated from the MIT-licensed `cahyadsn/wilayah` boundary data, sourced via the `edopandoyo/wilayah-indonesia-api` boundary SQL release. The source contains coded administrative boundaries for provinces, kabupaten/kota, kecamatan, and desa/kelurahan.
+Generated from the MIT-licensed `cahyadsn/wilayah` boundary data (provided as
+boundary SQL by `edopandoyo/wilayah-indonesia-api`). Each feature preserves:
+`code`, `name`, `latitude`, and `longitude`. The latter two are administrative
+centroids from source `lat`/`lng` columns, never student coordinates.
 
-## Generated layout
+## Chunk layout
 
-- `provinsi.geojson` contains all province features.
-- `kabupaten/{province-code}.geojson` contains kabupaten/kota for one province.
-- `kecamatan/{kabupaten-code}.geojson` contains kecamatan for one kabupaten/kota.
-- `desa/{kabupaten-code}.geojson` contains desa/kelurahan for one kabupaten/kota. The page lazy-loads this chunk only at the desa level.
+- `provinsi.geojson`: all 37 province features.
+- `kabupaten/{province-code}.geojson`: kabupaten/kota within one province.
+- `kecamatan/{kabupaten-code}.geojson`: kecamatan within one kabupaten/kota.
+- `desa/{kabupaten-code}.geojson`: villages within one kabupaten/kota.
 
-The checked-in assets are simplified for browser use. They retain exact `properties.code` and `properties.name` values, and the source latitude/longitude order has been converted to GeoJSON longitude/latitude order. The browser joins features to SIAKAD rows by exact code; it never matches by name.
+The map lazy-loads only the active level/chunk and joins counts by exact API
+code. A geometry with no SIAKAD row is shown as “Belum ada data”, not as a
+confirmed zero. No personal student data is stored or sent to the browser.
+
+The source has no desa-level geometry rows for kabupaten `12.01`; that chunk is
+intentionally absent. The UI does not invent geometry for it.
 
 ## Rebuild
 
-Keep compressed source files outside git in `storage/app/wilayah-build/`, then run:
+Keep the compressed source SQL outside git in `storage/app/wilayah-build/`.
+Run the generator, simplify each level using the reviewed mapshaper parameters
+(province/kabupaten/kecamatan: 8%; desa: 3%), and split the child level files
+by the parent-code layout above. Confirm these exact joins and centroid ranges
+after each rebuild: `53`, `53.18`, `53.18.04`, `53.18.04.2022`.
 
-```sh
-node tools/generate-wilayah.mjs storage/app/wilayah-build storage/app/wilayah-build/geojson
-```
-
-Apply the reviewed mapshaper simplification to each generated level, split the child levels using the same code prefixes, and validate representative exact joins for `53`, `53.18`, `53.18.04`, and `53.18.04.2022`. Serve the files with HTTP compression.
-
-Source: https://github.com/cahyadsn/wilayah
-License: MIT
+Source: https://github.com/cahyadsn/wilayah (MIT)

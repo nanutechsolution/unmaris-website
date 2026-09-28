@@ -133,4 +133,53 @@ class StudentStatisticsTest extends TestCase
             ->call('drillDown', 'not-a-code')
             ->assertCount('stack', 1);
     }
+
+    public function test_map_renders_reset_control_and_no_data_state(): void
+    {
+        $this->fakeStatistics();
+        $this->withoutVite();
+
+        $response = $this->get(route('kemahasiswaan.statistik'));
+
+        $response->assertOk()
+            ->assertSee('data-gis-reset', false)
+            ->assertSee('Reset Tampilan')
+            ->assertSee('Tidak ada data pada filter ini');
+    }
+
+    public function test_initial_map_payload_carries_the_active_filter(): void
+    {
+        $this->fakeStatistics();
+        $this->withoutVite();
+
+        $response = $this->get(route('kemahasiswaan.statistik'));
+
+        // The viewport state machine needs the same filter key on first render
+        // as it receives on every later Livewire dispatch.
+        $response->assertOk()->assertSee('&quot;status&quot;:&quot;aktif&quot;', false);
+    }
+
+    public function test_dispatch_carries_status_and_scope_for_the_viewport_state_machine(): void
+    {
+        $this->fakeStatistics();
+
+        Livewire::test(StudentStatistics::class)
+            ->assertDispatched('student-statistics-updated', function (string $event, array $params) {
+                return $params['status'] === 'aktif'
+                    && $params['level'] === 'provinsi'
+                    && $params['parent'] === null;
+            })
+            ->call('drillDown', '53')
+            ->assertDispatched('student-statistics-updated', function (string $event, array $params) {
+                return $params['status'] === 'aktif'
+                    && $params['level'] === 'kabupaten'
+                    && $params['parent'] === '53';
+            })
+            ->call('setStatus', 'semua')
+            ->assertDispatched('student-statistics-updated', function (string $event, array $params) {
+                return $params['status'] === 'semua'
+                    && $params['level'] === 'provinsi'
+                    && $params['parent'] === null;
+            });
+    }
 }

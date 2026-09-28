@@ -115,7 +115,8 @@
 }
 
 .gis-mode-button:hover:not(:disabled),
-.gis-mode-button.is-active {
+.gis-mode-button.is-active,
+.gis-mode-button[data-gis-reset]:hover {
     color: var(--color-unmaris-blue);
     background: #fef9c3;
     border-color: var(--color-unmaris-yellow);

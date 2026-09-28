@@ -77,6 +77,7 @@
                                 <p class="text-xs text-gray-500 mt-1">{{ $current['name'] }} · {{ ucfirst($current['level']) }}</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Mode peta">
+                                <button type="button" data-gis-reset class="gis-mode-button">Reset Tampilan</button>
                                 <button type="button" data-gis-mode="marker" class="gis-mode-button is-active">● Marker</button>
                                 <button type="button" data-gis-mode="heat" class="gis-mode-button" disabled title="Segera hadir">🔥 Heatmap</button>
                                 <button type="button" data-gis-mode="region" class="gis-mode-button">🗺️ Wilayah</button>
@@ -94,10 +95,17 @@
                                     'breadcrumbs' => $stack,
                                     'nextLevel' => $nextLevel,
                                     'mode' => 'marker',
+                                    'status' => $status,
                                     'bands' => $markerBands,
                                 ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG) }}"
                                 class="h-[360px] md:h-[520px] rounded-2xl overflow-hidden relative z-0 border border-gray-200"
                             ></div>
+                            <div id="student-statistics-no-data" aria-hidden="true" style="display:none" class="absolute inset-0 m-3 md:m-6 rounded-2xl bg-white/85 backdrop-blur-[1px] z-[999] flex flex-col items-center justify-center gap-3 pointer-events-none">
+                                <div class="rounded-2xl bg-white border border-gray-100 shadow-md px-7 py-6 text-center">
+                                    <p class="font-black text-unmaris-blue">Tidak ada data pada filter ini</p>
+                                    <p class="text-xs text-gray-500 mt-1">Coba ganti status filter atau wilayah untuk melihat persebaran mahasiswa.</p>
+                                </div>
+                            </div>
                             <div id="student-statistics-loading" style="display:none" class="absolute inset-0 m-3 md:m-6 rounded-2xl bg-white/70 backdrop-blur-[2px] z-[1000] flex items-center justify-center pointer-events-none">
                                 <div class="flex items-center gap-3 rounded-full bg-white px-5 py-3 shadow-lg border border-gray-100 text-xs font-bold text-unmaris-blue">
                                     <span class="w-4 h-4 rounded-full border-2 border-unmaris-blue/20 border-t-unmaris-blue animate-spin"></span>
@@ -161,6 +169,7 @@
                 'level' => $current['level'],
                 'parent' => $current['code'],
                 'nextLevel' => $nextLevel,
+                'status' => $status,
             ]);
         </script>
     @endpush

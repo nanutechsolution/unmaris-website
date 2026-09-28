@@ -27,10 +27,123 @@ let clusterLayer = null;
 let mode = 'marker';
 let requestToken = 0;
 let bands = DEFAULT_BANDS;
+let lastScopeKey = null;
+let lastFilterKey = null;
+let lastBoundsSignature = null;
+let initialBounds = null;
+let programmaticMove = false;
+let userInteracting = false;
+let dragInProgress = false;
+let pendingFit = null;
+let popupMoveToken = 0;
 
 function formatCount(value) {
     return new Intl.NumberFormat('id-ID').format(value ?? 0);
 }
+
+function scopeKey(stats) {
+    return `${stats.level ?? 'provinsi'}:${stats.parent ?? 'root'}`;
+}
+
+function boundsSignature(bounds) {
+    if (!bounds?.isValid()) return 'none';
+    const southWest = bounds.getSouthWest();
+    const northEast = bounds.getNorthEast();
+    return [southWest.lat, southWest.lng, northEast.lat, northEast.lng]
+        .map((value) => Number(value.toFixed(4)))
+        .join(',');
+}
+
+function maxZoomFor(level) {
+    return { provinsi: 7, kabupaten: 9, kecamatan: 11, desa: 13 }[level] ?? 12;
+}
+
+function setNoDataState(hasData) {
+    const state = document.getElementById('student-statistics-no-data');
+    if (!state) return;
+    state.style.display = hasData ? 'none' : 'flex';
+    state.setAttribute('aria-hidden', String(hasData));
+}
+
+function runProgrammatic(action) {
+    programmaticMove = true;
+    action();
+    window.setTimeout(() => {
+        programmaticMove = false;
+    }, 1000);
+}
+
+function fitViewport(bounds, level, reason, token = requestToken) {
+    if (!bounds?.isValid() || !map || token !== requestToken) return;
+
+    const fit = () => runProgrammatic(() => {
+        map.fitBounds(bounds, {
+            animate: true,
+            duration: 0.7,
+            padding: [24, 24],
+            maxZoom: maxZoomFor(level),
+        });
+    });
+
+    // Initial view and drill-down are explicit user actions: they must apply.
+    // Only filter-driven fits are deferred while the user is moving the map,
+    // so a manual pan is never fought (requirement 8).
+    const immediate = reason === 'initial' || reason === 'scope';
+
+    if (immediate || (!dragInProgress && !userInteracting)) {
+        fit();
+    } else {
+        pendingFit = { bounds, level, reason, token };
+    }
+}
+
+function maybeFitViewport(stats, features, token) {
+    if (!map || token !== requestToken) return;
+
+    const byCode = new Map((stats.rows ?? []).map((row) => [row.code, row]));
+    const active = features.filter((feature) => byCode.has(feature.properties.code));
+    const bounds = L.latLngBounds([]);
+    active.forEach((feature) => {
+        const point = centroidOf(feature);
+        if (point) bounds.extend(point);
+    });
+
+    const nextScope = scopeKey(stats);
+    const nextFilter = stats.status ?? 'aktif';
+    const nextSignature = boundsSignature(bounds);
+    const isInitial = lastScopeKey === null;
+    const scopeChanged = !isInitial && lastScopeKey !== nextScope;
+    const filterChanged = !isInitial && lastFilterKey !== nextFilter;
+    const boundsChanged = lastBoundsSignature !== nextSignature;
+
+    setNoDataState(active.length > 0);
+
+    if (!bounds.isValid()) {
+        // No active data: keep the current viewport untouched (requirement 10).
+        lastScopeKey = nextScope;
+        lastFilterKey = nextFilter;
+        lastBoundsSignature = nextSignature;
+        return;
+    }
+
+    if (isInitial) {
+        // Requirement 1: data-aware initial view, capped so it is neither
+        // zoomed out to the whole archipelago nor pushed in too close.
+        initialBounds = bounds;
+        fitViewport(bounds, 'provinsi', 'initial', token);
+    } else if (scopeChanged) {
+        fitViewport(bounds, stats.level, 'scope', token);
+    } else if (filterChanged && boundsChanged) {
+        // Requirement 5: a filter change only moves the view when the
+        // geographic extent of the active data actually changed.
+        fitViewport(bounds, stats.level, 'filter', token);
+    }
+
+    lastScopeKey = nextScope;
+    lastFilterKey = nextFilter;
+    lastBoundsSignature = nextSignature;
+}
+
 
 /**
  * Child levels are chunked by kabupaten code: kabupaten -> province,
@@ -185,13 +298,52 @@ function makeMarker(feature, row, stats) {
         fillOpacity: row ? 0.95 : 0.65,
     });
 
-    marker.bindPopup(popupFor(feature, row, stats), { closeButton: true, maxWidth: 260 });
+    // Popup content is captured now and opened explicitly after the flyTo
+    // animation finishes; Leaflet's bindPopup would open it immediately.
+    const popupContent = popupFor(feature, row, stats);
+    marker.on('click', () => flyToMarker(marker, popupContent, stats));
     marker.bindTooltip(`${feature.properties.name} · ${row ? formatCount(row.jumlah_mahasiswa) + ' mahasiswa' : 'belum ada data'}`, {
         direction: 'top',
         offset: [0, -6],
     });
     return marker;
 }
+
+/**
+ * Smooth flyTo to a clicked marker, then open the popup once the movement
+ * settles. A token guards against a stale moveend (another click/pan) opening
+ * the wrong popup. Already-visible markers open without animation.
+ */
+function flyToMarker(marker, content, stats) {
+    if (!map) return;
+
+    const latlng = marker.getLatLng();
+    const targetZoom = Math.min(Math.max(map.getZoom() + 2, 6), maxZoomFor(stats.level), 13);
+    const popup = L.popup({ closeButton: true, maxWidth: 260 })
+        .setLatLng(latlng)
+        .setContent(content);
+    const token = ++popupMoveToken;
+
+    const reveal = () => {
+        map.off('moveend', reveal);
+        if (token !== popupMoveToken) return;
+        popup.openOn(map);
+    };
+
+    if (map.getBounds().contains(latlng) && map.getZoom() >= targetZoom - 0.5) {
+        reveal();
+        return;
+    }
+
+    map.on('moveend', reveal);
+    // flyTo is a no-op when already at the target, which never fires moveend;
+    // this fallback is neutralised by reveal()'s map.off().
+    window.setTimeout(reveal, 1100);
+    runProgrammatic(() => {
+        map.flyTo(latlng, targetZoom, { animate: true, duration: 0.8 });
+    });
+}
+
 
 /**
  * Lightweight geo-hash clustering: markers sharing a chunk bucket are grouped
@@ -254,7 +406,9 @@ function renderMarkers(features, byCode, stats) {
         group.addLayer(iconMarker);
 
         cluster.on('click', () => {
-            map.fitBounds(L.latLngBounds(bucket.latlngs), { padding: [40, 40], maxZoom: 13 });
+            runProgrammatic(() => {
+                map.fitBounds(L.latLngBounds(bucket.latlngs), { padding: [40, 40], maxZoom: 13 });
+            });
         });
     }
 
@@ -294,8 +448,46 @@ function initMap(container) {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
 
-    map.on('zoomend', () => applyMode());
+    // Defer a queued fit while the user is dragging or animating manually;
+    // apply it when they let go (still current via the request token).
+    // Programmatic moves are flagged so our own animations are never
+    // mistaken for user gestures (requirement 8: don't fight manual pan/zoom).
+    map.on('dragstart', () => {
+        dragInProgress = true;
+        userInteracting = true;
+    });
+    map.on('dragend', () => {
+        dragInProgress = false;
+        window.setTimeout(() => {
+            if (!dragInProgress) {
+                userInteracting = false;
+                flushPendingFit();
+            }
+        }, 250);
+    });
+    map.on('movestart zoomstart', () => {
+        if (!programmaticMove) userInteracting = true;
+    });
+    map.on('moveend zoomend', () => {
+        if (!programmaticMove && !dragInProgress) {
+            window.setTimeout(() => {
+                if (!dragInProgress && !programmaticMove) {
+                    userInteracting = false;
+                    flushPendingFit();
+                }
+            }, 250);
+        }
+        applyMode();
+    });
     return map;
+}
+
+function flushPendingFit() {
+    const queued = pendingFit;
+    pendingFit = null;
+    if (queued && queued.token === requestToken) {
+        fitViewport(queued.bounds, queued.level, queued.reason, queued.token);
+    }
 }
 
 function applyMode() {
@@ -328,6 +520,12 @@ function render(stats) {
 
     const activeMap = initMap(container);
     const token = ++requestToken;
+    const nextScopeKey = scopeKey(stats);
+    if (lastScopeKey !== null && lastScopeKey !== nextScopeKey) {
+        // A relevant geography transition supersedes any user's previous view.
+        popupMoveToken += 1;
+        activeMap.closePopup();
+    }
 
     if (Array.isArray(stats.bands) && stats.bands.length > 0) bands = stats.bands;
     if (stats.mode === 'region' || stats.mode === 'marker') mode = stats.mode;
@@ -368,7 +566,15 @@ function render(stats) {
                 onEachFeature(feature, featureLayer) {
                     const row = byCode.get(feature.properties.code);
 
-                    featureLayer.bindPopup(popupFor(feature, row, stats));
+                    if (stats.nextLevel) {
+                        // Navigable region: click drills down. Binding a popup
+                        // here would open it only to be replaced immediately.
+                        featureLayer.on('click', () => drillDown(feature.properties.code, feature.properties.name));
+                    } else {
+                        // Terminal level (desa): the region itself carries detail.
+                        featureLayer.bindPopup(popupFor(feature, row, stats));
+                    }
+
                     featureLayer.bindTooltip(
                         () => {
                             const wrapper = document.createElement('div');
@@ -395,19 +601,13 @@ function render(stats) {
                         featureLayer.bringToFront();
                     });
                     featureLayer.on('mouseout', () => regionLayer?.resetStyle(featureLayer));
-
-                    if (stats.nextLevel) {
-                        featureLayer.on('click', () => drillDown(feature.properties.code, feature.properties.name));
-                    }
                 },
             });
 
             clusterLayer = renderMarkers(geojson.features, byCode, stats);
 
-            const bounds = regionLayer.getBounds();
-            if (bounds.isValid()) {
-                activeMap.fitBounds(bounds, { padding: [24, 24], maxZoom: 12 });
-            }
+            // Smart auto-zoom: replaces the old unconditional fitBounds.
+            maybeFitViewport(stats, geojson.features, token);
 
             applyMode();
             setLoading(false);
@@ -423,6 +623,17 @@ function readStats(element) {
     return window.studentStatisticsInitial ?? {};
 }
 
+function resetViewport() {
+    if (!map) return;
+
+    pendingFit = null;
+    const target = initialBounds?.isValid() ? initialBounds : INDONESIA_BOUNDS;
+    userInteracting = false;
+    runProgrammatic(() => {
+        map.fitBounds(target, { animate: true, duration: 0.7, padding: [8, 8], maxZoom: 7 });
+    });
+}
+
 function statsFromEvent(event) {
     const detail = event.detail ?? {};
     return {
@@ -432,6 +643,7 @@ function statsFromEvent(event) {
         parentName: detail.parentName ?? null,
         breadcrumbs: detail.breadcrumbs ?? [],
         nextLevel: detail.nextLevel ?? null,
+        status: detail.status ?? 'aktif',
         bands: detail.bands ?? bands,
         mode,
     };
@@ -442,9 +654,16 @@ document.addEventListener('student-statistics-updated', (event) => render(statsF
 document.addEventListener('livewire:navigated', () => render(readStats(document.getElementById('student-statistics-map'))));
 
 document.addEventListener('click', (event) => {
+    if (event.target.closest?.('[data-gis-reset]')) {
+        // Viewport only: hierarchy and filter are intentionally preserved.
+        resetViewport();
+        return;
+    }
+
     const button = event.target.closest?.('[data-gis-mode]');
     if (!button || button.disabled) return;
 
+    // Presentation only — switching mode never moves the viewport.
     mode = button.dataset.gisMode;
     setActiveModeButtons();
     applyMode();

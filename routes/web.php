@@ -143,3 +143,6 @@ Route::get('/kemahasiswaan/organisasi', function () {
 
 
 Route::get('/pengaduan', \App\Livewire\ComplaintPage::class)->name('complaint.index');
+
+// GIS Statistik Mahasiswa (agregat dari SIAKAD, tanpa data pribadi)
+Route::get('/kemahasiswaan/statistik-mahasiswa', \App\Livewire\StudentStatistics::class)->name('kemahasiswaan.statistik');

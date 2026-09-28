@@ -107,6 +107,8 @@
                         <a href="{{ route('scholarships.index') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Informasi Beasiswa</a>
 
                         <a href="{{ route('organizations.index') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Organisasi (BEM & UKM)</a>
+
+                        <a href="{{ route('kemahasiswaan.statistik') }}" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition {{ request()->routeIs('kemahasiswaan.statistik') ? 'text-unmaris-blue font-bold' : '' }}">GIS Statistik Mahasiswa</a>
                         <!-- <a href="#" class="block px-5 py-2.5 hover:bg-gray-50 hover:text-unmaris-blue transition">Layanan & Konseling</a> -->
                     </div>
                 </div>
@@ -195,6 +197,7 @@
                     <div x-show="openMhsMobile" x-collapse class="pl-4 pr-2 space-y-1" style="display: none;">
                         <a href="{{ route('scholarships.index') }}" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-900/50 rounded-lg">Informasi Beasiswa</a>
                         <a href="{{ route('organizations.index') }}" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-900/50 rounded-lg">Organisasi Mahasiswa</a>
+                        <a href="{{ route('kemahasiswaan.statistik') }}" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-900/50 rounded-lg {{ request()->routeIs('kemahasiswaan.statistik') ? 'text-unmaris-yellow' : '' }}">GIS Statistik Mahasiswa</a>
                         <a href="#" class="block px-4 py-2 text-gray-300 hover:text-white hover:bg-blue-900/50 rounded-lg">Layanan & Konseling</a>
                     </div>
                 </div>

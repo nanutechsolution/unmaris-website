@@ -295,7 +295,7 @@
                     <p class="text-[10px] md:text-xs lg:text-sm text-gray-500 font-bold uppercase tracking-widest">Publikasi & Riset</p>
                 </div>
                 <div class="p-2 transform transition hover:-translate-y-1">
-                    <p class="text-2xl sm:text-3xl md:text-4xl font-black text-unmaris-blue mb-1 md:mt-1 drop-shadow-sm">Baik Sekali</p>
+                    <p class="text-2xl sm:text-3xl md:text-4xl font-black text-unmaris-blue mb-1 md:mt-1 drop-shadow-sm">Baik</p>
                     <p class="text-[10px] md:text-xs lg:text-sm text-gray-500 font-bold uppercase tracking-widest">Akreditasi Institusi</p>
                 </div>
             </div>

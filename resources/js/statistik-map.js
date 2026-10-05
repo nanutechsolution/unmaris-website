@@ -272,7 +272,7 @@ function popupFor(feature, row, stats) {
         const button = document.createElement('button');
         button.type = 'button';
         button.className = 'gis-popup-action';
-        button.textContent = 'Lihat Detail';
+        button.textContent = '';
         button.addEventListener('click', () => drillDown(feature.properties.code, feature.properties.name));
         wrapper.append(button);
     }

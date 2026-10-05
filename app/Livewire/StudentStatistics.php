@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class StudentStatistics extends Component
 {
-    public string $status = 'aktif';
+    public string $status = 'semua';
 
     /**
      * Hirarki yang sedang ditampilkan. Setiap entri adalah wilayah yang pernah

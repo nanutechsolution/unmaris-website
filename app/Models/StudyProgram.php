@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -21,9 +22,6 @@ class StudyProgram extends Model
         'mission',
         'tujuan',
         'career_prospects',
-        'edom_path',
-        'edom_title',
-        'edom_description',
     ];
 
     public function faculty()
@@ -31,10 +29,15 @@ class StudyProgram extends Model
         return $this->belongsTo(Faculty::class);
     }
 
+    public function edomReports(): HasMany
+    {
+        return $this->hasMany(EdomReport::class);
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'faculty_id', 'degree', 'accreditation', 'vision', 'mission', 'tujuan', 'career_prospects', 'edom_path', 'edom_title', 'edom_description'])
+            ->logOnly(['name', 'faculty_id', 'degree', 'accreditation', 'vision', 'mission', 'tujuan', 'career_prospects'])
             ->logOnlyDirty()
             ->useLogName('Program Studi');
     }

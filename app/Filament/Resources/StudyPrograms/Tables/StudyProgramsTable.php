@@ -2,12 +2,14 @@
 
 namespace App\Filament\Resources\StudyPrograms\Tables;
 
+use App\Models\StudyProgram;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class StudyProgramsTable
 {
@@ -46,11 +48,11 @@ class StudyProgramsTable
                     })
                     ->searchable(),
                     
-                IconColumn::make('edom_path')
+                IconColumn::make('edom_reports_count')
                     ->label('EDOM')
                     ->boolean()
-                    ->getStateUsing(fn ($record): bool => filled($record->edom_path))
-                    ->tooltip(fn ($record): string => filled($record->edom_path) ? 'Dokumen EDOM tersedia' : 'Belum ada dokumen EDOM'),
+                    ->getStateUsing(fn (StudyProgram $record): bool => ($record->edom_reports_count ?? 0) > 0)
+                    ->tooltip(fn (StudyProgram $record): string => ($record->edom_reports_count ?? 0) > 0 ? 'Memiliki laporan EDOM' : 'Belum ada laporan EDOM'),
 
                 TextColumn::make('updated_at')
                     ->label('Terakhir Diperbarui')
@@ -58,6 +60,7 @@ class StudyProgramsTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->modifyQueryUsing(fn (Builder $query) => $query->withCount('edomReports'))
             ->defaultSort('name', 'asc')
             ->filters([
                 // Anda bisa menambahkan filter Fakultas di sini nanti jika diperlukan

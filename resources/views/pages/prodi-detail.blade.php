@@ -2,6 +2,7 @@
     $phoneLink = preg_replace('/[^0-9+]/', '', $faculty->phone ?? '');
     $emailParts = array_pad(explode('@', (string) $faculty->email, 2), 2, null);
     $otherProdis = $otherProdis ?? collect();
+    $edomReports = $prodi->edomReports ?? collect();
     $plainDescription = trim(strip_tags($prodi->description ?? ''));
     $metaDescription = \Illuminate\Support\Str::limit(
         $plainDescription !== '' ? $plainDescription : strip_tags($prodi->vision ?? ''),
@@ -12,7 +13,7 @@
         || filled($prodi->mission)
         || filled($prodi->tujuan)
         || filled($prodi->career_prospects)
-        || filled($prodi->edom_path);
+        || $edomReports->isNotEmpty();
     $sections = [
         [
             'label' => 'Visi',
@@ -224,7 +225,7 @@
                         </article>
                     @endif
 
-                    @if($prodi->edom_path)
+                    @if($edomReports->isNotEmpty())
                         <article class="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
                             <div class="border-l-4 border-red-400 p-5 sm:p-7 md:p-8">
                                 <div class="mb-4 flex items-center gap-3">
@@ -233,26 +234,35 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                                         </svg>
                                     </span>
-                                    <h2 class="text-xl font-black text-unmaris-blue sm:text-2xl">Evaluasi Dosen oleh Mahasiswa (EDOM)</h2>
+                                    <div>
+                                        <h2 class="text-xl font-black text-unmaris-blue sm:text-2xl">Evaluasi Dosen oleh Mahasiswa (EDOM)</h2>
+                                        <p class="mt-1 text-sm text-gray-500">Riwayat laporan evaluasi dosen program studi {{ $prodi->name }}.</p>
+                                    </div>
                                 </div>
 
-                                <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
-                                    <div class="min-w-0 flex-grow">
-                                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">Dokumen Resmi (PDF)</p>
-                                        <h3 class="mt-1 text-base font-bold leading-snug text-gray-900 sm:text-lg">
-                                            {{ $prodi->edom_title ?: 'Laporan Evaluasi Dosen oleh Mahasiswa (EDOM)' }}
-                                        </h3>
-                                        @if($prodi->edom_description)
-                                            <p class="mt-1 text-sm leading-relaxed text-gray-500">{{ $prodi->edom_description }}</p>
-                                        @endif
-                                    </div>
+                                <div class="space-y-3">
+                                    @foreach($edomReports as $report)
+                                        <div class="flex flex-col gap-3 rounded-2xl border border-gray-100 bg-gray-50/70 p-4 sm:flex-row sm:items-center">
+                                            <div class="min-w-0 flex-grow">
+                                                <p class="text-[10px] font-black uppercase tracking-widest text-gray-400">
+                                                    {{ $report->period_label ?: 'Dokumen Resmi (PDF)' }}
+                                                </p>
+                                                <h3 class="mt-1 text-base font-bold leading-snug text-gray-900">
+                                                    {{ $report->title }}
+                                                </h3>
+                                                @if($report->description)
+                                                    <p class="mt-1 text-sm leading-relaxed text-gray-500">{{ $report->description }}</p>
+                                                @endif
+                                            </div>
 
-                                    <a href="{{ asset('storage/'.$prodi->edom_path) }}" target="_blank" rel="noopener" download class="inline-flex min-h-[46px] w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-unmaris-blue px-5 py-3 text-sm font-bold text-white transition hover:bg-unmaris-yellow hover:text-unmaris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-unmaris-yellow focus-visible:ring-offset-2 sm:w-auto">
-                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                                        </svg>
-                                        Unduh Dokumen
-                                    </a>
+                                            <a href="{{ asset('storage/'.$report->file_path) }}" target="_blank" rel="noopener" download class="inline-flex min-h-[46px] w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-unmaris-blue px-5 py-3 text-sm font-bold text-white transition hover:bg-unmaris-yellow hover:text-unmaris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-unmaris-yellow focus-visible:ring-offset-2 sm:w-auto">
+                                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                </svg>
+                                                Unduh
+                                            </a>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </article>

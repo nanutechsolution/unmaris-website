@@ -70,6 +70,13 @@ Route::get('/fakultas/{facultySlug}/prodi/{prodiSlug}', function ($facultySlug, 
 
     abort_if($prodi === null, 404);
 
+    $prodi->load([
+        'edomReports' => fn ($query) => $query->where('is_active', true)
+            ->orderByDesc('academic_year')
+            ->orderByDesc('semester')
+            ->orderByDesc('created_at'),
+    ]);
+
     $otherProdis = $faculty->studyPrograms
         ->where('id', '!=', $prodi->id)
         ->values();

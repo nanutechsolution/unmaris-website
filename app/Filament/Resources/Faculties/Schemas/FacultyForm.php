@@ -44,30 +44,53 @@ class FacultyForm
                     
                 FileUpload::make('image')
                     ->label('Foto Gedung / Logo Fakultas')
+                    ->placeholder('Pilih foto JPG/PNG (maks. 30 MB)')
                     ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                    ->automaticallyResizeImagesMode('contain')
+                    ->automaticallyResizeImagesToWidth('2000')
+                    ->maxSize(30720)
+                    ->validationMessages([
+                        'max' => 'Ukuran foto terlalu besar. Maksimal 30 MB.',
+                        'mimetypes' => 'Format foto harus JPG atau PNG.',
+                        'image' => 'File harus berupa gambar JPG atau PNG.',
+                    ])
                     ->disk('public')
                     ->directory('faculties')
                     ->columnSpanFull(),
 
                 FileUpload::make('struktur_organisasi')
                     ->label('Gambar Bagan Struktur Organisasi Fakultas')
+                    ->placeholder('Pilih gambar JPG/PNG (maks. 30 MB)')
                     ->image()
                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                    ->maxSize(20480) // Maksimal 20MB
+                    ->automaticallyResizeImagesMode('contain')
+                    ->automaticallyResizeImagesToWidth('2500')
+                    ->maxSize(30720) // Maksimal 30MB
+                    ->validationMessages([
+                        'max' => 'Ukuran gambar terlalu besar. Maksimal 30 MB.',
+                        'mimetypes' => 'Format gambar harus JPG atau PNG.',
+                        'image' => 'File harus berupa gambar JPG atau PNG.',
+                    ])
                     ->disk('public')
                     ->directory('faculties/struktur')
                     ->visibility('public')
-                    ->helperText('Unggah gambar bagan struktur organisasi fakultas (JPG/PNG), maksimal 20 MB.')
+                    ->helperText('Format JPG/PNG, maksimal 30 MB. Jika lebih dari 30 MB, kompres atau kecilkan resolusi gambar terlebih dahulu.')
                     ->columnSpanFull(),
 
                 FileUpload::make('document_path')
                     ->label('Dokumen Fakultas (PDF)')
+                    ->placeholder('Pilih file PDF (maks. 30 MB)')
                     ->disk('public')
                     ->directory('faculties/dokumen')
                     ->acceptedFileTypes(['application/pdf'])
-                    ->maxSize(20480) // Maksimal 20MB
+                    ->maxSize(30720) // Maksimal 30MB
+                    ->validationMessages([
+                        'max' => 'Ukuran dokumen terlalu besar. Maksimal 30 MB.',
+                        'mimetypes' => 'Dokumen harus berformat PDF.',
+                    ])
                     ->visibility('public')
-                    ->helperText('Unggah dokumen PDF fakultas, misalnya SOTK. Maksimal 20 MB.')
+                    ->helperText('Format PDF, maksimal 30 MB. Jika lebih besar, kompres PDF terlebih dahulu.')
                     ->columnSpanFull(),
 
                 TextInput::make('document_title')

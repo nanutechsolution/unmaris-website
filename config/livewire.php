@@ -64,7 +64,7 @@ return [
     |---------------------------------------------------------------------------
     | This value determines the default configuration for the artisan make command
     | You can configure the component type (sfc, mfc, class) and whether to use
-    | the high-voltage (⚡) emoji as a prefix in the sfc|mfc component names.
+    | the high-voltage (âš¡) emoji as a prefix in the sfc|mfc component names.
     |
     */
 
@@ -130,7 +130,7 @@ return [
 
     'temporary_file_upload' => [
         'disk' => env('LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK'), // Example: 'local', 's3'             | Default: 'default'
-        'rules' => ['required', 'file', 'max:20480'],          // Example: ['file', 'mimes:png,jpg'] | Default: ['required', 'file', 'max:12288'] (12MB)
+        'rules' => ['required', 'file', 'max:30720'],          // Maksimal 30MB (PHP: upload_max_filesize 32M)
         'directory' => null,                                  // Example: 'tmp'                     | Default: 'livewire-tmp'
         'middleware' => null,                                 // Example: 'throttle:5,1'            | Default: 'throttle:60,1'
         'preview_mimes' => [                                  // Supported file types for temporary pre-signed file URLs...
@@ -280,3 +280,4 @@ return [
         'max_components' => 20,      // Maximum components per batch request
     ],
 ];
+

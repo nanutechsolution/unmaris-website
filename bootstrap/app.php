@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\LogUploadFailures;
 use App\Http\Middleware\TrackVisitors;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web([
             TrackVisitors::class, // Middleware untuk Melacak Pengunjung
+            LogUploadFailures::class, // Mencatat penyebab file gagal diunggah
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

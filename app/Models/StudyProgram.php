@@ -19,6 +19,7 @@ class StudyProgram extends Model
         'description',
         'vision',
         'mission',
+        'tujuan',
         'career_prospects'
     ];
 
@@ -30,7 +31,7 @@ class StudyProgram extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'faculty_id', 'degree', 'accreditation'])
+            ->logOnly(['name', 'faculty_id', 'degree', 'accreditation', 'vision', 'mission', 'tujuan', 'career_prospects'])
             ->logOnlyDirty()
             ->useLogName('Program Studi');
     }

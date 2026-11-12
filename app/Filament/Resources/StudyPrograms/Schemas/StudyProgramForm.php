@@ -72,6 +72,11 @@ class StudyProgramForm
                     ->label('Misi Prodi (Gunakan Bullet Points)')
                     ->toolbarButtons(['bulletList', 'orderedList', 'bold', 'italic'])
                     ->columnSpanFull(),
+
+                RichEditor::make('tujuan')
+                    ->label('Tujuan Program Studi (Gunakan Bullet Points)')
+                    ->toolbarButtons(['bulletList', 'orderedList', 'bold', 'italic'])
+                    ->columnSpanFull(),
                     
                 RichEditor::make('career_prospects')
                     ->label('Prospek Karir Lulusan (Gunakan Bullet Points)')

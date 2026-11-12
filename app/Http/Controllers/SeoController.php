@@ -93,6 +93,38 @@ class SeoController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | Halaman Detail Program Studi
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($faculties as $faculty) {
+
+            foreach ($faculty->studyPrograms as $prodi) {
+
+                $url = $dom->createElement('url');
+
+                $loc = $dom->createElement(
+                    'loc',
+                    route('prodi.detail', [
+                        'facultySlug' => $faculty->slug,
+                        'prodiSlug' => $prodi->slug,
+                    ])
+                );
+
+                $url->appendChild($loc);
+
+                $changefreq = $dom->createElement('changefreq', 'monthly');
+                $url->appendChild($changefreq);
+
+                $priority = $dom->createElement('priority', '0.6');
+                $url->appendChild($priority);
+
+                $urlset->appendChild($url);
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
         | Halaman Berita
         |--------------------------------------------------------------------------
         */

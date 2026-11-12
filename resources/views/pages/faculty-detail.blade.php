@@ -317,7 +317,9 @@
                                     </span>
                                 </div>
 
-                                <h3 class="mt-3 text-lg font-black leading-snug text-gray-900 sm:text-xl">{{ $prodi->name }}</h3>
+                                <h3 class="mt-3 text-lg font-black leading-snug text-gray-900 sm:text-xl">
+                                    <a href="{{ route('prodi.detail', [$faculty->slug, $prodi->slug]) }}" class="transition hover:text-unmaris-blue focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-unmaris-yellow rounded focus-visible:ring-offset-2">{{ $prodi->name }}</a>
+                                </h3>
 
                                 @if($prodi->description)
                                     <p class="mt-2 text-sm leading-relaxed text-gray-500">{{ $prodi->description }}</p>
@@ -373,6 +375,13 @@
                                         @endif
                                     </div>
                                 </div>
+
+                                <a href="{{ route('prodi.detail', [$faculty->slug, $prodi->slug]) }}" class="group flex items-center justify-between gap-2 border-t border-gray-200/80 bg-white px-4 py-3 text-sm font-bold text-unmaris-blue transition hover:bg-unmaris-blue hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-unmaris-yellow sm:px-5">
+                                    <span>Lihat Profil Lengkap</span>
+                                    <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                    </svg>
+                                </a>
                             </div>
                         </article>
                     @endforeach

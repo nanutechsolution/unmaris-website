@@ -85,7 +85,7 @@
                                         @else
                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 @foreach($faculty->studyPrograms as $prodi)
-                                                    <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-4 flex items-start gap-4 hover:border-unmaris-yellow hover:shadow-md transition-all cursor-default group/prodi">
+                                                    <a href="{{ route('prodi.detail', [$faculty->slug, $prodi->slug]) }}" class="bg-white border border-gray-100 shadow-sm rounded-2xl p-4 flex items-start gap-4 hover:border-unmaris-yellow hover:shadow-md transition-all group/prodi focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-unmaris-yellow">
                                                         <div class="w-12 h-12 shrink-0 rounded-xl bg-blue-50 text-unmaris-blue flex items-center justify-center font-black text-sm group-hover/prodi:bg-unmaris-yellow transition-colors">
                                                             {{ $prodi->degree }}
                                                         </div>
@@ -97,7 +97,7 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </a>
                                                 @endforeach
                                             </div>
                                         @endif

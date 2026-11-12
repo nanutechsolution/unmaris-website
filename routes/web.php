@@ -62,6 +62,20 @@ Route::get('/fakultas/{slug}', function ($slug) {
     $faculty = Faculty::with('studyPrograms')->where('slug', $slug)->firstOrFail();
     return view('pages.faculty-detail', compact('faculty'));
 })->name('faculties.detail');
+
+// Detail Program Studi
+Route::get('/fakultas/{facultySlug}/prodi/{prodiSlug}', function ($facultySlug, $prodiSlug) {
+    $faculty = Faculty::with('studyPrograms')->where('slug', $facultySlug)->firstOrFail();
+    $prodi = $faculty->studyPrograms->firstWhere('slug', $prodiSlug);
+
+    abort_if($prodi === null, 404);
+
+    $otherProdis = $faculty->studyPrograms
+        ->where('id', '!=', $prodi->id)
+        ->values();
+
+    return view('pages.prodi-detail', compact('faculty', 'prodi', 'otherProdis'));
+})->name('prodi.detail');
 // Berita (Menggunakan Livewire untuk pagination tanpa reload)
 Route::get('/berita', \App\Livewire\NewsIndex::class)->name('news.index');
 

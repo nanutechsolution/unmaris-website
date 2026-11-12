@@ -48,7 +48,31 @@ class FacultyForm
                     ->disk('public')
                     ->directory('faculties')
                     ->columnSpanFull(),
-                    
+
+                FileUpload::make('struktur_organisasi')
+                    ->label('Gambar Bagan Struktur Organisasi Fakultas')
+                    ->image()
+                    ->disk('public')
+                    ->directory('faculties/struktur')
+                    ->visibility('public')
+                    ->helperText('Unggah gambar bagan struktur organisasi fakultas (JPG/PNG).')
+                    ->columnSpanFull(),
+
+                FileUpload::make('document_path')
+                    ->label('Dokumen Fakultas (PDF)')
+                    ->disk('public')
+                    ->directory('faculties/dokumen')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(20480) // Maksimal 20MB
+                    ->visibility('public')
+                    ->helperText('Unggah dokumen PDF fakultas, misalnya SOTK. Maksimal 20 MB.')
+                    ->columnSpanFull(),
+
+                TextInput::make('document_title')
+                    ->label('Judul Dokumen Fakultas')
+                    ->placeholder('Contoh: Dokumen Struktur Organisasi dan Tata Kelola (SOTK) Fakultas Keguruan Tahun 2025')
+                    ->helperText('Kosongkan untuk memakai judul default.')
+                    ->columnSpanFull(),
                 TextInput::make('email')
                     ->label('Email Resmi Fakultas')
                     ->email(),

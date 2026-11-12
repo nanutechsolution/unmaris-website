@@ -66,6 +66,53 @@
         </div>
     </section>
 
+    <!-- Struktur Organisasi Fakultas -->
+    @if($faculty->struktur_organisasi)
+    <section class="py-16 bg-white border-b border-gray-100">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-unmaris-blue inline-block border-b-4 border-unmaris-yellow pb-2">Struktur Organisasi</h2>
+                <p class="text-gray-500 mt-4 text-lg">Bagan struktur organisasi {{ $faculty->name }}.</p>
+            </div>
+            <div class="bg-gray-50 rounded-3xl p-4 md:p-8 border border-gray-100 shadow-sm">
+                <img src="{{ asset('storage/'.$faculty->struktur_organisasi) }}" alt="Bagan Struktur Organisasi {{ $faculty->name }}" class="w-full h-auto rounded-xl">
+            </div>
+        </div>
+    </section>
+    @endif
+
+    <!-- Dokumen Fakultas -->
+    @if($faculty->document_path)
+    <section class="py-16 bg-white border-b border-gray-100">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-unmaris-blue inline-block border-b-4 border-unmaris-yellow pb-2">Dokumen Fakultas</h2>
+                <p class="text-gray-500 mt-4 text-lg">Dokumen resmi {{ $faculty->name }} yang dapat diunduh.</p>
+            </div>
+            <div class="bg-gray-50 rounded-3xl p-6 md:p-8 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center gap-6">
+                <div class="w-16 h-16 shrink-0 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center">
+                    <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="flex-grow">
+                    <p class="text-[10px] font-black tracking-widest uppercase text-gray-400 mb-1">Dokumen Resmi (PDF)</p>
+                    <h3 class="text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                        {{ $faculty->document_title ?: 'Dokumen Struktur Organisasi dan Tata Kelola (SOTK)' }}
+                    </h3>
+                    <p class="text-sm text-gray-500 mt-1">{{ $faculty->name }}</p>
+                </div>
+                <a href="{{ asset('storage/'.$faculty->document_path) }}" target="_blank" download class="inline-flex items-center justify-center px-6 py-3 bg-unmaris-blue text-white font-bold rounded-full hover:bg-unmaris-yellow hover:text-unmaris-blue transition-all shadow-md whitespace-nowrap">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    Unduh Dokumen
+                </a>
+            </div>
+        </div>
+    </section>
+    @endif
+
     <!-- Program Studi Section -->
     <section class="py-16 bg-gray-50">
         <div class="container mx-auto px-4 max-w-6xl">

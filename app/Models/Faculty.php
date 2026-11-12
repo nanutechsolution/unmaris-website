@@ -17,6 +17,9 @@ class Faculty extends Model
         'slug',
         'description',
         'image',
+        'struktur_organisasi',
+        'document_path',
+        'document_title',
         'vision',
         'mission',
         'email',
@@ -31,7 +34,7 @@ class Faculty extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'slug', 'description', 'vision', 'mission', 'email', 'phone'])
+            ->logOnly(['name', 'slug', 'description', 'struktur_organisasi', 'document_path', 'document_title', 'vision', 'mission', 'email', 'phone'])
             ->logOnlyDirty()
             ->useLogName('Fakultas');
     }

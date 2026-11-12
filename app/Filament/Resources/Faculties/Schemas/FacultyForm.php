@@ -52,10 +52,12 @@ class FacultyForm
                 FileUpload::make('struktur_organisasi')
                     ->label('Gambar Bagan Struktur Organisasi Fakultas')
                     ->image()
+                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                    ->maxSize(20480) // Maksimal 20MB
                     ->disk('public')
                     ->directory('faculties/struktur')
                     ->visibility('public')
-                    ->helperText('Unggah gambar bagan struktur organisasi fakultas (JPG/PNG).')
+                    ->helperText('Unggah gambar bagan struktur organisasi fakultas (JPG/PNG), maksimal 20 MB.')
                     ->columnSpanFull(),
 
                 FileUpload::make('document_path')

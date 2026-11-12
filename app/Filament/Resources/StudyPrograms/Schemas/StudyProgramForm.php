@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\StudyPrograms\Schemas;
 
 use App\Models\StudyProgram;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -81,6 +82,32 @@ class StudyProgramForm
                 RichEditor::make('career_prospects')
                     ->label('Prospek Karir Lulusan (Gunakan Bullet Points)')
                     ->toolbarButtons(['bulletList', 'orderedList', 'bold', 'italic'])
+                    ->columnSpanFull(),
+
+                FileUpload::make('edom_path')
+                    ->label('Dokumen Evaluasi Dosen oleh Mahasiswa (EDOM)')
+                    ->placeholder('Pilih file PDF (maks. 30 MB)')
+                    ->disk('public')
+                    ->directory('study-programs/edom')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->maxSize(30720) // Maksimal 30MB
+                    ->validationMessages([
+                        'max' => 'Ukuran dokumen terlalu besar. Maksimal 30 MB.',
+                        'mimetypes' => 'Dokumen harus berformat PDF.',
+                    ])
+                    ->visibility('public')
+                    ->helperText('Format PDF, maksimal 30 MB. Dokumen akan tampil di halaman detail program studi.')
+                    ->columnSpanFull(),
+
+                TextInput::make('edom_title')
+                    ->label('Judul Dokumen EDOM')
+                    ->placeholder('Contoh: Laporan Evaluasi Dosen oleh Mahasiswa Semester Ganjil 2025/2026')
+                    ->helperText('Kosongkan untuk memakai judul default.')
+                    ->columnSpanFull(),
+
+                Textarea::make('edom_description')
+                    ->label('Keterangan Dokumen EDOM (Opsional)')
+                    ->rows(2)
                     ->columnSpanFull(),
             ]);
     }

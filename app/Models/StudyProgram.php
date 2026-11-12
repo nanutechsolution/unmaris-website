@@ -20,7 +20,10 @@ class StudyProgram extends Model
         'vision',
         'mission',
         'tujuan',
-        'career_prospects'
+        'career_prospects',
+        'edom_path',
+        'edom_title',
+        'edom_description',
     ];
 
     public function faculty()
@@ -31,7 +34,7 @@ class StudyProgram extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'faculty_id', 'degree', 'accreditation', 'vision', 'mission', 'tujuan', 'career_prospects'])
+            ->logOnly(['name', 'faculty_id', 'degree', 'accreditation', 'vision', 'mission', 'tujuan', 'career_prospects', 'edom_path', 'edom_title', 'edom_description'])
             ->logOnlyDirty()
             ->useLogName('Program Studi');
     }

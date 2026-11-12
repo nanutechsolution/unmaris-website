@@ -5,6 +5,7 @@ namespace App\Filament\Resources\StudyPrograms\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -45,6 +46,12 @@ class StudyProgramsTable
                     })
                     ->searchable(),
                     
+                IconColumn::make('edom_path')
+                    ->label('EDOM')
+                    ->boolean()
+                    ->getStateUsing(fn ($record): bool => filled($record->edom_path))
+                    ->tooltip(fn ($record): string => filled($record->edom_path) ? 'Dokumen EDOM tersedia' : 'Belum ada dokumen EDOM'),
+
                 TextColumn::make('updated_at')
                     ->label('Terakhir Diperbarui')
                     ->dateTime('d M Y')

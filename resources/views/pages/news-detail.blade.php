@@ -87,11 +87,11 @@
                     <article class="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-gray-100/50 overflow-hidden transform transition-transform duration-500 hover:-translate-y-1">
 
                         <!-- Gambar Sampul (Lebih premium dengan gradient yang diperbaiki) -->
-                        <div class="w-full overflow-hidden relative group bg-gray-100 md:aspect-video">
+                        <div class="w-full aspect-video overflow-hidden relative group bg-gray-100 md:aspect-video">
                             @if($news->featured_image)
                             <img src="{{ Storage::url($news->featured_image) }}"
                                 alt="{{ $news->title }}"
-                                class="w-full h-auto object-contain md:h-full md:object-cover transition-transform duration-1000 group-hover:scale-105">
+                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
                             @else
                             <div class="w-full h-64 md:h-full flex items-center justify-center bg-unmaris-blue">
                                 <svg class="w-20 h-20 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -150,7 +150,8 @@
                                         [&_a]:text-unmaris-blue [&_a]:font-bold [&_a]:underline hover:[&_a]:text-unmaris-yellow [&_a]:transition-colors
                                         [&_blockquote]:border-l-4 [&_blockquote]:border-unmaris-yellow [&_blockquote]:bg-gray-50 [&_blockquote]:py-6 [&_blockquote]:px-6 md:[&_blockquote]:px-8 [&_blockquote]:rounded-r-2xl [&_blockquote]:italic [&_blockquote]:text-gray-600 [&_blockquote]:mb-8 [&_blockquote]:shadow-sm
                                         [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:mx-auto [&_img]:my-8 [&_img]:max-w-full
-                                        [&_table]:w-full [&_table]:border-collapse [&_table]:rounded-xl [&_table]:overflow-hidden [&_table]:mb-6 
+                                        [&_iframe]:max-w-full
+                                        [&_table]:w-full [&_table]:border-collapse [&_table]:rounded-xl [&_table]:overflow-x-auto [&_table]:mb-6 
                                         [&_th]:bg-unmaris-blue [&_th]:text-white [&_th]:p-3 [&_th]:text-left 
                                         [&_td]:p-3 [&_td]:border-b [&_td]:border-gray-200 hover:[&_tr]:bg-gray-50">
                                 {!! $news->content !!}

@@ -55,7 +55,7 @@
             </a>
 
             <!-- Kanan: Tombol Hamburger (Hanya Tampil di Mobile) -->
-            <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="xl:hidden text-white hover:text-unmaris-yellow focus:outline-none relative z-20 transition-colors" aria-label="Toggle menu">
+            <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="xl:hidden text-white hover:text-unmaris-yellow focus:outline-none relative z-20 transition-colors flex items-center justify-center w-11 h-11 min-h-[44px]" aria-label="Toggle menu">
                 <svg x-show="!mobileMenuOpen" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>

@@ -89,9 +89,8 @@
     </div>
     @endif
     <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
-    <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
     @if(isset($sliders) && $sliders->count() > 0)
-    <section class="relative w-full h-[90vh] min-h-[650px] md:h-[85vh] lg:min-h-[750px] bg-unmaris-blue overflow-hidden group"
+    <section class="relative w-full h-[80vh] min-h-[540px] md:h-[85vh] lg:min-h-[750px] bg-unmaris-blue overflow-hidden group"
         aria-roledescription="carousel"
         aria-label="Sorotan Kampus UNMARIS"
         x-data="{ 
@@ -231,7 +230,7 @@
                         @if($slider->button_url)
                         <a href="{{ $slider->button_url }}"
                             :tabindex="activeSlide === {{ $index }} ? '0' : '-1'"
-                            class="inline-flex justify-center items-center bg-unmaris-yellow text-unmaris-blue px-6 py-3 md:px-8 md:py-4 rounded-full font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50">
+                            class="inline-flex justify-center items-center bg-unmaris-yellow text-unmaris-blue px-6 py-3 md:px-8 md:py-4 min-h-[44px] rounded-full font-black text-[10px] md:text-sm uppercase tracking-widest hover:bg-white hover:scale-105 transition-all shadow-lg focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50">
                             {{ $slider->button_text ?? 'Jelajahi' }}
                         </a>
                         @endif

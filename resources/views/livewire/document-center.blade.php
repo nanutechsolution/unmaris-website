@@ -59,7 +59,7 @@
                         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
                             {{ ucwords(str_replace('_', ' ', $doc->category)) }}
                         </span>
-                        <h3 class="text-lg font-bold text-gray-900 leading-tight">{{ $doc->title }}</h3>
+                        <h3 class="text-lg font-bold text-gray-900 leading-tight break-words">{{ $doc->title }}</h3>
                     </div>
                 </div>
 
@@ -67,10 +67,6 @@
                 <p class="text-gray-600 text-sm mb-6 flex-grow">{{ Str::limit($doc->description, 80) }}</p>
                 @else
                 <div class="flex-grow mb-6"></div>
-                @endif
-
-                @if($doc->file_path)
-                <p class="text-xs text-gray-400 truncate mb-2">Nama file: {{ Str::basename($doc->file_path) }}</p>
                 @endif
 
                 <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">

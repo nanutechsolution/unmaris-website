@@ -87,11 +87,11 @@
                     <article class="bg-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)] border border-gray-100/50 overflow-hidden transform transition-transform duration-500 hover:-translate-y-1">
 
                         <!-- Gambar Sampul (Lebih premium dengan gradient yang diperbaiki) -->
-                        <div class="w-full aspect-video overflow-hidden relative group bg-gray-100 md:aspect-video">
+                        <div class="w-full aspect-video overflow-hidden relative group bg-gray-50">
                             @if($news->featured_image)
                             <img src="{{ Storage::url($news->featured_image) }}"
                                 alt="{{ $news->title }}"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                                class="w-full h-full object-contain bg-gray-50 transition-transform duration-1000 group-hover:scale-105">
                             @else
                             <div class="w-full h-64 md:h-full flex items-center justify-center bg-unmaris-blue">
                                 <svg class="w-20 h-20 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -34,11 +34,11 @@ $scrollIntoViewJsSnippet = ($scrollTo !== false)
                     @if (is_array($element))
                         @foreach ($element as $page => $url)
                             @if ($page == $paginator->currentPage())
-                                <span aria-current="page" class="relative inline-flex items-center justify-center min-h-[44px] px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md leading-5 cursor-default">
+                                <span aria-current="page" wire:key="paginator-{{ $paginator->getPageName() }}-page{{ $page }}" class="relative inline-flex items-center justify-center min-h-[44px] px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md leading-5 cursor-default">
                                     {{ $page }}
                                 </span>
                             @else
-                                <button type="button" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="relative inline-flex items-center justify-center min-h-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md leading-5 hover:text-gray-500 focus:outline-none focus:ring ring-blue-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
+                                <button type="button" wire:key="paginator-{{ $paginator->getPageName() }}-page{{ $page }}" wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')" x-on:click="{{ $scrollIntoViewJsSnippet }}" class="relative inline-flex items-center justify-center min-h-[44px] px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md leading-5 hover:text-gray-500 focus:outline-none focus:ring ring-blue-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150" aria-label="{{ __('Go to page :page', ['page' => $page]) }}">
                                     {{ $page }}
                                 </button>
                             @endif

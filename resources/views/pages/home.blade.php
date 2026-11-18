@@ -90,7 +90,7 @@
     @endif
     <!-- 1. HERO SLIDER SECTION (Mobile Split Layout & Desktop Overlay) -->
     @if(isset($sliders) && $sliders->count() > 0)
-    <section class="relative w-full h-[80vh] min-h-[540px] md:h-[85vh] lg:min-h-[750px] bg-unmaris-blue overflow-hidden group"
+    <section class="relative w-full h-[80svh] min-h-[540px] md:h-[85svh] lg:min-h-[750px] bg-unmaris-blue overflow-hidden group"
         aria-roledescription="carousel"
         aria-label="Sorotan Kampus UNMARIS"
         x-data="{ 

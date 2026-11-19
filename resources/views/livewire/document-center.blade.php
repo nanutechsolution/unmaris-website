@@ -26,9 +26,9 @@
         <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-10 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-20 z-30">
             <!-- Tabs -->
             <div class="relative flex overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar gap-2"
-                 x-data="{ canScroll: false }"
-                 x-init="$nextTick(() => { this.canScroll = this.$el.scrollWidth > this.$el.clientWidth; })"
-                 x-on:scroll="$nextTick(() => { this.canScroll = this.$el.scrollWidth > this.$el.clientWidth; })">
+                 x-data="{ canScroll: false, cekScroll() { return this.$el.scrollWidth > this.$el.clientWidth && (this.$el.scrollLeft + this.$el.clientWidth) < this.$el.scrollWidth; } }"
+                 x-init="$nextTick(() => { this.canScroll = this.cekScroll(); })"
+                 x-on:scroll="$nextTick(() => { this.canScroll = this.cekScroll(); })">
                 @foreach($categories as $key => $label)
                 <button
                     wire:click="setTab('{{ $key }}')"

@@ -2,16 +2,90 @@
 
 namespace App\Filament\Resources\Documents\Schemas;
 
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Toggle;
+use App\Models\StudyProgram;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Str;
 
 class DocumentForm
 {
+    /**
+     * Opsi kategori dokumen.
+     *
+     * @var array<string, string>
+     */
+    public const CATEGORY_OPTIONS = [
+        'kalender_akademik' => 'Kalender Akademik',
+        'jadwal_kuliah' => 'Jadwal Kuliah',
+        'jadwal_ujian' => 'Jadwal Ujian',
+        'buku_pedoman' => 'Buku Pedoman Akademik',
+        'kurikulum' => 'Kurikulum',
+        'peraturan_akademik' => 'Peraturan Akademik',
+        'formulir_akademik' => 'Formulir Akademik',
+        'panduan_skripsi' => 'Panduan Skripsi / Tugas Akhir',
+        'panduan_kkn' => 'Panduan KKN',
+        'panduan_pkl' => 'Panduan PKL / Magang',
+        'beasiswa' => 'Informasi Beasiswa',
+        'kemahasiswaan' => 'Dokumen Kemahasiswaan',
+        'kerjasama' => 'Dokumen Kerjasama',
+        'akreditasi' => 'Dokumen Akreditasi',
+        'laporan' => 'Laporan Institusi',
+        'pengumuman_resmi' => 'Pengumuman Resmi',
+        'brosur_pmb' => 'Brosur PMB',
+        'dokumen_umum' => 'Dokumen Umum / Lainnya',
+    ];
+
+    /**
+     * Saran nama lembaga akreditasi untuk datalist.
+     *
+     * @var list<string>
+     */
+    public const LEMBAGA_AKREDITASI_SUGGESTIONS = [
+        'BAN-PT',
+        'LAM INFOKOM',
+        'LAM Teknik',
+        'LAMEMBA',
+        'LAM Sains',
+        'LAM Pertanian',
+        'LAM Kesehatan',
+        'LAM Seni',
+    ];
+
+    /**
+     * Opsi peringkat akreditasi.
+     *
+     * @var array<string, string>
+     */
+    public const PERINGKAT_OPTIONS = [
+        'Unggul' => 'Unggul',
+        'Baik Sekali' => 'Baik Sekali',
+        'Baik' => 'Baik',
+        'A' => 'A',
+        'B' => 'B',
+        'C' => 'C',
+    ];
+
+    /**
+     * Kolom yang hanya boleh terisi untuk kategori akreditasi.
+     *
+     * @var list<string>
+     */
+    public const ACCREDITATION_FIELDS = [
+        'lembaga_akreditasi',
+        'study_program_id',
+        'nomor_sk',
+        'peringkat',
+        'berlaku_mulai',
+        'berlaku_sampai',
+    ];
+
     public static function configure(Schema $schema): Schema
     {
         return $schema
@@ -28,28 +102,10 @@ class DocumentForm
 
                 Select::make('category')
                     ->label('Kategori Dokumen')
-                    ->options([
-                        'kalender_akademik' => 'Kalender Akademik',
-                        'jadwal_kuliah' => 'Jadwal Kuliah',
-                        'jadwal_ujian' => 'Jadwal Ujian',
-                        'buku_pedoman' => 'Buku Pedoman Akademik',
-                        'kurikulum' => 'Kurikulum',
-                        'peraturan_akademik' => 'Peraturan Akademik',
-                        'formulir_akademik' => 'Formulir Akademik',
-                        'panduan_skripsi' => 'Panduan Skripsi / Tugas Akhir',
-                        'panduan_kkn' => 'Panduan KKN',
-                        'panduan_pkl' => 'Panduan PKL / Magang',
-                        'beasiswa' => 'Informasi Beasiswa',
-                        'kemahasiswaan' => 'Dokumen Kemahasiswaan',
-                        'kerjasama' => 'Dokumen Kerjasama',
-                        'akreditasi' => 'Dokumen Akreditasi',
-                        'laporan' => 'Laporan Institusi',
-                        'pengumuman_resmi' => 'Pengumuman Resmi',
-                        'brosur_pmb' => 'Brosur PMB',
-                        'dokumen_umum' => 'Dokumen Umum / Lainnya',
-                    ])
+                    ->options(self::CATEGORY_OPTIONS)
                     ->required()
-                    ->default('dokumen_umum'),
+                    ->default('dokumen_umum')
+                    ->live(),
 
                 FileUpload::make('file_path')
                     ->label('Unggah File (PDF, DOCX, XLSX)')
@@ -65,9 +121,81 @@ class DocumentForm
                     ->rows(2)
                     ->columnSpanFull(),
 
+                Section::make('Data Akreditasi')
+                    ->description('Lengkapi data berikut untuk dokumen kategori akreditasi.')
+                    ->columns(2)
+                    ->visible(fn (Get $get): bool => $get('category') === 'akreditasi')
+                    ->schema([
+                        TextInput::make('lembaga_akreditasi')
+                            ->label('Lembaga Akreditasi')
+                            ->datalist(self::LEMBAGA_AKREDITASI_SUGGESTIONS)
+                            ->maxLength(255)
+                            ->required()
+                            ->placeholder('Contoh: BAN-PT'),
+
+                        Select::make('peringkat')
+                            ->label('Peringkat Akreditasi')
+                            ->options(self::PERINGKAT_OPTIONS)
+                            ->required()
+                            ->placeholder('Pilih peringkat akreditasi'),
+
+                        TextInput::make('nomor_sk')
+                            ->label('Nomor SK Akreditasi')
+                            ->maxLength(255)
+                            ->placeholder('Contoh: 1234/SK/BAN-PT/Akred/S/2026'),
+
+                        Select::make('study_program_id')
+                            ->label('Program Studi')
+                            ->options(fn (): array => StudyProgram::query()
+                                ->with('faculty')
+                                ->orderBy('name')
+                                ->get()
+                                ->mapWithKeys(fn (StudyProgram $prodi): array => [
+                                    $prodi->id => $prodi->faculty?->name
+                                        ? $prodi->name.' — '.$prodi->faculty->name
+                                        : $prodi->name,
+                                ])
+                                ->all())
+                            ->searchable()
+                            ->placeholder('Kosongkan untuk akreditasi tingkat institusi'),
+
+                        DatePicker::make('berlaku_mulai')
+                            ->label('Berlaku Mulai'),
+
+                        DatePicker::make('berlaku_sampai')
+                            ->label('Berlaku Sampai')
+                            ->required()
+                            ->afterOrEqual('berlaku_mulai')
+                            ->validationMessages([
+                                'after_or_equal' => 'Tanggal berlaku sampai harus sama dengan atau setelah tanggal berlaku mulai.',
+                            ]),
+                    ]),
+
                 Toggle::make('is_active')
                     ->label('Tampilkan di Website')
                     ->default(true),
             ]);
+    }
+
+    /**
+     * Mengosongkan seluruh kolom akreditasi apabila kategori bukan akreditasi.
+     *
+     * Dipanggil dari CreateDocument dan EditDocument agar data lama tidak
+     * memengaruhi scope tampilan publik ketika kategori dokumen diubah.
+     *
+     * @param  array<string, mixed>  $data
+     * @return array<string, mixed>
+     */
+    public static function normalizeAccreditationData(array $data): array
+    {
+        if (($data['category'] ?? null) === 'akreditasi') {
+            return $data;
+        }
+
+        foreach (self::ACCREDITATION_FIELDS as $field) {
+            $data[$field] = null;
+        }
+
+        return $data;
     }
 }

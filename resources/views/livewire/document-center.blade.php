@@ -30,15 +30,29 @@
 
             <!-- Search -->
             <div class="w-full md:w-72 relative">
-                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari dokumen..." class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-unmaris-yellow focus:border-transparent text-base min-h-[44px]">
+                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari judul, nomor SK, atau prodi..." aria-label="Cari dokumen" class="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-unmaris-yellow focus:border-transparent text-base min-h-[44px]">
                 <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
             </div>
         </div>
 
+        @if($activeTab === $arsipTab)
+        <!-- Keterangan Tab Arsip -->
+        <div class="mb-8 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+            <p class="font-bold mb-1">Arsip {{ $singkatanInstitusiLama }}</p>
+            <p>Dokumen di bawah diterbitkan saat institusi masih bernama {{ $namaInstitusiLama }} dan tidak lagi menjadi akreditasi yang berlaku. Arsip ini tetap ditampilkan sebagai bukti bagi lulusan periode tersebut, misalnya untuk pendaftaran CPNS, melanjutkan studi, atau verifikasi ijazah.</p>
+        </div>
+        @elseif($activeTab === 'akreditasi')
+        <!-- Keterangan Tab Akreditasi -->
+        <p class="mb-8 text-sm text-gray-600">
+            Menampilkan dokumen akreditasi Universitas Stella Maris Sumba yang masih berlaku. Dokumen yang sudah kedaluwarsa tersedia di tab
+            <button type="button" wire:click="setTab('{{ $arsipTab }}')" class="font-bold text-unmaris-blue underline underline-offset-2">Arsip {{ $singkatanInstitusiLama }}</button>.
+        </p>
+        @endif
+
         <!-- Loading State -->
-        <div wire:loading wire:target="setTab, search" class="w-full text-center py-10">
+        <div wire:loading wire:target="setTab, search" class="w-full text-center py-10" role="status" aria-live="polite">
             <div class="inline-block animate-spin rounded-full h-10 w-10 border-t-4 border-b-4 border-unmaris-blue"></div>
             <p class="mt-2 text-gray-500 font-medium">Memuat dokumen...</p>
         </div>
@@ -56,8 +70,17 @@
                         </svg>
                     </div>
                     <div>
+                        @php
+                            $arsip = $doc->adalahArsip();
+                            $namaInstitusiDokumen = $doc->institusi === \App\Models\Document::INSTITUSI_SEKOLAH_TINGGI
+                                ? ($doc->nama_institusi_lama ?: $namaInstitusiLama)
+                                : null;
+                        @endphp
                         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
                             {{ ucwords(str_replace('_', ' ', $doc->category)) }}
+                            @if($arsip)
+                            <span class="ml-1 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 normal-case tracking-normal" title="{{ $namaInstitusiLama }}">Arsip STMIK</span>
+                            @endif
                         </span>
                         <h3 class="text-lg font-bold text-gray-900 leading-tight break-words">{{ $doc->title }}</h3>
                     </div>
@@ -72,6 +95,12 @@
                 @if($doc->category === 'akreditasi' && (filled($doc->lembaga_akreditasi) || filled($doc->peringkat) || filled($doc->berlaku_sampai)))
                 <div class="mb-6 rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-700">
                     <dl class="space-y-1">
+                        @if(filled($namaInstitusiDokumen))
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Institusi Saat Terbit:</dt>
+                            <dd class="break-words min-w-0">{{ $namaInstitusiDokumen }}</dd>
+                        </div>
+                        @endif
                         @if(filled($doc->lembaga_akreditasi))
                         <div class="flex flex-wrap gap-x-2">
                             <dt class="font-bold text-gray-900">Lembaga:</dt>
@@ -134,8 +163,13 @@
                 <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
+                @if($activeTab === $arsipTab)
+                <h3 class="text-xl font-bold text-gray-700">Belum ada arsip {{ $singkatanInstitusiLama }}</h3>
+                <p class="text-gray-500 mt-2">Arsip akan tampil di sini setelah dokumen akreditasi lama ditambahkan melalui panel admin.</p>
+                @else
                 <h3 class="text-xl font-bold text-gray-700">Tidak ada dokumen ditemukan</h3>
                 <p class="text-gray-500 mt-2">Coba gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.</p>
+                @endif
             </div>
             @endforelse
         </div>

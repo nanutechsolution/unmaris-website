@@ -10,6 +10,7 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -34,6 +35,17 @@ class DocumentsTable
                         default => 'gray',
                     })
                     ->formatStateUsing(fn (string $state): string => ucwords(str_replace('_', ' ', $state))),
+
+                TextColumn::make('institusi')
+                    ->label('Institusi')
+                    ->badge()
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        Document::INSTITUSI_SEKOLAH_TINGGI => 'STMIK (arsip)',
+                        Document::INSTITUSI_UNIVERSITAS => 'Universitas',
+                        default => '-',
+                    })
+                    ->color(fn (?string $state): string => $state === Document::INSTITUSI_SEKOLAH_TINGGI ? 'warning' : 'success')
+                    ->placeholder('-'),
 
                 TextColumn::make('lembaga_akreditasi')
                     ->label('Lembaga')
@@ -71,6 +83,23 @@ class DocumentsTable
                     ->sortable(),
             ])
             ->filters([
+                SelectFilter::make('institusi')
+                    ->label('Institusi')
+                    ->options(Document::INSTITUSI_OPTIONS),
+
+                TernaryFilter::make('is_arsip')
+                    ->label('Dokumen Arsip')
+                    ->trueLabel('Hanya arsip')
+                    ->falseLabel('Bukan arsip')
+                    ->placeholder('Semua dokumen')
+                    ->queries(
+                        true: fn (Builder $query): Builder => $query->where('is_arsip', true),
+                        false: fn (Builder $query): Builder => $query->where(function (Builder $query): void {
+                            $query->whereNull('is_arsip')
+                                ->orWhere('is_arsip', false);
+                        }),
+                    ),
+
                 SelectFilter::make('category')
                     ->label('Kategori')
                     ->options(DocumentForm::CATEGORY_OPTIONS)

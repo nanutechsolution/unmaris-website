@@ -2,15 +2,17 @@
 #
 # scripts/rollback-akreditasi.sh
 #
-# Rollback fitur data akreditasi dokumen pada server produksi.
+# Rollback fitur data akreditasi dan arsip institusi pada server produksi.
 #
 # Urutan wajib:
 #   preflight (APP_DIR berisi artisan + .env, branch, tree bersih,
 #              file migration ada, migration tercatat Ran)
 #   -> php artisan down --retry=60
 #   -> migrate:rollback --path=<file migration>   (file migration MASIH ADA)
-#   -> verifikasi kolom akreditasi sudah hilang
+#      dijalankan dari migration terbaru ke terlama
+#   -> verifikasi kolom setiap migration sudah hilang
 #   -> revert kode (git pull + git revert, atau git pull bila sudah direvert)
+#   -> verifikasi tidak ada migration Pending setelah revert
 #   -> composer install --no-dev --optimize-autoloader
 #   -> optimize:clear, filament:optimize-clear
 #   -> queue:restart, reload PHP-FPM
@@ -18,9 +20,9 @@
 #
 # MENGAPA ROLLBACK MIGRATION HARUS SEBELUM REVERT KODE:
 # git revert menghapus file migration dari working tree. Setelah file itu
-# hilang, "migrate:rollback --path=database/migrations/2026_11_19_000000_..."
-# tidak dapat dijalankan lagi karena Laravel tidak menemukan file migration
-# yang dimaksud. Karena itu urutan di atas tidak boleh dibalik.
+# hilang, "migrate:rollback --path=database/migrations/..." tidak dapat
+# dijalankan lagi karena Laravel tidak menemukan file migration yang dimaksud.
+# Karena itu urutan di atas tidak boleh dibalik.
 #
 # Perilaku trap (disengaja):
 # 1. Gagal SEBELUM maintenance mode aktif -> tidak ada aksi.
@@ -28,8 +30,8 @@
 #    -> "php artisan up" dijalankan karena skema dan kode masih lengkap.
 # 3. Gagal setelah kolom database dirollback dan kode BELUM dikembalikan
 #    -> maintenance DIPERTAHANKAN, karena kode baru tidak kompatibel dengan
-#       skema tanpa kolom akreditasi. Operator harus menyelesaikan revert kode
-#       lebih dulu, baru "php artisan up".
+#       skema tanpa kolom akreditasi/institusi. Operator harus menyelesaikan
+#       revert kode lebih dulu, baru "php artisan up".
 # 4. Gagal setelah kolom dirollback DAN kode sudah dikembalikan
 #    (mis. push/composer/cache/queue/PHP-FPM gagal)
 #    -> "php artisan up" dijalankan karena skema dan kode sudah konsisten.
@@ -68,8 +70,15 @@ set -euo pipefail
 BRANCH="${BRANCH:-main}"
 REVERT_MODE="${REVERT_MODE:-server}"
 REVERT_SHA="${REVERT_SHA:-}"
-MIGRATION_NAME="2026_11_19_000000_add_accreditation_fields_to_documents_table"
-MIGRATION_FILE="database/migrations/${MIGRATION_NAME}.php"
+
+MIGRATION_AKREDITASI="2026_11_19_000000_add_accreditation_fields_to_documents_table"
+MIGRATION_INSTITUSI="2026_11_19_000001_add_institusi_fields_to_documents_table"
+
+# Migration terbaru lebih dulu agar rollback mengikuti urutan kebalikan deploy.
+MIGRATION_FILES=(
+    "database/migrations/${MIGRATION_INSTITUSI}.php"
+    "database/migrations/${MIGRATION_AKREDITASI}.php"
+)
 
 MAINTENANCE_MODE=0
 DB_ROLLED_BACK=0
@@ -97,7 +106,7 @@ on_exit() {
 
     if [[ "$MAINTENANCE_MODE" -eq 1 ]]; then
         if [[ "$DB_ROLLED_BACK" -eq 1 && "$CODE_REVERTED" -eq 0 ]]; then
-            warn "Kolom akreditasi sudah dihapus, tetapi kode baru masih terpasang."
+            warn "Kolom database sudah dihapus, tetapi kode baru masih terpasang."
             warn "Aplikasi TETAP dalam maintenance mode sampai kode dikembalikan."
             warn "Selesaikan revert/pull kode, lalu jalankan: php artisan up"
         else
@@ -135,6 +144,20 @@ reload_php_fpm() {
     log "PHP-FPM direload: $service"
 }
 
+columns_for_migration() {
+    case "$1" in
+        "$MIGRATION_INSTITUSI")
+            printf '%s\n' institusi nama_institusi_lama is_arsip
+            ;;
+        "$MIGRATION_AKREDITASI")
+            printf '%s\n' lembaga_akreditasi study_program_id nomor_sk peringkat berlaku_mulai berlaku_sampai
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
 preflight() {
     [[ -f artisan ]] || die "APP_DIR tidak berisi artisan: $APP_DIR. Jalankan dengan APP_DIR=\"\$(pwd)\" dari root project."
     [[ -f .env ]] || die "File .env tidak ditemukan di $APP_DIR"
@@ -155,23 +178,35 @@ preflight() {
         die "Working tree server tidak bersih. Commit atau stash perubahan sebelum rollback."
     fi
 
-    [[ -f "$MIGRATION_FILE" ]] \
-        || die "File migration tidak ditemukan. Rollback database wajib dijalankan sebelum revert kode."
+    local file name migration_status pending_output
+    local -a existing_files=()
 
-    local pending_output
+    for file in "${MIGRATION_FILES[@]}"; do
+        if [[ -f "$file" ]]; then
+            existing_files+=("$file")
+        else
+            warn "File migration tidak ditemukan (mungkin sudah direvert): $file"
+        fi
+    done
+
+    [[ "${#existing_files[@]}" -gt 0 ]] \
+        || die "Tidak ada file migration fitur akreditasi di working tree. Tidak ada yang dapat dirollback."
+
+    migration_status="$(php artisan migrate:status --no-ansi)"
     pending_output="$(php artisan migrate:status --pending --no-ansi)"
 
-    if grep -Fq "$MIGRATION_NAME" <<<"$pending_output"; then
-        die "Migration akreditasi masih Pending (belum pernah dijalankan). Tidak ada yang perlu dirollback."
-    fi
+    for file in "${existing_files[@]}"; do
+        name="$(basename "$file" .php)"
 
-    local migration_status
-    migration_status="$(php artisan migrate:status --no-ansi)"
+        if grep -Fq "$name" <<<"$pending_output"; then
+            die "Migration '$name' masih Pending (belum pernah dijalankan). Tidak ada yang perlu dirollback."
+        fi
 
-    grep -Fq "$MIGRATION_NAME" <<<"$migration_status" \
-        || die "Migration akreditasi tidak tercatat sebagai Ran. Periksa migrate:status terlebih dahulu."
+        grep -Fq "$name" <<<"$migration_status" \
+            || die "Migration '$name' tidak tercatat sebagai Ran. Periksa migrate:status terlebih dahulu."
+    done
 
-    log "Preflight OK: APP_DIR $APP_DIR, branch '$current_branch', tree bersih, migration tercatat Ran."
+    log "Preflight OK: APP_DIR $APP_DIR, branch '$current_branch', tree bersih, ${#existing_files[@]} file migration fitur siap dirollback."
 }
 
 columns_of_documents() {
@@ -182,18 +217,10 @@ columns_of_documents() {
 
 verify_columns_removed() {
     local columns column
-    local -a removed_columns=(
-        lembaga_akreditasi
-        study_program_id
-        nomor_sk
-        peringkat
-        berlaku_mulai
-        berlaku_sampai
-    )
 
     columns="$(columns_of_documents)"
 
-    for column in "${removed_columns[@]}"; do
+    for column in "$@"; do
         if [[ ",$columns," == *",$column,"* ]]; then
             die "Kolom documents.$column masih ada setelah rollback."
         fi
@@ -201,7 +228,20 @@ verify_columns_removed() {
 
     [[ ",$columns," == *",is_active,"* ]] || die "Kolom documents.is_active hilang. Hentikan dan periksa database."
 
-    log "Verifikasi: kolom akreditasi sudah tidak ada, kolom lama tetap utuh."
+    log "Verifikasi: kolom $* sudah tidak ada, kolom lama tetap utuh."
+}
+
+verify_no_pending_migrations() {
+    local pending_output
+
+    pending_output="$(php artisan migrate:status --pending --no-ansi)"
+
+    if grep -Eq '^[[:space:]]*[0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{6}_[A-Za-z0-9_]+' <<<"$pending_output"; then
+        printf '%s\n' "$pending_output" >&2
+        die "Masih ada migration Pending setelah revert kode. Skema dan kode tidak konsisten; aplikasi TETAP maintenance mode."
+    fi
+
+    log "Verifikasi: tidak ada migration Pending setelah revert kode."
 }
 
 revert_code() {
@@ -229,18 +269,17 @@ revert_code() {
             ;;
         pull)
             git pull --ff-only origin "$BRANCH" \
-                || die "git pull --ff-only gagal. Aplikasi TETAP maintenance mode karena skema sudah tanpa kolom akreditasi."
+                || die "git pull --ff-only gagal. Aplikasi TETAP maintenance mode karena skema sudah tanpa kolom akreditasi/institusi."
             ;;
         *)
             die "REVERT_MODE tidak valid: '$REVERT_MODE'. Gunakan 'server' atau 'pull'."
             ;;
     esac
 
-    [[ ! -f "$MIGRATION_FILE" ]] \
-        || die "File migration masih ada setelah revert. Pastikan commit revert sudah benar."
+    verify_no_pending_migrations
 
     CODE_REVERTED=1
-    log "Kode berhasil dikembalikan; file migration sudah tidak ada di working tree."
+    log "Kode berhasil dikembalikan."
 
     if [[ "$REVERT_MODE" == "server" ]]; then
         git push origin "$BRANCH" \
@@ -249,6 +288,9 @@ revert_code() {
 }
 
 main() {
+    local file name line
+    local -a columns=()
+
     log "Preflight rollback akreditasi"
     preflight
 
@@ -257,10 +299,28 @@ main() {
     MAINTENANCE_MODE=1
 
     log "Rollback migration (wajib sebelum revert kode)"
-    php artisan migrate:rollback --path="$MIGRATION_FILE" --force --no-ansi
+    for file in "${MIGRATION_FILES[@]}"; do
+        if [[ ! -f "$file" ]]; then
+            warn "Lewati rollback, file tidak ada: $file"
+            continue
+        fi
 
-    log "Verifikasi kolom akreditasi sudah hilang"
-    verify_columns_removed
+        name="$(basename "$file" .php)"
+
+        log "Rollback migration: $name"
+        php artisan migrate:rollback --path="$file" --force --no-ansi
+
+        columns=()
+        while IFS= read -r line; do
+            if [[ -n "$line" ]]; then
+                columns+=("$line")
+            fi
+        done <<<"$(columns_for_migration "$name")"
+
+        log "Verifikasi kolom migration $name sudah hilang"
+        verify_columns_removed "${columns[@]}"
+    done
+
     DB_ROLLED_BACK=1
 
     log "Kembalikan kode"

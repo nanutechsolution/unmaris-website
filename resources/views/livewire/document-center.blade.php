@@ -161,7 +161,7 @@
                 @endif
 
                 <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <span class="text-xs text-gray-400 font-medium">Diperbarui: {{ $doc->updated_at->format('d M Y') }}</span>
+                    <span class="text-xs text-gray-400 font-medium">Diperbarui: {{ $doc->updated_at->copy()->locale('id')->translatedFormat('d M Y') }}</span>
 
                     <a href="{{ asset('storage/'.$doc->file_path) }}" target="_blank" download class="inline-flex items-center justify-center min-h-[44px] text-sm font-bold text-white bg-unmaris-blue hover:bg-unmaris-yellow hover:text-unmaris-blue px-4 py-2 rounded-lg transition-colors">
                         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -183,11 +183,19 @@
                 <h3 class="text-xl font-bold text-gray-700">Tidak ada dokumen ditemukan</h3>
                 <p class="text-gray-500 mt-2">Coba gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.</p>
                 @endif
+
+                <div class="mt-6 flex flex-wrap justify-center gap-3">
+                    <button type="button" wire:click="setTab('semua')" class="inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-lg font-bold text-sm text-white bg-unmaris-blue hover:bg-unmaris-yellow hover:text-unmaris-blue">Lihat semua dokumen</button>
+                    <button type="button" wire:click="$set('search', '')" class="inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-lg font-bold text-sm text-white bg-gray-500 hover:bg-gray-600">Hapus pencarian</button>
+                </div>
             </div>
             @endforelse
         </div>
 
-        <div class="mt-8 flex justify-center">
+        <div class="mt-8 flex flex-col items-center gap-3">
+            @if($documents->total() > 0)
+            <p class="text-sm text-gray-500 font-medium">{{ $documents->total() }} dokumen ditemukan</p>
+            @endif
             {{ $documents->links() }}
         </div>
     </div>

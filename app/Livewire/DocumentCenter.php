@@ -101,6 +101,8 @@ class DocumentCenter extends Component
 
         $documents = $query->latest('updated_at')->paginate(12);
 
+        app('translator')->setLocale('id');
+
         return view('livewire.document-center', [
             'documents' => $documents,
             'categories' => $this->categories,

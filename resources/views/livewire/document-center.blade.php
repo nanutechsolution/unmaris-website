@@ -3,7 +3,7 @@
     <section class="bg-unmaris-blue text-white py-16 mb-12 relative overflow-hidden">
         <div class="container mx-auto px-4 text-center relative z-10">
             <h1 class="text-4xl md:text-5xl font-extrabold mb-4 border-b-4 border-unmaris-yellow inline-block pb-2">Pusat Unduhan Akademik</h1>
-            <p class="text-lg text-gray-200 max-w-2xl mx-auto mt-4">Akses dan unduh dokumen penting seperti Kalender Akademik, Jadwal Kuliah, dan Buku Pedoman Universitas Stella Maris Sumba.</p>
+            <p class="text-lg text-gray-200 max-w-2xl mx-auto mt-4">Akses dan unduh dokumen penting Universitas Stella Maris Sumba, mulai dari Kalender Akademik, Jadwal Kuliah, Buku Pedoman, kurikulum, hingga dokumen akreditasi.</p>
         </div>
     </section>
 
@@ -25,20 +25,25 @@
         <!-- Filter & Search Bar -->
         <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-10 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-20 z-30">
             <!-- Tabs -->
-            <div class="flex overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar gap-2">
+            <div class="relative flex overflow-x-auto w-full md:w-auto pb-2 md:pb-0 hide-scrollbar gap-2"
+                 x-data="{ canScroll: false }"
+                 x-init="$nextTick(() => { this.canScroll = this.$el.scrollWidth > this.$el.clientWidth; })"
+                 x-on:scroll="$nextTick(() => { this.canScroll = this.$el.scrollWidth > this.$el.clientWidth; })">
                 @foreach($categories as $key => $label)
                 <button
                     wire:click="setTab('{{ $key }}')"
+                    aria-pressed="{{ $activeTab === $key ? 'true' : 'false' }}"
                     class="whitespace-nowrap px-5 py-2 min-h-[44px] rounded-full font-bold text-sm transition
     {{ $activeTab === $key
         ? 'bg-unmaris-blue text-white'
-        : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
+        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-unmaris-yellow focus-visible:ring-offset-2' }}">
 
                     {{ $label }}
 
                 </button>
 
                 @endforeach
+                <div x-show="canScroll" class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-white to-transparent" aria-hidden="true"></div>
             </div>
 
             <!-- Search -->
@@ -70,14 +75,37 @@
             <p class="mt-2 text-gray-500 font-medium">Memuat dokumen...</p>
         </div>
 
+        <!-- Sorting -->
+        <div class="mb-6 flex justify-end">
+            <div class="w-full md:w-56">
+                <label for="sort-dokumen" class="sr-only">Urutan dokumen</label>
+                <select id="sort-dokumen" wire:model.live="sort" class="w-full min-h-[44px] rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-bold text-gray-700 focus:outline-none focus:ring-2 focus:ring-unmaris-yellow focus:border-transparent">
+                    <option value="terbaru">Terbaru</option>
+                    <option value="nama_az">Nama A–Z</option>
+                </select>
+            </div>
+        </div>
+
         <!-- Grid Dokumen -->
         <div wire:loading.remove wire:target="setTab, search" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @forelse($documents as $doc)
             <div class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow border border-gray-100 flex flex-col h-full border-t-4 {{ $doc->category === 'kalender_akademik' ? 'border-red-500' : ($doc->category === 'jadwal_kuliah' ? 'border-blue-500' : 'border-unmaris-yellow') }}">
 
                 <div class="flex items-start gap-4 mb-4">
-                    <!-- Icon berdasarkan tipe file (Asumsi PDF secara umum) -->
-                    <div class="w-12 h-12 shrink-0 bg-red-50 text-red-500 rounded-xl flex items-center justify-center">
+                    <!-- Icon berdasarkan ekstensi tipe file yang diunggah -->
+                    @php
+                        $fileExt = strtoupper(pathinfo($doc->file_path ?? '', PATHINFO_EXTENSION));
+                        $fileIconBg = match ($fileExt) {
+                            'DOCX' => 'bg-blue-600',
+                            'XLSX' => 'bg-green-600',
+                            default => 'bg-red-500',
+                        };
+                        $fileSizeBytes = $fileSizes[$doc->file_path] ?? null;
+                        $fileSizeLabel = $fileSizeBytes
+                            ? number_format(round($fileSizeBytes / 1048576, 1), 1).' MB'
+                            : null;
+                    @endphp
+                    <div class="w-12 h-12 shrink-0 rounded-xl flex items-center justify-center {{ $fileIconBg }} text-white">
                         <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
                         </svg>
@@ -160,10 +188,15 @@
                 </div>
                 @endif
 
-                <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <span class="text-xs text-gray-400 font-medium">Diperbarui: {{ $doc->updated_at->copy()->locale('id')->translatedFormat('d M Y') }}</span>
+                <div class="mt-auto pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-gray-500 font-medium">Diperbarui: {{ $doc->updated_at->copy()->locale('id')->translatedFormat('d M Y') }}</span>
+                        @if($fileSizeLabel)
+                        <span class="text-xs text-gray-400 font-medium">{{ $fileExt }} · {{ $fileSizeLabel }}</span>
+                        @endif
+                    </div>
 
-                    <a href="{{ asset('storage/'.$doc->file_path) }}" target="_blank" download class="inline-flex items-center justify-center min-h-[44px] text-sm font-bold text-white bg-unmaris-blue hover:bg-unmaris-yellow hover:text-unmaris-blue px-4 py-2 rounded-lg transition-colors">
+                    <a href="{{ asset('storage/'.$doc->file_path) }}" target="_blank" rel="noopener" download aria-label="Unduh {{ $doc->title }}" class="inline-flex items-center justify-center min-h-[44px] text-sm font-bold text-white bg-unmaris-blue hover:bg-unmaris-yellow hover:text-unmaris-blue px-4 py-2 rounded-lg transition-colors">
                         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>

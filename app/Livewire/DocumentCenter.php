@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Document;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentCenter extends Component
 {
@@ -31,8 +32,15 @@ class DocumentCenter extends Component
     public $activeTab = 'semua';
     public $search = '';
 
+    /**
+     * Kolom pengurutan dokumen publik. Nilai di-whitelist pada render().
+     */
+    public string $sort = 'terbaru';
+
     public $categories = [
         'semua' => 'Semua Dokumen',
+        'akreditasi' => 'Akreditasi',
+        self::ARSIP_TAB => 'Arsip STMIK',
         'kalender_akademik' => 'Kalender Akademik',
         'jadwal_kuliah' => 'Jadwal Kuliah',
         'jadwal_ujian' => 'Jadwal Ujian',
@@ -46,8 +54,6 @@ class DocumentCenter extends Component
         'beasiswa' => 'Beasiswa',
         'kemahasiswaan' => 'Kemahasiswaan',
         'kerjasama' => 'Kerjasama',
-        'akreditasi' => 'Akreditasi',
-        self::ARSIP_TAB => 'Arsip STMIK',
         'laporan' => 'Laporan',
         'pengumuman_resmi' => 'Pengumuman Resmi',
         'brosur_pmb' => 'Brosur PMB',
@@ -65,6 +71,11 @@ class DocumentCenter extends Component
     }
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSort()
     {
         $this->resetPage();
     }
@@ -99,9 +110,33 @@ class DocumentCenter extends Component
             });
         }
 
-        $documents = $query->latest('updated_at')->paginate(12);
+        $sort = in_array($this->sort, ['terbaru', 'nama_az'], true) ? $this->sort : 'terbaru';
+
+        if ($sort === 'nama_az') {
+            $query->orderBy('title', 'asc');
+        } else {
+            $query->latest('updated_at');
+        }
+
+        $documents = $query->paginate(12);
 
         app('translator')->setLocale('id');
+
+        $fileSizes = [];
+
+        foreach ($documents->items() as $doc) {
+            $path = (string) $doc->file_path;
+
+            if ($path === '' || array_key_exists($path, $fileSizes)) {
+                continue;
+            }
+
+            try {
+                $fileSizes[$path] = Storage::disk('public')->size($path);
+            } catch (\Throwable) {
+                $fileSizes[$path] = null;
+            }
+        }
 
         return view('livewire.document-center', [
             'documents' => $documents,
@@ -109,6 +144,7 @@ class DocumentCenter extends Component
             'arsipTab' => self::ARSIP_TAB,
             'namaInstitusiLama' => self::NAMA_INSTITUSI_LAMA,
             'singkatanInstitusiLama' => self::SINGKATAN_INSTITUSI_LAMA,
+            'fileSizes' => $fileSizes,
         ])->layout('components.layouts.app', ['title' => 'Pusat Unduhan Akademik - UNMARIS']);
     }
 }

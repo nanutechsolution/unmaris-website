@@ -13,7 +13,7 @@
 #   -> php artisan down --retry=60
 #   -> git pull --ff-only
 #   -> composer install --no-dev --optimize-autoloader
-#   -> guard migrate:status (enum Ran, tepat satu Pending = akreditasi)
+#   -> guard migrate:status (enum Ran, semua Pending hanya migration fitur)
 #   -> migrate --pretend (disimpan ke log) + tolak DROP/TRUNCATE/MODIFY
 #   -> migrate --force
 #   -> verifikasi status migration, kolom, dan foreign key
@@ -28,9 +28,9 @@
 #                                             karena skema dan kode masih lama.
 # 3. Gagal pada guard migration            -> maintenance DIPERTAHANKAN agar
 #                                             operator memeriksa prasyarat
-#                                             (enum harus Ran, tepat satu
-#                                             migration Pending) sebelum
-#                                             mengulang.
+#                                             (enum harus Ran, tidak ada
+#                                             migration Pending di luar fitur)
+#                                             sebelum mengulang.
 # 4. Gagal SETELAH git pull berhasil       -> maintenance DIPERTAHANKAN, karena
 #    (composer, pretend, migrate, verifikasi, cache, queue, PHP-FPM)
 #                                             kode baru tidak boleh melayani
@@ -57,6 +57,11 @@ set -euo pipefail
 BRANCH="${BRANCH:-main}"
 MIGRATION_ENUM="2026_03_05_174636_update_category_enum_on_documents_table"
 MIGRATION_AKREDITASI="2026_11_19_000000_add_accreditation_fields_to_documents_table"
+MIGRATION_INSTITUSI="2026_11_19_000001_add_institusi_fields_to_documents_table"
+MIGRATION_FITUR=(
+    "$MIGRATION_AKREDITASI"
+    "$MIGRATION_INSTITUSI"
+)
 
 BACKUP_FILE=""
 PRETEND_LOG=""
@@ -207,8 +212,9 @@ backup_database() {
 }
 
 check_migration_prerequisites() {
-    local status_output pending_output line
+    local status_output pending_output line migration pending_display
     local -a pending_list=()
+    local -A allowed=()
 
     status_output="$(php artisan migrate:status --no-ansi)"
     pending_output="$(php artisan migrate:status --pending --no-ansi)"
@@ -222,12 +228,12 @@ check_migration_prerequisites() {
         die "Migration enum '$MIGRATION_ENUM' masih Pending. Deploy dihentikan."
     fi
 
-    grep -Fq "$MIGRATION_AKREDITASI" <<<"$status_output" \
-        || die "Migration '$MIGRATION_AKREDITASI' tidak ditemukan pada migrate:status."
+    for migration in "${MIGRATION_FITUR[@]}"; do
+        allowed["$migration"]=1
 
-    if ! grep -Fq "$MIGRATION_AKREDITASI" <<<"$pending_output"; then
-        die "Migration akreditasi tidak berstatus Pending (mungkin sudah Ran). Deploy dihentikan."
-    fi
+        grep -Fq "$migration" <<<"$status_output" \
+            || die "Migration '$migration' tidak ditemukan pada migrate:status."
+    done
 
     while IFS= read -r line; do
         if [[ "$line" =~ ^[[:space:]]*([0-9]{4}_[0-9]{2}_[0-9]{2}_[0-9]{6}_[A-Za-z0-9_]+) ]]; then
@@ -235,20 +241,19 @@ check_migration_prerequisites() {
         fi
     done <<<"$pending_output"
 
-    if [[ "${#pending_list[@]}" -ne 1 ]]; then
-        warn "migrate:status --pending memuat ${#pending_list[@]} migration:"
-        if [[ "${#pending_list[@]}" -gt 0 ]]; then
-            printf '  - %s\n' "${pending_list[@]}" >&2
+    for migration in "${pending_list[@]}"; do
+        if [[ -z "${allowed[$migration]:-}" ]]; then
+            warn "Migration Pending di luar fitur akreditasi: $migration"
+            die "migrate:status --pending memuat migration yang tidak dikenal. Deploy dihentikan."
         fi
-        die "migrate:status --pending harus berisi tepat satu migration, yaitu '$MIGRATION_AKREDITASI'. Selesaikan migration lain terlebih dahulu."
+    done
+
+    pending_display="tidak ada"
+    if [[ "${#pending_list[@]}" -gt 0 ]]; then
+        pending_display="${pending_list[*]}"
     fi
 
-    if [[ "${pending_list[0]}" != "$MIGRATION_AKREDITASI" ]]; then
-        warn "Migration Pending yang ditemukan: ${pending_list[0]}"
-        die "Migration Pending bukan '$MIGRATION_AKREDITASI'. Deploy dihentikan."
-    fi
-
-    log "Guard migration OK: enum sudah Ran, tepat satu migration Pending (akreditasi)."
+    log "Guard migration OK: enum sudah Ran, ${#pending_list[@]} migration fitur Pending ($pending_display)."
 }
 
 columns_of_documents() {
@@ -266,6 +271,9 @@ verify_schema() {
         peringkat
         berlaku_mulai
         berlaku_sampai
+        institusi
+        nama_institusi_lama
+        is_arsip
     )
 
     columns="$(columns_of_documents)"
@@ -289,7 +297,7 @@ verify_schema() {
 }
 
 main() {
-    local pending_after status_after
+    local pending_after status_after migration
 
     log "Preflight deploy akreditasi"
     preflight
@@ -330,13 +338,17 @@ main() {
 
     log "Verifikasi status migration"
     pending_after="$(php artisan migrate:status --pending --no-ansi)"
-    if grep -Fq "$MIGRATION_AKREDITASI" <<<"$pending_after"; then
-        die "Migration akreditasi masih Pending setelah eksekusi."
-    fi
+    for migration in "${MIGRATION_FITUR[@]}"; do
+        if grep -Fq "$migration" <<<"$pending_after"; then
+            die "Migration '$migration' masih Pending setelah eksekusi."
+        fi
+    done
 
     status_after="$(php artisan migrate:status --no-ansi)"
-    grep -Fq "$MIGRATION_AKREDITASI" <<<"$status_after" \
-        || die "Migration akreditasi tidak tercatat pada migrate:status."
+    for migration in "${MIGRATION_FITUR[@]}"; do
+        grep -Fq "$migration" <<<"$status_after" \
+            || die "Migration '$migration' tidak tercatat pada migrate:status."
+    done
 
     log "Verifikasi skema database"
     verify_schema

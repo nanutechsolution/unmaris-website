@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Documents\Schemas;
 
+use App\Models\Document;
 use App\Models\StudyProgram;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
@@ -78,6 +79,9 @@ class DocumentForm
      * @var list<string>
      */
     public const ACCREDITATION_FIELDS = [
+        'institusi',
+        'nama_institusi_lama',
+        'is_arsip',
         'lembaga_akreditasi',
         'study_program_id',
         'nomor_sk',
@@ -126,6 +130,37 @@ class DocumentForm
                     ->columns(2)
                     ->visible(fn (Get $get): bool => $get('category') === 'akreditasi')
                     ->schema([
+                        Select::make('institusi')
+                            ->label('Institusi Penerbit')
+                            ->options(Document::INSTITUSI_OPTIONS)
+                            ->default(Document::INSTITUSI_UNIVERSITAS)
+                            ->required()
+                            ->live()
+                            ->afterStateUpdated(function (?string $state, $set): void {
+                                if ($state !== Document::INSTITUSI_SEKOLAH_TINGGI) {
+                                    $set('is_arsip', false);
+                                }
+                            })
+                            ->helperText('Pilih institusi yang tercantum pada dokumen.'),
+
+                        Toggle::make('is_arsip')
+                            ->label('Dokumen Arsip Sekolah Tinggi')
+                            ->live()
+                            ->afterStateUpdated(function (bool $state, $set): void {
+                                if ($state) {
+                                    $set('institusi', Document::INSTITUSI_SEKOLAH_TINGGI);
+                                }
+                            })
+                            ->helperText('Aktifkan untuk dokumen era STMIK. Dokumen arsip tetap tampil di tab Arsip walau masa berlakunya sudah lewat.'),
+
+                        TextInput::make('nama_institusi_lama')
+                            ->label('Nama Institusi Saat Dokumen Diterbitkan')
+                            ->maxLength(255)
+                            ->columnSpanFull()
+                            ->visible(fn (Get $get): bool => $get('institusi') === Document::INSTITUSI_SEKOLAH_TINGGI)
+                            ->placeholder('Contoh: Sekolah Tinggi Manajemen Informatika Komputer Stella Maris Sumba')
+                            ->helperText('Opsional. Jika dikosongkan, kartu publik memakai nama resmi institusi lama.'),
+
                         TextInput::make('lembaga_akreditasi')
                             ->label('Lembaga Akreditasi')
                             ->datalist(self::LEMBAGA_AKREDITASI_SUGGESTIONS)
@@ -178,22 +213,42 @@ class DocumentForm
     }
 
     /**
-     * Mengosongkan seluruh kolom akreditasi apabila kategori bukan akreditasi.
+     * Merapikan kolom akreditasi sebelum data disimpan.
      *
-     * Dipanggil dari CreateDocument dan EditDocument agar data lama tidak
-     * memengaruhi scope tampilan publik ketika kategori dokumen diubah.
+     * Kolom akreditasi dikosongkan apabila kategori bukan akreditasi. Untuk
+     * kategori akreditasi, nilai institusi dan is_arsip dijaga tetap konsisten:
+     * arsip selalu berasal dari institusi sekolah tinggi, dan institusi kosong
+     * dianggap sebagai universitas.
      *
      * @param  array<string, mixed>  $data
      * @return array<string, mixed>
      */
     public static function normalizeAccreditationData(array $data): array
     {
-        if (($data['category'] ?? null) === 'akreditasi') {
+        if (($data['category'] ?? null) !== 'akreditasi') {
+            foreach (self::ACCREDITATION_FIELDS as $field) {
+                $data[$field] = null;
+            }
+
             return $data;
         }
 
-        foreach (self::ACCREDITATION_FIELDS as $field) {
-            $data[$field] = null;
+        if (blank($data['institusi'] ?? null)) {
+            $data['institusi'] = Document::INSTITUSI_UNIVERSITAS;
+        }
+
+        if ((bool) ($data['is_arsip'] ?? false)) {
+            $data['is_arsip'] = true;
+            $data['institusi'] = Document::INSTITUSI_SEKOLAH_TINGGI;
+        } else {
+            $data['is_arsip'] = false;
+        }
+
+        if ($data['institusi'] !== Document::INSTITUSI_SEKOLAH_TINGGI) {
+            $data['is_arsip'] = false;
+            $data['nama_institusi_lama'] = null;
+        } elseif (blank($data['nama_institusi_lama'] ?? null)) {
+            $data['nama_institusi_lama'] = null;
         }
 
         return $data;

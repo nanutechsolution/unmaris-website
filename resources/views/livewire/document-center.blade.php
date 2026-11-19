@@ -70,7 +70,12 @@
                         </svg>
                     </div>
                     <div>
-                        @php($arsip = $doc->category === 'akreditasi' && $doc->berlaku_sampai && $doc->berlaku_sampai->lt(today()))
+                        @php
+                            $arsip = $doc->adalahArsip();
+                            $namaInstitusiDokumen = $doc->institusi === \App\Models\Document::INSTITUSI_SEKOLAH_TINGGI
+                                ? ($doc->nama_institusi_lama ?: $namaInstitusiLama)
+                                : null;
+                        @endphp
                         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
                             {{ ucwords(str_replace('_', ' ', $doc->category)) }}
                             @if($arsip)
@@ -90,6 +95,12 @@
                 @if($doc->category === 'akreditasi' && (filled($doc->lembaga_akreditasi) || filled($doc->peringkat) || filled($doc->berlaku_sampai)))
                 <div class="mb-6 rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-700">
                     <dl class="space-y-1">
+                        @if(filled($namaInstitusiDokumen))
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Institusi Saat Terbit:</dt>
+                            <dd class="break-words min-w-0">{{ $namaInstitusiDokumen }}</dd>
+                        </div>
+                        @endif
                         @if(filled($doc->lembaga_akreditasi))
                         <div class="flex flex-wrap gap-x-2">
                             <dt class="font-bold text-gray-900">Lembaga:</dt>

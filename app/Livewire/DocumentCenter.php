@@ -74,10 +74,7 @@ class DocumentCenter extends Component
         $query = Document::query()->with('studyProgram');
 
         if ($this->activeTab === self::ARSIP_TAB) {
-            $query->where('is_active', true)
-                ->where('category', 'akreditasi')
-                ->whereNotNull('berlaku_sampai')
-                ->whereDate('berlaku_sampai', '<', today());
+            $query->tampilArsipPublik();
         } else {
             $query->tampilPublik();
 
@@ -95,6 +92,7 @@ class DocumentCenter extends Component
                     ->orWhere('nomor_sk', 'like', $term)
                     ->orWhere('lembaga_akreditasi', 'like', $term)
                     ->orWhere('peringkat', 'like', $term)
+                    ->orWhere('nama_institusi_lama', 'like', $term)
                     ->orWhereHas('studyProgram', function ($prodi) use ($term) {
                         $prodi->where('name', 'like', $term);
                     });

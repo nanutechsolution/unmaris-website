@@ -40,14 +40,14 @@
         @if($activeTab === $arsipTab)
         <!-- Keterangan Tab Arsip -->
         <div class="mb-8 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
-            <p class="font-bold mb-1">Arsip dokumen sekolah tinggi</p>
-            <p>Dokumen di bawah diterbitkan saat institusi masih berstatus sekolah tinggi dan tidak lagi menjadi akreditasi yang berlaku. Arsip ini tetap ditampilkan sebagai bukti bagi lulusan periode tersebut, misalnya untuk pendaftaran CPNS, melanjutkan studi, atau verifikasi ijazah.</p>
+            <p class="font-bold mb-1">Arsip {{ $singkatanInstitusiLama }}</p>
+            <p>Dokumen di bawah diterbitkan saat institusi masih bernama {{ $namaInstitusiLama }} dan tidak lagi menjadi akreditasi yang berlaku. Arsip ini tetap ditampilkan sebagai bukti bagi lulusan periode tersebut, misalnya untuk pendaftaran CPNS, melanjutkan studi, atau verifikasi ijazah.</p>
         </div>
         @elseif($activeTab === 'akreditasi')
         <!-- Keterangan Tab Akreditasi -->
         <p class="mb-8 text-sm text-gray-600">
-            Menampilkan dokumen akreditasi yang masih berlaku. Dokumen yang sudah kedaluwarsa tersedia di tab
-            <button type="button" wire:click="setTab('{{ $arsipTab }}')" class="font-bold text-unmaris-blue underline underline-offset-2">Arsip Sekolah Tinggi</button>.
+            Menampilkan dokumen akreditasi Universitas Stella Maris Sumba yang masih berlaku. Dokumen yang sudah kedaluwarsa tersedia di tab
+            <button type="button" wire:click="setTab('{{ $arsipTab }}')" class="font-bold text-unmaris-blue underline underline-offset-2">Arsip {{ $singkatanInstitusiLama }}</button>.
         </p>
         @endif
 
@@ -74,7 +74,7 @@
                         <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider block mb-1">
                             {{ ucwords(str_replace('_', ' ', $doc->category)) }}
                             @if($arsip)
-                            <span class="ml-1 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 normal-case tracking-normal">Arsip</span>
+                            <span class="ml-1 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 normal-case tracking-normal" title="{{ $namaInstitusiLama }}">Arsip STMIK</span>
                             @endif
                         </span>
                         <h3 class="text-lg font-bold text-gray-900 leading-tight break-words">{{ $doc->title }}</h3>
@@ -153,7 +153,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                 </svg>
                 @if($activeTab === $arsipTab)
-                <h3 class="text-xl font-bold text-gray-700">Belum ada arsip dokumen sekolah tinggi</h3>
+                <h3 class="text-xl font-bold text-gray-700">Belum ada arsip {{ $singkatanInstitusiLama }}</h3>
                 <p class="text-gray-500 mt-2">Arsip akan tampil di sini setelah dokumen akreditasi lama ditambahkan melalui panel admin.</p>
                 @else
                 <h3 class="text-xl font-bold text-gray-700">Tidak ada dokumen ditemukan</h3>

@@ -52,7 +52,9 @@ class DocumentCenter extends Component
 
     public function render()
     {
-        $query = Document::where('is_active', true);
+        $query = Document::query()
+            ->tampilPublik()
+            ->with('studyProgram');
 
         if ($this->activeTab !== 'semua') {
             $query->where('category', $this->activeTab);

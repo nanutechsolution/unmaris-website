@@ -69,6 +69,55 @@
                 <div class="flex-grow mb-6"></div>
                 @endif
 
+                @if($doc->category === 'akreditasi' && (filled($doc->lembaga_akreditasi) || filled($doc->peringkat) || filled($doc->berlaku_sampai)))
+                <div class="mb-6 rounded-xl border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+                    <dl class="space-y-1">
+                        @if(filled($doc->lembaga_akreditasi))
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Lembaga:</dt>
+                            <dd>{{ $doc->lembaga_akreditasi }}</dd>
+                        </div>
+                        @endif
+                        @if(filled($doc->peringkat))
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Peringkat:</dt>
+                            <dd>{{ $doc->peringkat }}</dd>
+                        </div>
+                        @endif
+                        @if($doc->studyProgram)
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Program Studi:</dt>
+                            <dd>{{ $doc->studyProgram->name }}</dd>
+                        </div>
+                        @endif
+                        @if(filled($doc->nomor_sk))
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Nomor SK:</dt>
+                            <dd>{{ $doc->nomor_sk }}</dd>
+                        </div>
+                        @endif
+                        @if($doc->berlaku_mulai && $doc->berlaku_sampai)
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Masa Berlaku:</dt>
+                            <dd>
+                                {{ $doc->berlaku_mulai->copy()->locale('id')->translatedFormat('d F Y') }}
+                                s.d.
+                                {{ $doc->berlaku_sampai->copy()->locale('id')->translatedFormat('d F Y') }}
+                            </dd>
+                        </div>
+                        @elseif($doc->berlaku_sampai)
+                        <div class="flex flex-wrap gap-x-2">
+                            <dt class="font-bold text-gray-900">Masa Berlaku:</dt>
+                            <dd>
+                                Berlaku sampai
+                                {{ $doc->berlaku_sampai->copy()->locale('id')->translatedFormat('d F Y') }}
+                            </dd>
+                        </div>
+                        @endif
+                    </dl>
+                </div>
+                @endif
+
                 <div class="mt-auto pt-4 border-t border-gray-100 flex items-center justify-between">
                     <span class="text-xs text-gray-400 font-medium">Diperbarui: {{ $doc->updated_at->format('d M Y') }}</span>
 

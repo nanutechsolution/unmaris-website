@@ -9,6 +9,19 @@
 
     <div class="container mx-auto px-4 max-w-6xl">
 
+        @if($activeTab !== $arsipTab)
+        <!-- Pintasan ke tab arsip dokumen sekolah tinggi -->
+        <div class="mb-10">
+            <div class="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                    <p class="font-bold text-amber-900 text-sm">Arsip SK Akreditasi Sekolah Tinggi</p>
+                    <p class="text-amber-800/90 text-sm mt-0.5">Mencari bukti akreditasi lama masa STMIK Stella Maris Sumba? Dokumen era Sekolah Tinggi disediakan di sini.</p>
+                </div>
+                <button type="button" wire:click="setTab('{{ $arsipTab }}')" class="inline-flex items-center justify-center min-h-[44px] px-5 py-2 rounded-full bg-amber-800 text-white font-bold text-sm hover:bg-amber-700 transition-colors">Lihat arsip STMIK</button>
+            </div>
+        </div>
+        @endif
+
         <!-- Filter & Search Bar -->
         <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-10 flex flex-col md:flex-row justify-between items-center gap-4 sticky top-20 z-30">
             <!-- Tabs -->

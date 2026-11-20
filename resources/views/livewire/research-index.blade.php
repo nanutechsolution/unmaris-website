@@ -1,46 +1,39 @@
-<div class="bg-gray-50 min-h-screen pb-20">
-    <!-- Header Section (Elegan & Berwibawa) -->
-    <section class="bg-unmaris-blue text-white py-16 md:py-24 relative overflow-hidden border-b-8 border-unmaris-yellow">
-        <!-- Elemen Dekoratif Edukasi -->
-        <div class="absolute inset-0 opacity-5">
-            <svg class="h-full w-full md:w-1/2" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
-                <polygon points="0,100 100,0 100,100" />
-            </svg>
-        </div>
-        <div class="absolute top-0 right-0 w-64 h-64 md:w-96 md:h-96 bg-unmaris-yellow rounded-full blur-[80px] md:blur-[120px] opacity-10 pointer-events-none z-0"></div>
-        
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-white/10 border border-white/20 text-white text-[10px] md:text-xs font-bold tracking-widest uppercase mb-4 shadow-sm backdrop-blur-sm">Lembaga Penelitian & Pengabdian Masyarakat</span>
-            <h1 class="text-3xl md:text-5xl lg:text-6xl font-black mb-4 leading-tight tracking-tighter">Direktori <span class="text-unmaris-yellow">Publikasi Ilmiah</span></h1>
-            <p class="text-sm md:text-lg text-gray-300 max-w-3xl mx-auto mt-4 font-medium px-2 leading-relaxed">Kumpulan repositori jurnal, artikel riset, buku, dan laporan pengabdian masyarakat hasil karya sivitas akademika Universitas Stella Maris Sumba.</p>
-        </div>
-    </section>
+<div class="min-h-screen bg-slate-50 pb-20">
+    <x-ui.page-hero title="Direktori Publikasi Ilmiah" eyebrow="Lembaga Penelitian & Pengabdian Masyarakat"
+        description="Kumpulan repositori jurnal, artikel riset, buku, dan laporan pengabdian masyarakat hasil karya sivitas akademika Universitas Stella Maris Sumba."
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => 'Publikasi Ilmiah'],
+        ]" />
 
-    <div class="container mx-auto px-4 max-w-6xl -mt-8 relative z-20">
+    <div class="container-page py-10 md:py-14">
         
         <!-- Filter & Search Bar (Sticky) -->
-        <div class="bg-white p-4 md:p-6 rounded-2xl md:rounded-[2rem] shadow-xl border border-gray-100 mb-10 flex flex-col lg:flex-row justify-between items-center gap-4 lg:gap-6 sticky top-20 z-30">
+        <div class="sticky top-20 z-30 mb-10 flex flex-col items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-5 lg:flex-row lg:gap-6">
             <!-- Tabs Navigasi -->
-            <div class="flex overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0 hide-scrollbar gap-2 snap-x">
-                <button wire:click="setTab('semua')" class="snap-start whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all {{ $activeTab === 'semua' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Semua Karya</button>
-                <button wire:click="setTab('jurnal')" class="snap-start whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all {{ $activeTab === 'jurnal' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Jurnal Ilmiah</button>
-                <button wire:click="setTab('pengabdian')" class="snap-start whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all {{ $activeTab === 'pengabdian' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Pengabdian</button>
-                <button wire:click="setTab('buku')" class="snap-start whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all {{ $activeTab === 'buku' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">Buku</button>
-                <button wire:click="setTab('hki')" class="snap-start whitespace-nowrap px-6 py-2.5 rounded-full font-bold text-xs md:text-sm transition-all {{ $activeTab === 'hki' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-gray-50 text-gray-500 hover:bg-gray-100' }}">HKI</button>
+            <div class="hide-scrollbar flex w-full snap-x gap-2 overflow-x-auto pb-1 lg:w-auto lg:pb-0">
+                <button wire:click="setTab('semua')" class="shrink-0 snap-start whitespace-nowrap rounded-full px-5 py-2 text-xs font-bold transition md:text-sm {{ $activeTab === 'semua' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">Semua Karya</button>
+                <button wire:click="setTab('jurnal')" class="shrink-0 snap-start whitespace-nowrap rounded-full px-5 py-2 text-xs font-bold transition md:text-sm {{ $activeTab === 'jurnal' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">Jurnal Ilmiah</button>
+                <button wire:click="setTab('pengabdian')" class="shrink-0 snap-start whitespace-nowrap rounded-full px-5 py-2 text-xs font-bold transition md:text-sm {{ $activeTab === 'pengabdian' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">Pengabdian</button>
+                <button wire:click="setTab('buku')" class="shrink-0 snap-start whitespace-nowrap rounded-full px-5 py-2 text-xs font-bold transition md:text-sm {{ $activeTab === 'buku' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">Buku</button>
+                <button wire:click="setTab('hki')" class="shrink-0 snap-start whitespace-nowrap rounded-full px-5 py-2 text-xs font-bold transition md:text-sm {{ $activeTab === 'hki' ? 'bg-unmaris-blue text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">HKI</button>
             </div>
 
             <!-- Kolom Pencarian -->
-            <div class="w-full lg:w-80 shrink-0 relative">
-                <input wire:model.live.debounce.500ms="search" type="text" placeholder="Cari judul atau nama penulis..." 
-                    class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-unmaris-yellow focus:border-unmaris-yellow transition-all text-sm font-medium">
-                <svg class="w-5 h-5 text-gray-400 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <div class="relative w-full shrink-0 lg:w-72">
+                <label for="pencarian-publikasi" class="sr-only">Cari judul atau nama penulis</label>
+                <input id="pencarian-publikasi" wire:model.live.debounce.500ms="search" type="search" placeholder="Cari judul atau nama penulis..."
+                    class="w-full rounded-full border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm font-medium outline-none transition focus:border-unmaris-yellow focus:ring-2 focus:ring-unmaris-yellow">
+                <svg class="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
             </div>
         </div>
 
         <!-- Indikator Loading -->
-        <div wire:loading wire:target="setTab, search" class="w-full text-center py-12">
-            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-unmaris-blue"></div>
-            <p class="mt-4 text-gray-500 font-bold tracking-widest uppercase text-xs">Menyinkronkan Basis Data...</p>
+        <div wire:loading wire:target="setTab, search" class="w-full py-12 text-center" role="status" aria-live="polite">
+            <div class="inline-block h-12 w-12 animate-spin rounded-full border-b-4 border-t-4 border-unmaris-blue"></div>
+            <p class="mt-4 text-xs font-bold uppercase tracking-widest text-slate-500">Menyinkronkan Basis Data...</p>
         </div>
 
         <!-- Daftar Publikasi (List Layout untuk kesan akademik) -->
@@ -94,13 +87,12 @@
                     </div>
                 </article>
             @empty
-                <div class="text-center py-24 bg-white rounded-[2rem] border border-gray-100 shadow-sm">
-                    <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-black text-gray-800 mb-2">Publikasi Tidak Ditemukan</h3>
-                    <p class="text-gray-500 font-medium">Coba gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.</p>
-                </div>
+                <x-ui.empty-state title="Publikasi Tidak Ditemukan"
+                    description="Coba gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </x-ui.empty-state>
             @endforelse
         </div>
 
@@ -110,8 +102,3 @@
         </div>
     </div>
 </div>
-
-<style>
-.hide-scrollbar::-webkit-scrollbar { display: none; }
-.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-</style>

@@ -1,21 +1,16 @@
 <div x-on:document:student-statistics-drill="$wire.drillDown($event.detail.code, $event.detail.name)">
     <!-- Header -->
-    <section class="bg-unmaris-blue text-white py-14 md:py-20 relative overflow-hidden border-b-8 border-unmaris-yellow">
-        <div class="absolute inset-0 opacity-10">
-            <svg class="absolute right-0 top-0 h-full w-1/2" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
-                <polygon points="0,100 100,0 100,100" />
-            </svg>
-        </div>
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-white/10 border border-white/20 text-[10px] md:text-xs font-bold tracking-widest uppercase backdrop-blur-sm">Promosi Kampus Berbasis Data</span>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black mb-4 tracking-tighter mt-4">GIS <span class="text-unmaris-yellow">Statistik Mahasiswa</span></h1>
-            <p class="text-sm md:text-lg text-gray-200 max-w-3xl mx-auto font-medium">Jelajahi persebaran mahasiswa Universitas Stella Maris Sumba berdasarkan wilayah. Data disajikan secara agregat dan tidak memuat nama, NIM, NIK, maupun data pribadi lainnya.</p>
-        </div>
-    </section>
+    <x-ui.page-hero title="GIS Statistik Mahasiswa" eyebrow="Promosi Kampus Berbasis Data"
+        description="Jelajahi persebaran mahasiswa Universitas Stella Maris Sumba berdasarkan wilayah. Data disajikan secara agregat dan tidak memuat nama, NIM, NIK, maupun data pribadi lainnya."
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => 'Kemahasiswaan', 'url' => route('scholarships.index')],
+            ['label' => 'Statistik Mahasiswa'],
+        ]" />
 
     <!-- Konten -->
-    <section class="py-10 md:py-16 bg-gray-50 min-h-screen relative -mt-8 z-20 rounded-t-3xl md:rounded-t-[3rem]">
-        <div class="container mx-auto px-4 max-w-7xl space-y-6">
+    <section class="min-h-screen bg-slate-50 py-10 md:py-14">
+        <div class="container-page space-y-6">
 
             <!-- Kontrol -->
             <div class="bg-white rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm p-5 md:p-7">

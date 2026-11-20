@@ -1,5 +1,7 @@
 <x-layouts.app title="Beranda - Universitas Stella Maris Sumba">
 
+    <h1 class="sr-only">Universitas Stella Maris Sumba — Membangun Masa Depan dari Sumba untuk Dunia</h1>
+
     <!-- 0. POP-UP PROMO OVERLAY (PMB) -->
     @if(isset($popupPromo) && $popupPromo)
     <div x-data="{ promoOpen: false }"
@@ -183,7 +185,19 @@
                     class="w-full h-full object-cover transform transition-transform duration-[20000ms] ease-out origin-center"
                     :class="activeSlide === {{ $index }} ? 'scale-110' : 'scale-100'">
                 @else
-                <div class="absolute inset-0 bg-gray-200" aria-hidden="true"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-unmaris-blue via-[#241b7a] to-slate-900" aria-hidden="true">
+                    <svg class="absolute inset-0 h-full w-full text-white opacity-[0.12]" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <pattern id="hero-dots-{{ $index }}" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                            <circle cx="2" cy="2" r="1.4" fill="currentColor" />
+                        </pattern>
+                        <rect width="100" height="100" fill="url(#hero-dots-{{ $index }})" />
+                    </svg>
+                    <div class="absolute inset-0 grid place-items-center p-10">
+                        <img src="{{ asset('images/logo-unmaris.png') }}" alt=""
+                            class="h-20 w-auto opacity-90 drop-shadow-2xl md:h-28" loading="lazy">
+                    </div>
+                    <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-unmaris-blue/70 to-transparent"></div>
+                </div>
                 @endif
             </div>
 
@@ -277,61 +291,125 @@
     <div id="setelah-slider" tabindex="-1"></div>
     @endif
 
-    <!-- 2. STATISTIK KAMPUS -->
-    <section class="py-8 md:py-12 bg-white border-b border-gray-100 relative z-20 -mt-4 md:-mt-6 rounded-t-2xl md:rounded-t-3xl shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center divide-x-0 md:divide-x divide-gray-100">
-                <div class="p-2 transform transition hover:-translate-y-1">
-                    <p class="text-3xl sm:text-4xl md:text-5xl font-black text-unmaris-blue mb-1 drop-shadow-sm">{{ $countProdi ?? 0 }}</p>
-                    <p class="text-[10px] md:text-xs lg:text-sm text-gray-500 font-bold uppercase tracking-widest">Program Studi</p>
-                </div>
-                <div class="p-2 transform transition hover:-translate-y-1">
-                    <p class="text-3xl sm:text-4xl md:text-5xl font-black text-unmaris-blue mb-1 drop-shadow-sm">{{ $countFakultas ?? 0 }}</p>
-                    <p class="text-[10px] md:text-xs lg:text-sm text-gray-500 font-bold uppercase tracking-widest">Fakultas Utama</p>
-                </div>
-                <div class="p-2 transform transition hover:-translate-y-1">
-                    <p class="text-3xl sm:text-4xl md:text-5xl font-black text-unmaris-blue mb-1 drop-shadow-sm">{{ $countBerita ?? 0 }}+</p>
-                    <p class="text-[10px] md:text-xs lg:text-sm text-gray-500 font-bold uppercase tracking-widest">Publikasi & Riset</p>
-                </div>
-                <div class="p-2 transform transition hover:-translate-y-1">
-                    <p class="text-2xl sm:text-3xl md:text-4xl font-black text-unmaris-blue mb-1 md:mt-1 drop-shadow-sm">Baik</p>
-                    <p class="text-[10px] md:text-xs lg:text-sm text-gray-500 font-bold uppercase tracking-widest">Akreditasi Institusi</p>
-                </div>
+    <!-- 1b. AKSES CEPAT LAYANAN -->
+    <section class="border-b border-slate-100 bg-white" aria-label="Akses cepat layanan">
+        <div class="container-page py-6 md:py-8">
+            <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
+                <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                    class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition hover:-translate-y-0.5 hover:border-unmaris-blue/30 hover:shadow-lg md:p-4">
+                    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-yellow-50 text-yellow-700 transition group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Penerimaan</span>
+                        <span class="block truncate text-sm font-bold text-slate-900 transition group-hover:text-unmaris-blue">Daftar PMB</span>
+                    </span>
+                </a>
+
+                <a href="{{ route('scholarships.index') }}"
+                    class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition hover:-translate-y-0.5 hover:border-unmaris-blue/30 hover:shadow-lg md:p-4">
+                    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-emerald-50 text-emerald-700 transition group-hover:bg-emerald-600 group-hover:text-white">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7" />
+                        </svg>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Kemahasiswaan</span>
+                        <span class="block truncate text-sm font-bold text-slate-900 transition group-hover:text-unmaris-blue">Info Beasiswa</span>
+                    </span>
+                </a>
+
+                <a href="{{ route('akademik.unduhan') }}"
+                    class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition hover:-translate-y-0.5 hover:border-unmaris-blue/30 hover:shadow-lg md:p-4">
+                    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-blue-50 text-unmaris-blue transition group-hover:bg-unmaris-blue group-hover:text-white">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Akademik</span>
+                        <span class="block truncate text-sm font-bold text-slate-900 transition group-hover:text-unmaris-blue">Pusat Unduhan</span>
+                    </span>
+                </a>
+
+                <a href="{{ route('complaint.index') }}"
+                    class="group flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition hover:-translate-y-0.5 hover:border-unmaris-blue/30 hover:shadow-lg md:p-4">
+                    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-rose-50 text-rose-600 transition group-hover:bg-rose-600 group-hover:text-white">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                        </svg>
+                    </span>
+                    <span class="min-w-0">
+                        <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400">Layanan</span>
+                        <span class="block truncate text-sm font-bold text-slate-900 transition group-hover:text-unmaris-blue">Pengaduan</span>
+                    </span>
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- 2. STATISTIK KAMPUS -->
+    <section class="relative z-20 border-b border-slate-100 bg-slate-50" aria-label="Statistik kampus">
+        <div class="container-page py-8 md:py-10">
+            <dl class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+                <div class="rounded-2xl bg-white p-5 text-center shadow-sm ring-1 ring-slate-200/60">
+                    <dd class="font-display text-3xl font-extrabold text-unmaris-blue sm:text-4xl">{{ $countProdi ?? 0 }}</dd>
+                    <dt class="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 md:text-xs">Program Studi</dt>
+                </div>
+                <div class="rounded-2xl bg-white p-5 text-center shadow-sm ring-1 ring-slate-200/60">
+                    <dd class="font-display text-3xl font-extrabold text-unmaris-blue sm:text-4xl">{{ $countFakultas ?? 0 }}</dd>
+                    <dt class="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 md:text-xs">Fakultas</dt>
+                </div>
+                <div class="rounded-2xl bg-white p-5 text-center shadow-sm ring-1 ring-slate-200/60">
+                    <dd class="font-display text-3xl font-extrabold text-unmaris-blue sm:text-4xl">{{ $countBerita ?? 0 }}+</dd>
+                    <dt class="mt-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 md:text-xs">Berita &amp; Publikasi</dt>
+                </div>
+                <div class="rounded-2xl bg-unmaris-blue p-5 text-center shadow-sm">
+                    <dd class="font-display text-2xl font-extrabold text-unmaris-yellow sm:text-3xl">Baik</dd>
+                    <dt class="mt-1 text-[10px] font-bold uppercase tracking-widest text-white/70 md:text-xs">Akreditasi Institusi</dt>
+                </div>
+            </dl>
+        </div>
+    </section>
+
     <!-- 3. VIDEO PROFIL KAMPUS POPUP -->
-    <section class="py-16 md:py-24 bg-gray-900 relative overflow-hidden" x-data="{ videoOpen: false }">
+    <section class="relative overflow-hidden bg-slate-900 py-16 md:py-24" x-data="{ videoOpen: false }"
+        @keydown.escape.window="videoOpen = false"
+        x-effect="document.documentElement.style.overflow = videoOpen ? 'hidden' : ''">
         <div class="absolute inset-0 z-0">
             <div class="absolute inset-0 bg-unmaris-blue/30 mix-blend-multiply"></div>
-            <!-- Anda bisa mengganti link ini dengan gambar kampus UNMARIS dari atas (drone) -->
-            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Kampus Background" class="w-full h-full object-cover opacity-30 grayscale">
-            <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
+            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+                alt="" aria-hidden="true" loading="lazy"
+                class="h-full w-full object-cover opacity-30 grayscale">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent"></div>
         </div>
 
-        <div class="container mx-auto px-4 relative z-10">
-            <div class="max-w-4xl mx-auto text-center">
-                <span class="text-unmaris-yellow font-black tracking-widest uppercase text-[10px] md:text-xs mb-3 block">Mengenal Lebih Dekat</span>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-8 md:mb-12 leading-tight">Jelajahi Kampus<br>Universitas Stella Maris Sumba</h2>
+        <div class="container-page relative z-10">
+            <div class="mx-auto max-w-4xl text-center">
+                <span class="eyebrow-light mb-3">Mengenal Lebih Dekat</span>
+                <h2 class="mb-8 text-balance text-3xl font-extrabold leading-tight text-white md:mb-12 md:text-4xl lg:text-5xl">Jelajahi Kampus<br>Universitas Stella Maris Sumba</h2>
 
-                <div class="relative inline-block group cursor-pointer" @click="videoOpen = true">
-                    <div class="absolute inset-0 bg-unmaris-yellow rounded-full animate-ping opacity-20 group-hover:opacity-40 transition-opacity duration-300"></div>
-                    <div class="absolute -inset-4 bg-unmaris-yellow/20 rounded-full scale-100 group-hover:scale-110 transition-transform duration-500 blur-xl"></div>
+                <button type="button" @click="videoOpen = true"
+                    class="group relative inline-flex items-center justify-center rounded-full"
+                    aria-label="Putar video profil kampus">
+                    <span class="absolute inset-0 animate-ping rounded-full bg-unmaris-yellow opacity-20 transition-opacity duration-300 group-hover:opacity-40"></span>
+                    <span class="absolute -inset-4 scale-100 rounded-full bg-unmaris-yellow/20 blur-xl transition-transform duration-500 group-hover:scale-110"></span>
 
-                    <div class="relative w-20 h-20 md:w-28 md:h-28 bg-unmaris-yellow rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(253,224,26,0.4)] group-hover:scale-105 group-hover:bg-white transition-all duration-300 z-10 border-4 border-white/10">
-                        <svg class="w-8 h-8 md:w-10 md:h-10 text-unmaris-blue ml-1.5 md:ml-2" fill="currentColor" viewBox="0 0 24 24">
+                    <span class="relative z-10 flex h-20 w-20 items-center justify-center rounded-full border-4 border-white/10 bg-unmaris-yellow shadow-[0_0_40px_rgba(253,224,26,0.4)] transition-all duration-300 group-hover:scale-105 group-hover:bg-white md:h-28 md:w-28">
+                        <svg class="ml-1.5 h-8 w-8 text-unmaris-blue md:ml-2 md:h-10 md:w-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path d="M8 5v14l11-7z" />
                         </svg>
-                    </div>
-                </div>
+                    </span>
+                </button>
 
-                <p class="text-gray-300 mt-8 md:mt-10 text-sm md:text-base max-w-2xl mx-auto font-medium">Tonton video profil kami untuk melihat fasilitas, suasana belajar, dan kegiatan kemahasiswaan yang akan Anda alami selama berkuliah di UNMARIS.</p>
+                <p class="mx-auto mt-8 max-w-2xl text-sm font-medium text-slate-300 md:mt-10 md:text-base">Tonton video profil kami untuk melihat fasilitas, suasana belajar, dan kegiatan kemahasiswaan yang akan Anda alami selama berkuliah di UNMARIS.</p>
             </div>
         </div>
 
         <!-- Video Modal -->
-        <div x-show="videoOpen" style="display: none;"
+        <div x-show="videoOpen" style="display: none;" role="dialog" aria-modal="true" aria-label="Video profil kampus"
             x-transition:enter="transition ease-out duration-300"
             x-transition:enter-start="opacity-0 backdrop-blur-none"
             x-transition:enter-end="opacity-100 backdrop-blur-md"
@@ -340,9 +418,10 @@
             x-transition:leave-end="opacity-0 backdrop-blur-none"
             class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 sm:p-6 md:p-12">
             <div class="relative w-full max-w-5xl aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden transform transition-all" @click.away="videoOpen = false">
-                <button @click="videoOpen = false" class="absolute -top-12 right-0 md:-right-12 md:top-0 text-white/70 hover:text-unmaris-yellow transition-colors p-2">
-                    <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <button @click="videoOpen = false" aria-label="Tutup video"
+                    class="absolute -top-12 right-0 p-2 text-white/70 transition-colors hover:text-unmaris-yellow md:-right-12 md:top-0">
+                    <svg class="h-8 w-8 md:h-10 md:w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
                 <template x-if="videoOpen">
@@ -361,170 +440,159 @@
 
 
 
-    <!-- 5. BERITA & UPDATE TERBARU (PENAMBAHAN BARU) -->
+    <!-- 5. BERITA & UPDATE TERBARU -->
     @if(isset($latestNews) && $latestNews->count() > 0)
-    <section class="py-16 md:py-24 bg-white border-t border-gray-100">
-        <div class="container mx-auto px-4 max-w-7xl">
-            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-16 gap-6">
-                <div class="text-center md:text-left">
-                    <span class="text-unmaris-blue font-black tracking-widest uppercase text-[10px] md:text-xs mb-2 md:mb-3 block">Informasi Terkini</span>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 border-b-4 border-unmaris-yellow inline-block pb-2">Berita Kampus</h2>
-                </div>
-                <a href="{{ route('news.index') }}" class="hidden md:inline-flex items-center text-unmaris-blue font-black text-xs md:text-sm uppercase tracking-widest hover:text-unmaris-yellow transition group">
-                    Semua Berita
-                    <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center ml-3 group-hover:bg-unmaris-yellow transition-colors">
-                        <svg class="w-4 h-4 text-unmaris-blue transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                        </svg>
-                    </div>
-                </a>
-            </div>
+    <section class="section-y border-t border-slate-100 bg-white">
+        <div class="container-page">
+            <x-ui.section-heading eyebrow="Informasi Terkini" title="Berita Kampus"
+                description="Kabar terbaru seputar akademik, prestasi, dan kehidupan kampus Universitas Stella Maris Sumba."
+                :href="route('news.index')" link-label="Semua Berita" />
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 md:gap-7">
                 @foreach($latestNews as $item)
-                <article class="group bg-gray-50 rounded-[2rem] p-3 border border-gray-100 hover:border-gray-200 hover:shadow-xl transition-all duration-500 flex flex-col h-full">
-                    <a href="{{ route('news.detail', $item->slug) }}" class="block relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 shadow-sm">
+                <article class="card card-hover group flex h-full flex-col overflow-hidden">
+                    <a href="{{ route('news.detail', $item->slug) }}" class="relative block aspect-[4/3] overflow-hidden bg-slate-100">
                         @if($item->featured_image)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($item->featured_image) }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="{{ $item->title }}">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($item->featured_image) }}"
+                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            alt="{{ $item->title }}" loading="lazy">
                         @else
-                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
-                            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        <div class="flex h-full w-full items-center justify-center text-slate-300">
+                            <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
                         @endif
 
                         @if($item->video_url)
-                        <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors z-10 flex items-center justify-center">
-                            <div class="w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300">
-                                <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                        <span class="absolute inset-0 z-10 flex items-center justify-center bg-slate-900/10 transition group-hover:bg-transparent">
+                            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-white/70 text-unmaris-blue shadow-lg backdrop-blur transition group-hover:scale-110">
+                                <svg class="ml-0.5 h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path d="M8 5v14l11-7z" />
                                 </svg>
-                            </div>
-                        </div>
+                            </span>
+                        </span>
                         @endif
 
-                        <div class="absolute top-3 left-3 z-20">
-                            <span class="bg-unmaris-blue/90 backdrop-blur-md text-white text-[8px] font-black px-3 py-1.5 rounded-full uppercase tracking-tighter shadow-sm">
-                                {{ $item->category->name }}
-                            </span>
-                        </div>
+                        <span class="absolute left-3 top-3 z-20 rounded-full bg-unmaris-blue/90 px-3 py-1 text-[9px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
+                            {{ $item->category->name }}
+                        </span>
                     </a>
 
-                    <div class="px-2 flex flex-col flex-grow">
-                        <span class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mb-2 flex items-center gap-1.5">
-                            <div class="w-1.5 h-1.5 bg-unmaris-yellow rounded-full"></div>
-                            {{ $item->published_at->format('d M Y') }}
-                        </span>
-                        <h3 class="text-sm md:text-base font-black text-gray-900 leading-snug mb-3 group-hover:text-unmaris-blue transition-colors line-clamp-3">
-                            <a href="{{ route('news.detail', $item->slug) }}">
-                                {{ $item->title }}
-                            </a>
+                    <div class="flex flex-1 flex-col p-5">
+                        <time datetime="{{ $item->published_at?->toDateString() }}" class="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            {{ $item->published_at?->translatedFormat('d F Y') }}
+                        </time>
+                        <h3 class="mt-2 line-clamp-3 text-base font-bold leading-snug text-slate-900 transition group-hover:text-unmaris-blue">
+                            <a href="{{ route('news.detail', $item->slug) }}">{{ $item->title }}</a>
                         </h3>
+                        <a href="{{ route('news.detail', $item->slug) }}"
+                            class="mt-auto inline-flex items-center gap-1.5 pt-4 text-[11px] font-extrabold uppercase tracking-widest text-unmaris-blue transition hover:gap-2.5">
+                            Baca selengkapnya
+                            <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </a>
                     </div>
                 </article>
                 @endforeach
             </div>
 
             <div class="mt-8 text-center md:hidden">
-                <a href="{{ route('news.index') }}" class="inline-block w-full bg-gray-50 border border-gray-200 text-gray-700 px-6 py-3.5 rounded-full font-bold text-sm hover:bg-unmaris-blue hover:text-white transition shadow-sm">
-                    Baca Berita Lainnya
-                </a>
+                <a href="{{ route('news.index') }}" class="btn-outline w-full">Baca Berita Lainnya</a>
             </div>
         </div>
     </section>
     @endif
 
     <!-- 4. FAKULTAS & PROGRAM STUDI -->
-    <section class="py-16 md:py-24 bg-gray-50">
-        <div class="container mx-auto px-4 max-w-7xl">
-            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-16 gap-6">
-                <div class="text-center md:text-left">
-                    <span class="text-unmaris-blue font-black tracking-widest uppercase text-[10px] md:text-xs mb-2 md:mb-3 block">Jalur Keilmuan</span>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 border-b-4 border-unmaris-yellow inline-block pb-2">Fakultas Pilihan</h2>
-                </div>
-                <a href="{{ route('faculties.index') }}" class="hidden md:inline-flex items-center bg-white border border-gray-200 px-6 py-3 rounded-full text-unmaris-blue font-bold hover:bg-unmaris-blue hover:text-white transition-all shadow-sm">
-                    Lihat Semua Fakultas <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                    </svg>
-                </a>
-            </div>
+    <section class="section-y bg-slate-50">
+        <div class="container-page">
+            <x-ui.section-heading eyebrow="Jalur Keilmuan" title="Fakultas Pilihan"
+                description="Temukan program studi yang sesuai dengan minat dan cita-cita Anda di UNMARIS."
+                :href="route('faculties.index')" link-label="Lihat Semua Fakultas" />
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                @if(isset($faculties) && $faculties->count() > 0)
+            @if(isset($faculties) && $faculties->count() > 0)
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 md:gap-7">
                 @foreach($faculties->take(3) as $faculty)
-                <a href="{{ route('faculties.detail', $faculty->slug) }}" class="group bg-white rounded-2xl md:rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-500 border border-gray-100 overflow-hidden flex flex-col h-full transform hover:-translate-y-2">
-                    <div class="h-48 md:h-56 bg-unmaris-blue relative overflow-hidden">
+                <a href="{{ route('faculties.detail', $faculty->slug) }}"
+                    class="card card-hover group flex h-full flex-col overflow-hidden">
+                    <div class="relative h-48 overflow-hidden bg-unmaris-blue md:h-52">
                         @if($faculty->image)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($faculty->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" alt="{{ $faculty->name }}">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($faculty->image) }}"
+                            class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            alt="{{ $faculty->name }}" loading="lazy">
                         @else
-                        <div class="w-full h-full opacity-30 bg-gradient-to-br from-unmaris-blue to-blue-900 flex items-center justify-center">
-                            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-unmaris-blue to-blue-900">
+                            <svg class="h-14 w-14 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                             </svg>
                         </div>
                         @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent"></div>
-                        <h3 class="absolute bottom-4 md:bottom-5 left-5 md:left-6 right-5 md:right-6 text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-unmaris-yellow transition-colors">{{ $faculty->name }}</h3>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
+                        <h3 class="absolute bottom-4 left-5 right-5 font-display text-xl font-bold leading-tight text-white transition-colors group-hover:text-unmaris-yellow">
+                            {{ $faculty->name }}
+                        </h3>
                     </div>
-                    <div class="p-5 md:p-6 flex-grow flex flex-col justify-between">
-                        <p class="text-gray-500 text-sm md:text-base mb-6 line-clamp-3 leading-relaxed font-medium">{{ $faculty->description ?? 'Pendidikan tinggi berkualitas untuk mencetak lulusan unggul, profesional, dan berkarakter.' }}</p>
-                        <div class="flex items-center justify-between text-unmaris-blue font-bold text-[10px] md:text-xs uppercase tracking-widest mt-auto border-t border-gray-50 pt-4 group-hover:text-unmaris-yellow transition-colors">
-                            <span class="flex items-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002 2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    <div class="flex flex-1 flex-col p-5 md:p-6">
+                        <p class="line-clamp-3 text-sm leading-relaxed text-slate-600">
+                            {{ $faculty->description ?? 'Pendidikan tinggi berkualitas untuk mencetak lulusan unggul, profesional, dan berkarakter.' }}
+                        </p>
+                        <div class="mt-auto flex items-center justify-between border-t border-slate-100 pt-4 text-[10px] font-extrabold uppercase tracking-widest text-unmaris-blue md:text-xs">
+                            <span class="inline-flex items-center gap-2">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002 2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                                 </svg>
                                 {{ $faculty->studyPrograms ? $faculty->studyPrograms->count() : 0 }} Program Studi
                             </span>
-                            <svg class="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            <svg class="h-4 w-4 transition-transform group-hover:translate-x-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </div>
                     </div>
                 </a>
                 @endforeach
-                @endif
             </div>
+            @else
+            <x-ui.empty-state title="Data fakultas belum tersedia"
+                description="Informasi fakultas dan program studi akan segera ditampilkan di halaman ini." />
+            @endif
 
             <div class="mt-8 text-center md:hidden">
-                <a href="{{ route('faculties.index') }}" class="inline-flex items-center justify-center w-full bg-unmaris-blue text-white px-6 py-4 rounded-full font-bold hover:bg-unmaris-yellow hover:text-unmaris-blue transition shadow-md">
-                    Lihat Semua Fakultas
-                </a>
+                <a href="{{ route('faculties.index') }}" class="btn-navy w-full">Lihat Semua Fakultas</a>
             </div>
         </div>
     </section>
     @if(isset($testimonials) && $testimonials->count() > 0)
-    <section class="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-unmaris-blue opacity-5 rounded-l-full blur-3xl pointer-events-none"></div>
-        <div class="container mx-auto px-4 max-w-7xl relative z-10">
-            <div class="text-center mb-12 md:mb-16">
-                <span class="text-unmaris-blue font-black tracking-widest uppercase text-[10px] md:text-xs mb-2 md:mb-3 block">Jejak Karir</span>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 inline-block border-b-4 border-unmaris-yellow pb-2">Kisah Sukses Alumni</h2>
-            </div>
+    <section class="section-y relative overflow-hidden bg-white">
+        <div class="pointer-events-none absolute -right-24 top-0 h-96 w-96 rounded-full bg-unmaris-blue opacity-[0.04] blur-3xl" aria-hidden="true"></div>
+        <div class="container-page relative z-10">
+            <x-ui.section-heading align="center" eyebrow="Jejak Karier" title="Kisah Sukses Alumni"
+                description="Pengalaman para lulusan yang kini berkarya dan memberi dampak di berbagai bidang." />
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-7">
                 @foreach($testimonials as $testi)
-                <div class="bg-white p-8 md:p-10 rounded-[2.5rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 relative group flex flex-col h-full">
-                    <div class="absolute top-8 right-8 text-gray-100 group-hover:text-unmaris-yellow transition-colors opacity-50">
-                        <svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                        </svg>
-                    </div>
-                    <p class="text-gray-600 text-sm md:text-base leading-relaxed mb-8 relative z-10 font-medium italic flex-grow">"{{ $testi->message }}"</p>
-                    <div class="flex items-center gap-4 mt-auto relative z-10">
+                <figure class="card flex h-full flex-col p-7 md:p-8">
+                    <svg class="mb-5 h-9 w-9 text-unmaris-yellow" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                    <blockquote class="flex-1 text-sm leading-relaxed text-slate-600 md:text-base">“{{ $testi->message }}”</blockquote>
+                    <figcaption class="mt-6 flex items-center gap-3 border-t border-slate-100 pt-5">
                         @if($testi->image)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($testi->image) }}" alt="{{ $testi->name }}" class="w-12 h-12 rounded-full border-2 border-gray-100 object-cover">
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($testi->image) }}" alt="{{ $testi->name }}"
+                            class="h-11 w-11 rounded-full border-2 border-slate-100 object-cover" loading="lazy">
                         @else
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testi->name) }}&background=1B1464&color=FDE01A" alt="{{ $testi->name }}" class="w-12 h-12 rounded-full border-2 border-gray-100">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($testi->name) }}&background=1B1464&color=FDE01A"
+                            alt="{{ $testi->name }}" class="h-11 w-11 rounded-full border-2 border-slate-100" loading="lazy">
                         @endif
-                        <div>
-                            <h4 class="font-bold text-gray-900 text-sm">{{ $testi->name }}</h4>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">
-                                {{ $testi->job_title }} {{ $testi->company ? 'di ' . $testi->company : '' }}
+                        <div class="min-w-0">
+                            <p class="truncate text-sm font-bold text-slate-900">{{ $testi->name }}</p>
+                            <p class="truncate text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                {{ $testi->job_title }}{{ $testi->company ? ' di ' . $testi->company : '' }}
                             </p>
                         </div>
-                    </div>
-                </div>
+                    </figcaption>
+                </figure>
                 @endforeach
             </div>
         </div>
@@ -532,95 +600,103 @@
     @endif
 
 
-    <!-- 7. MITRA / PARTNERS (Marquee Simpel) -->
+    <!-- 7. MITRA / PARTNERS (Marquee) -->
     @if(isset($partners) && $partners->count() > 0)
-    <section class="py-10 border-t border-b border-gray-100 bg-white overflow-hidden">
-        <div class="container mx-auto px-4 text-center mb-6">
-            <p class="text-[10px] md:text-xs font-black text-gray-400 uppercase tracking-widest">Telah Dipercaya Oleh Berbagai Institusi</p>
+    <section class="border-y border-slate-100 bg-slate-50 py-10" aria-label="Institusi mitra UNMARIS">
+        <div class="container-page mb-6 text-center">
+            <p class="text-[10px] font-extrabold uppercase tracking-[0.22em] text-slate-400 md:text-xs">Telah Dipercaya oleh Berbagai Institusi</p>
         </div>
-        <!-- Infinite Scroll Animation Wrapper (Tailwind util class needed in app.css, or just simple flex wrap for now) -->
-        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500 max-w-5xl mx-auto px-4">
-            @foreach($partners as $partner)
-            <div class="text-xl font-black text-gray-400 flex items-center gap-2">
-                @if($partner->logo)
-                <img src="{{ \Illuminate\Support\Facades\Storage::url($partner->logo) }}" alt="{{ $partner->name }}" class="h-8 object-contain">
-                @else
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-                @endif
-                {{ $partner->name }}
+
+        <div class="marquee overflow-hidden">
+            <div class="marquee-track flex w-max items-center gap-12 px-6 md:gap-16">
+                @foreach($partners->concat($partners) as $partner)
+                <div class="flex shrink-0 items-center gap-2.5 text-base font-extrabold text-slate-400 md:text-lg">
+                    @if($partner->logo)
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($partner->logo) }}" alt="{{ $partner->name }}"
+                        class="h-7 w-auto max-w-[9rem] object-contain opacity-70 grayscale md:h-8" loading="lazy">
+                    @else
+                    <svg class="h-5 w-5 shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                    </svg>
+                    <span>{{ $partner->name }}</span>
+                    @endif
+                </div>
+                @endforeach
             </div>
-            @endforeach
         </div>
     </section>
     @endif
 
     <!-- 8. MENGAPA MEMILIH KAMI -->
-    <section class="py-16 md:py-24 bg-white">
-        <div class="container mx-auto px-4 max-w-7xl">
-            <div class="text-center mb-12 md:mb-16">
-                <span class="text-unmaris-blue font-black tracking-widest uppercase text-[10px] md:text-xs mb-2 md:mb-3 block">Nilai Inti</span>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 inline-block border-b-4 border-unmaris-yellow pb-2">Mengapa Memilih Kami?</h2>
-            </div>
+    <section class="section-y bg-white">
+        <div class="container-page">
+            <x-ui.section-heading align="center" eyebrow="Nilai Inti" title="Mengapa Memilih Kami?"
+                description="Tiga pilar yang membentuk pengalaman belajar dan kesiapan karier lulusan UNMARIS." />
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <div class="bg-gray-50 p-8 md:p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col items-center text-center group">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-blue-100 text-unmaris-blue rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:bg-unmaris-blue group-hover:text-white transition-colors duration-500 shadow-sm transform group-hover:rotate-6">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-7">
+                <div class="card group flex h-full flex-col items-center p-8 text-center md:p-10">
+                    <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-unmaris-blue transition-colors duration-300 group-hover:bg-unmaris-blue group-hover:text-white md:h-16 md:w-16">
+                        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">Pendidikan Berkarakter</h3>
-                    <p class="text-gray-500 text-sm md:text-base leading-relaxed font-medium">Menanamkan nilai-nilai integritas, etika profesional, dan karakter unggul di setiap langkah akademik lulusan.</p>
+                    <h3 class="heading-3 mb-3">Pendidikan Berkarakter</h3>
+                    <p class="text-sm leading-relaxed text-slate-600 md:text-base">Menanamkan nilai-nilai integritas, etika profesional, dan karakter unggul di setiap langkah akademik lulusan.</p>
                 </div>
 
-                <div class="bg-gray-50 p-8 md:p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col items-center text-center group">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-yellow-100 text-yellow-700 rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue transition-colors duration-500 shadow-sm transform group-hover:rotate-6">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                <div class="card group flex h-full flex-col items-center p-8 text-center md:p-10">
+                    <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-yellow-50 text-yellow-700 transition-colors duration-300 group-hover:bg-unmaris-yellow group-hover:text-unmaris-blue md:h-16 md:w-16">
+                        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">Fasilitas Modern</h3>
-                    <p class="text-gray-500 text-sm md:text-base leading-relaxed font-medium">Dukungan lingkungan kampus yang kondusif dengan laboratorium terpadu dan sistem e-learning terkini.</p>
+                    <h3 class="heading-3 mb-3">Fasilitas Modern</h3>
+                    <p class="text-sm leading-relaxed text-slate-600 md:text-base">Dukungan lingkungan kampus yang kondusif dengan laboratorium terpadu dan sistem e-learning terkini.</p>
                 </div>
 
-                <div class="bg-gray-50 p-8 md:p-10 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col items-center text-center group">
-                    <div class="w-16 h-16 md:w-20 md:h-20 bg-blue-100 text-unmaris-blue rounded-2xl flex items-center justify-center mb-6 md:mb-8 group-hover:bg-unmaris-blue group-hover:text-white transition-colors duration-500 shadow-sm transform group-hover:-rotate-6">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                <div class="card group flex h-full flex-col items-center p-8 text-center md:p-10">
+                    <div class="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-unmaris-blue transition-colors duration-300 group-hover:bg-unmaris-blue group-hover:text-white md:h-16 md:w-16">
+                        <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mb-3">Lulusan Siap Kerja</h3>
-                    <p class="text-gray-500 text-sm md:text-base leading-relaxed font-medium">Kurikulum yang disusun adaptif terhadap tantangan global, riset terapan, dan kebutuhan industri digital.</p>
+                    <h3 class="heading-3 mb-3">Lulusan Siap Kerja</h3>
+                    <p class="text-sm leading-relaxed text-slate-600 md:text-base">Kurikulum yang disusun adaptif terhadap tantangan global, riset terapan, dan kebutuhan industri digital.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- 9. CALL TO ACTION (PMB) -->
-    <section class="py-16 md:py-24 relative overflow-hidden bg-unmaris-blue border-t-8 border-unmaris-yellow">
-        <div class="absolute inset-0 opacity-10">
+    <section class="relative overflow-hidden border-t-[6px] border-unmaris-yellow bg-unmaris-blue py-16 md:py-24">
+        <div class="pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden="true">
             <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
                 <polygon points="100,100 0,0 100,0" />
             </svg>
         </div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] md:w-[800px] md:h-[800px] bg-unmaris-yellow rounded-full blur-[100px] md:blur-[150px] opacity-20 pointer-events-none"></div>
+        <div class="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-unmaris-yellow opacity-20 blur-[110px] md:h-[700px] md:w-[700px] md:blur-[150px]" aria-hidden="true"></div>
 
-        <div class="container mx-auto px-4 relative z-10 text-center max-w-4xl">
-            <span class="inline-block py-1.5 px-4 md:px-5 bg-white/10 border border-white/20 text-white rounded-full text-[10px] md:text-xs font-bold tracking-widest uppercase mb-4 md:mb-6 backdrop-blur-sm shadow-sm">Penerimaan Mahasiswa Baru</span>
-            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 md:mb-6 leading-tight">Mulai Perjalanan<br>Akademikmu Sekarang.</h2>
-            <p class="text-base md:text-lg lg:text-xl text-gray-300 mb-8 md:mb-12 font-medium px-4 md:px-0">Jadilah bagian dari Universitas Stella Maris Sumba dan kembangkan potensimu untuk membawa perubahan positif bagi bangsa.</p>
+        <div class="container-page relative z-10">
+            <div class="mx-auto max-w-3xl text-center">
+                <span class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white backdrop-blur-sm md:text-xs">
+                    Penerimaan Mahasiswa Baru
+                </span>
+                <h2 class="text-balance text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+                    Mulai Perjalanan Akademikmu Sekarang.
+                </h2>
+                <p class="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base lg:text-lg">
+                    Jadilah bagian dari Universitas Stella Maris Sumba dan kembangkan potensimu untuk membawa perubahan positif bagi bangsa.
+                </p>
 
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 px-4 md:px-0">
-                <a href="https://pmb.unmarissumba.ac.id" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue font-black text-base md:text-lg px-8 md:px-10 py-4 md:py-5 rounded-full hover:bg-white hover:scale-105 transition-all shadow-[0_10px_30px_rgba(253,224,26,0.3)]">
-                    Daftar Sekarang <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-                    </svg>
-                </a>
-                <a href="{{ route('contact') }}" class="w-full sm:w-auto inline-flex items-center justify-center bg-transparent border-2 border-white/30 text-white font-bold text-base md:text-lg px-8 md:px-10 py-4 md:py-5 rounded-full hover:bg-white/10 hover:border-white transition-all">
-                    Hubungi Panitia PMB
-                </a>
+                <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener" class="btn-primary w-full sm:w-auto">
+                        Daftar Sekarang
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                    <a href="{{ route('contact') }}" class="btn-light-outline w-full sm:w-auto">Hubungi Panitia PMB</a>
+                </div>
             </div>
         </div>
     </section>

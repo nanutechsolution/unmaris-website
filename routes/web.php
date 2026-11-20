@@ -29,10 +29,10 @@ Route::get('/', function () {
     $countFakultas = Faculty::count();
     $countBerita = News::where('is_published', true)->count();
     $testimonials = Testimonial::where('is_active', true)->orderBy('order', 'asc')->take(6)->get();
-    $partner = Partner::where('is_active', true)->orderBy('order', 'asc')->get();
+    $partners = Partner::where('is_active', true)->orderBy('order', 'asc')->get();
 
     $faculties = Faculty::with('studyPrograms')->get();
-    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo', 'testimonials', 'partner', 'faculties'));
+    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo', 'testimonials', 'partners', 'faculties'));
 })->name('home');
 
 Route::get('/fasilitas', function () {

@@ -1,59 +1,106 @@
 <div>
     @if($successMessage)
-        <div class="bg-green-50 border-l-4 border-green-500 p-6 rounded-r-xl shadow-sm mb-6 transform transition-all duration-500">
-            <div class="flex items-center">
-                <svg class="w-8 h-8 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="mb-6 rounded-r-xl border-l-4 border-green-500 bg-green-50 p-6 shadow-sm" role="status" aria-live="polite">
+            <div class="flex items-start">
+                <svg class="mr-3 h-7 w-7 shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
                 <div>
                     <h3 class="text-lg font-bold text-green-800">Pesan Berhasil Terkirim!</h3>
-                    <p class="text-green-700 mt-1">Terima kasih telah menghubungi kami. Tim UNMARIS akan segera membalas pesan Anda.</p>
+                    <p class="mt-1 text-sm leading-relaxed text-green-700">Terima kasih telah menghubungi kami. Tim UNMARIS akan segera membalas pesan Anda.</p>
                 </div>
             </div>
-            <button wire:click="$set('successMessage', false)" class="mt-4 text-sm font-semibold text-green-600 hover:text-green-800 underline">Kirim pesan lainnya</button>
+            <button type="button" wire:click="$set('successMessage', false)"
+                class="mt-4 text-sm font-semibold text-green-600 underline transition hover:text-green-800">
+                Kirim pesan lainnya
+            </button>
         </div>
     @else
         <form wire:submit.prevent="submitMessage" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <!-- Nama -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
-                    <input type="text" wire:model.defer="name" class="w-full px-4 py-3 rounded-xl border {{ $errors->has('name') ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50' }} focus:ring-2 focus:ring-unmaris-blue focus:border-transparent transition-all outline-none" placeholder="Masukkan nama Anda">
-                    @error('name') <span class="text-red-500 text-xs mt-1 font-medium">{{ $message }}</span> @enderror
+                    <label for="kontak-nama" class="mb-2 block text-sm font-semibold text-slate-700">
+                        Nama Lengkap <span class="text-red-500" aria-hidden="true">*</span>
+                    </label>
+                    <input id="kontak-nama" type="text" wire:model.defer="name" required
+                        aria-invalid="{{ $errors->has('name') ? 'true' : 'false' }}"
+                        aria-describedby="{{ $errors->has('name') ? 'kontak-nama-error' : '' }}"
+                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('name') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        placeholder="Masukkan nama Anda">
+                    @error('name')
+                        <span id="kontak-nama-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
                 <!-- Email -->
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat Email <span class="text-red-500">*</span></label>
-                    <input type="email" wire:model.defer="email" class="w-full px-4 py-3 rounded-xl border {{ $errors->has('email') ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50' }} focus:ring-2 focus:ring-unmaris-blue focus:border-transparent transition-all outline-none" placeholder="nama@email.com">
-                    @error('email') <span class="text-red-500 text-xs mt-1 font-medium">{{ $message }}</span> @enderror
+                    <label for="kontak-email" class="mb-2 block text-sm font-semibold text-slate-700">
+                        Alamat Email <span class="text-red-500" aria-hidden="true">*</span>
+                    </label>
+                    <input id="kontak-email" type="email" wire:model.defer="email" required
+                        aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}"
+                        aria-describedby="{{ $errors->has('email') ? 'kontak-email-error' : '' }}"
+                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('email') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        placeholder="nama@email.com">
+                    @error('email')
+                        <span id="kontak-email-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
             <!-- Telepon & Subjek -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor Telepon/WA</label>
-                    <input type="text" wire:model.defer="phone" class="w-full px-4 py-3 rounded-xl border {{ $errors->has('phone') ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50' }} focus:ring-2 focus:ring-unmaris-blue focus:border-transparent transition-all outline-none" placeholder="08123456789">
-                    @error('phone') <span class="text-red-500 text-xs mt-1 font-medium">{{ $message }}</span> @enderror
+                    <label for="kontak-telepon" class="mb-2 block text-sm font-semibold text-slate-700">Nomor Telepon/WA</label>
+                    <input id="kontak-telepon" type="tel" wire:model.defer="phone"
+                        aria-invalid="{{ $errors->has('phone') ? 'true' : 'false' }}"
+                        aria-describedby="{{ $errors->has('phone') ? 'kontak-telepon-error' : '' }}"
+                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('phone') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        placeholder="08123456789">
+                    @error('phone')
+                        <span id="kontak-telepon-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Subjek <span class="text-red-500">*</span></label>
-                    <input type="text" wire:model.defer="subject" class="w-full px-4 py-3 rounded-xl border {{ $errors->has('subject') ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50' }} focus:ring-2 focus:ring-unmaris-blue focus:border-transparent transition-all outline-none" placeholder="Contoh: Informasi Pendaftaran">
-                    @error('subject') <span class="text-red-500 text-xs mt-1 font-medium">{{ $message }}</span> @enderror
+                    <label for="kontak-subjek" class="mb-2 block text-sm font-semibold text-slate-700">
+                        Subjek <span class="text-red-500" aria-hidden="true">*</span>
+                    </label>
+                    <input id="kontak-subjek" type="text" wire:model.defer="subject" required
+                        aria-invalid="{{ $errors->has('subject') ? 'true' : 'false' }}"
+                        aria-describedby="{{ $errors->has('subject') ? 'kontak-subjek-error' : '' }}"
+                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('subject') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        placeholder="Contoh: Informasi Pendaftaran">
+                    @error('subject')
+                        <span id="kontak-subjek-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
             <!-- Isi Pesan -->
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Isi Pesan <span class="text-red-500">*</span></label>
-                <textarea wire:model.defer="content" rows="5" class="w-full px-4 py-3 rounded-xl border {{ $errors->has('content') ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50' }} focus:ring-2 focus:ring-unmaris-blue focus:border-transparent transition-all outline-none resize-none" placeholder="Tuliskan pesan atau pertanyaan Anda secara detail..."></textarea>
-                @error('content') <span class="text-red-500 text-xs mt-1 font-medium">{{ $message }}</span> @enderror
+                <label for="kontak-pesan" class="mb-2 block text-sm font-semibold text-slate-700">
+                    Isi Pesan <span class="text-red-500" aria-hidden="true">*</span>
+                </label>
+                <textarea id="kontak-pesan" wire:model.defer="content" rows="5" required
+                    aria-invalid="{{ $errors->has('content') ? 'true' : 'false' }}"
+                    aria-describedby="{{ $errors->has('content') ? 'kontak-pesan-error' : '' }}"
+                    class="w-full resize-none rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('content') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                    placeholder="Tuliskan pesan atau pertanyaan Anda secara detail..."></textarea>
+                @error('content')
+                    <span id="kontak-pesan-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                @enderror
             </div>
 
             <!-- Submit Button dengan Loading State -->
             <div class="text-right">
-                <button type="submit" class="inline-flex items-center justify-center bg-unmaris-blue text-white font-bold py-3 px-8 rounded-full hover:bg-opacity-90 transition-all shadow-md focus:outline-none focus:ring-4 focus:ring-unmaris-blue/30 disabled:opacity-70">
+                <button type="submit"
+                    class="btn-navy disabled:opacity-70">
                     <span wire:loading.remove wire:target="submitMessage">Kirim Pesan Sekarang</span>
                     <span wire:loading wire:target="submitMessage" class="flex items-center">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <svg class="mr-3 -ml-1 h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
                         Mengirim...
                     </span>
                 </button>

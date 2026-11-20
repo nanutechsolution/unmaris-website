@@ -1,23 +1,14 @@
 <div>
-    <!-- Hero Banner -->
-    <div class="bg-[#1B1464] text-white py-12 md:py-16 border-b-4 border-[#FDE01A] relative overflow-hidden">
-        <div class="absolute inset-0 opacity-5 pointer-events-none">
-            <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <polygon fill="currentColor" points="100,100 0,0 100,0" />
-            </svg>
-        </div>
-        
-        <div class="container mx-auto px-4 relative z-10 text-center md:text-left">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-[#FDE01A] mb-4">Layanan Pengaduan & Aspirasi</h1>
-            <p class="text-gray-300 max-w-2xl text-base md:text-lg">
-                Suara Anda sangat berarti bagi kami. Sampaikan aspirasi, kritik, atau keluhan Anda untuk membangun Universitas Stella Maris Sumba menjadi lebih baik.
-            </p>
-        </div>
-    </div>
+    <x-ui.page-hero title="Layanan Pengaduan & Aspirasi" eyebrow="Suara Anda Berarti"
+        description="Sampaikan aspirasi, kritik, atau keluhan Anda untuk membangun Universitas Stella Maris Sumba menjadi lebih baik."
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => 'Pengaduan & Aspirasi'],
+        ]" />
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-12 max-w-7xl">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+    <div class="container-page py-10 md:py-14">
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
             
             <!-- KOLOM KIRI: FORMULIR -->
             <div class="lg:col-span-2">

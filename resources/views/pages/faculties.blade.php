@@ -1,35 +1,23 @@
 <x-layouts.app title="Fakultas & Program Studi - UNMARIS">
     
-    <!-- Hero Section (Premium Minimalist) -->
-    <section class="bg-unmaris-blue text-white py-20 md:py-32 relative overflow-hidden">
-        <!-- Background Pattern & Glow -->
-        <div class="absolute inset-0 opacity-5">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
-                <path d="M0 0 L100 0 L100 100 L0 100 Z" />
-            </svg>
-        </div>
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-unmaris-yellow rounded-full blur-[120px] opacity-20 pointer-events-none z-0"></div>
-        <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-blue-400 rounded-full blur-[100px] opacity-20 pointer-events-none z-0"></div>
-
-        <div class="container mx-auto px-4 sm:px-6 relative z-10 text-center max-w-4xl">
-            <span class="text-unmaris-yellow font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-4 md:mb-6 block">Jalur Pendidikan & Keilmuan</span>
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter leading-tight">Fakultas & <span class="text-unmaris-yellow">Prodi</span></h1>
-            <p class="text-gray-300 text-base md:text-lg lg:text-xl leading-relaxed font-medium">Temukan program studi pilihanmu di Universitas Stella Maris Sumba. Kami menawarkan berbagai disiplin ilmu yang dirancang untuk memenuhi kebutuhan industri dan tantangan global masa kini.</p>
-        </div>
-    </section>
+    <x-ui.page-hero title="Fakultas & Program Studi" eyebrow="Jalur Pendidikan & Keilmuan"
+        description="Temukan program studi pilihanmu di Universitas Stella Maris Sumba. Kami menawarkan berbagai disiplin ilmu yang dirancang untuk memenuhi kebutuhan industri dan tantangan global masa kini."
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => 'Fakultas & Program Studi'],
+        ]" />
 
     <!-- Content Section -->
-    <section class="py-16 md:py-24 bg-gray-50 min-h-screen relative -mt-10 z-20 rounded-t-[3rem] shadow-sm">
-        <div class="container mx-auto px-4 sm:px-6 max-w-7xl">
+    <section class="section-y bg-slate-50">
+        <div class="container-page">
             
             @if($faculties->isEmpty())
-                <div class="text-center py-20 md:py-32 bg-white rounded-[3rem] border border-gray-100 shadow-sm">
-                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                    </div>
-                    <h3 class="text-2xl font-extrabold text-gray-900 mb-2">Data Belum Tersedia</h3>
-                    <p class="text-gray-500 font-medium">Saat ini belum ada data fakultas yang dipublikasikan ke dalam sistem.</p>
-                </div>
+                <x-ui.empty-state title="Data Belum Tersedia"
+                    description="Saat ini belum ada data fakultas yang dipublikasikan ke dalam sistem.">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </x-ui.empty-state>
             @else
                 <div class="space-y-12 md:space-y-20">
                     @foreach($faculties as $faculty)
@@ -123,25 +111,34 @@
     </section>
 
     <!-- Call to Action Section -->
-    <section class="relative bg-unmaris-blue text-white py-20 md:py-24 overflow-hidden border-t-8 border-unmaris-yellow">
-        <!-- Dekorasi Background -->
-        <div class="absolute inset-0 opacity-10">
+    <section class="relative overflow-hidden border-t-[6px] border-unmaris-yellow bg-unmaris-blue py-16 text-white md:py-24">
+        <div class="pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden="true">
             <svg class="h-full w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <polygon fill="currentColor" points="100,100 0,0 100,0"/>
+                <polygon fill="currentColor" points="100,100 0,0 100,0" />
             </svg>
         </div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-unmaris-yellow rounded-full blur-[150px] opacity-20 pointer-events-none z-0"></div>
+        <div class="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-unmaris-yellow opacity-20 blur-[110px] md:h-[700px] md:w-[700px] md:blur-[150px]" aria-hidden="true"></div>
 
-        <div class="container mx-auto px-4 text-center relative z-10 max-w-4xl">
-            <span class="inline-block py-1.5 px-5 rounded-full bg-white/10 border border-white/20 text-white text-[10px] md:text-xs font-bold tracking-widest uppercase mb-6 shadow-sm backdrop-blur-sm">Langkah Selanjutnya</span>
-            <h2 class="text-3xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">Sudah Menemukan<br>Program Studimu?</h2>
-            <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl mx-auto font-medium">Mari wujudkan cita-cita masa depanmu bersama kampus peradaban, Universitas Stella Maris Sumba.</p>
-            
-            <div class="flex justify-center">
-                <a href="https://pmb.unmaris.ac.id" target="_blank" class="inline-flex items-center justify-center bg-unmaris-yellow text-unmaris-blue font-black text-sm md:text-lg uppercase tracking-wider px-8 md:px-12 py-4 md:py-5 rounded-full hover:bg-white hover:scale-105 transition-all transform shadow-[0_10px_40px_rgba(253,224,26,0.3)]">
-                    Daftar Mahasiswa Baru
-                    <svg class="w-5 h-5 md:w-6 md:h-6 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                </a>
+        <div class="container-page relative z-10">
+            <div class="mx-auto max-w-3xl text-center">
+                <span class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white backdrop-blur-sm md:text-xs">
+                    Langkah Selanjutnya
+                </span>
+                <h2 class="text-balance text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+                    Sudah Menemukan Program Studimu?
+                </h2>
+                <p class="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base lg:text-lg">
+                    Mari wujudkan cita-cita masa depanmu bersama kampus peradaban, Universitas Stella Maris Sumba.
+                </p>
+
+                <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                    <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener" class="btn-primary w-full sm:w-auto">
+                        Daftar Mahasiswa Baru
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
     </section>

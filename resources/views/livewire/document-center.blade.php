@@ -1,13 +1,13 @@
-<div class="bg-gray-50 min-h-screen pb-20">
-    <!-- Header Section -->
-    <section class="bg-unmaris-blue text-white py-16 mb-12 relative overflow-hidden">
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 border-b-4 border-unmaris-yellow inline-block pb-2">Pusat Unduhan Akademik</h1>
-            <p class="text-lg text-gray-200 max-w-2xl mx-auto mt-4">Akses dan unduh dokumen penting Universitas Stella Maris Sumba, mulai dari Kalender Akademik, Jadwal Kuliah, Buku Pedoman, kurikulum, hingga dokumen akreditasi.</p>
-        </div>
-    </section>
+<div class="min-h-screen bg-slate-50 pb-20">
+    <x-ui.page-hero title="Pusat Unduhan Akademik" eyebrow="Dokumen Resmi"
+        description="Akses dan unduh dokumen penting Universitas Stella Maris Sumba, mulai dari Kalender Akademik, Jadwal Kuliah, Buku Pedoman, kurikulum, hingga dokumen akreditasi."
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => 'Akademik', 'url' => route('faculties.index')],
+            ['label' => 'Pusat Unduhan'],
+        ]" />
 
-    <div class="container mx-auto px-4 max-w-6xl">
+    <div class="container-page py-10 md:py-14">
 
         @if($activeTab !== $arsipTab)
         <!-- Pintasan ke tab arsip dokumen sekolah tinggi -->
@@ -205,21 +205,20 @@
                 </div>
             </div>
             @empty
-            <div class="col-span-1 md:col-span-2 lg:col-span-3 text-center py-16 bg-white rounded-2xl border border-gray-100">
-                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                @if($activeTab === $arsipTab)
-                <h3 class="text-xl font-bold text-gray-700">Belum ada arsip {{ $singkatanInstitusiLama }}</h3>
-                <p class="text-gray-500 mt-2">Arsip akan tampil di sini setelah dokumen akreditasi lama ditambahkan melalui panel admin.</p>
-                @else
-                <h3 class="text-xl font-bold text-gray-700">Tidak ada dokumen ditemukan</h3>
-                <p class="text-gray-500 mt-2">Coba gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.</p>
-                @endif
+            <div class="col-span-1 md:col-span-2 lg:col-span-3">
+                <x-ui.empty-state
+                    :title="$activeTab === $arsipTab ? 'Belum ada arsip ' . $singkatanInstitusiLama : 'Tidak ada dokumen ditemukan'"
+                    :description="$activeTab === $arsipTab
+                        ? 'Arsip akan tampil di sini setelah dokumen akreditasi lama ditambahkan melalui panel admin.'
+                        : 'Coba gunakan kata kunci pencarian lain atau pilih kategori yang berbeda.'">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </x-ui.empty-state>
 
                 <div class="mt-6 flex flex-wrap justify-center gap-3">
-                    <button type="button" wire:click="setTab('semua')" class="inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-lg font-bold text-sm text-white bg-unmaris-blue hover:bg-unmaris-yellow hover:text-unmaris-blue">Lihat semua dokumen</button>
-                    <button type="button" wire:click="$set('search', '')" class="inline-flex items-center justify-center min-h-[44px] px-4 py-2 rounded-lg font-bold text-sm text-white bg-gray-500 hover:bg-gray-600">Hapus pencarian</button>
+                    <button type="button" wire:click="setTab('semua')" class="btn-navy">Lihat semua dokumen</button>
+                    <button type="button" wire:click="$set('search', '')" class="btn-outline">Hapus pencarian</button>
                 </div>
             </div>
             @endforelse
@@ -227,22 +226,10 @@
 
         <div class="mt-8 flex flex-col items-center gap-3">
             @if($documents->total() > 0)
-            <p class="text-sm text-gray-500 font-medium">{{ $documents->total() }} dokumen ditemukan</p>
+            <p class="text-sm font-medium text-slate-500">{{ $documents->total() }} dokumen ditemukan</p>
             @endif
             {{ $documents->links() }}
         </div>
     </div>
-
-    <style>
-        /* CSS khusus untuk menyembunyikan scrollbar di menu Tab filter */
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
 
 </div>

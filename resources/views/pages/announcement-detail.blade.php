@@ -1,36 +1,15 @@
 <x-layouts.app :title="$announcement->title . ' - UNMARIS'">
 
-    <div class="bg-gray-50 min-h-screen py-12">
-        <div class="container mx-auto px-4 max-w-4xl">
+    <div class="min-h-screen bg-slate-50 py-10 md:py-14">
+        <div class="container-page max-w-4xl">
 
             <!-- Breadcrumbs Navigasi -->
-            <nav class="flex text-sm text-gray-500 mb-8 font-medium bg-white p-4 rounded-xl shadow-sm border border-gray-100" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <a href="{{ route('home') }}" class="inline-flex items-center hover:text-unmaris-blue transition">
-                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-                            </svg>
-                            Beranda
-                        </a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <a href="{{ route('announcements.index') }}" class="ml-1 md:ml-2 hover:text-unmaris-blue transition">Pengumuman & Agenda</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="ml-1 md:ml-2 text-gray-400">{{ Str::limit($announcement->title, 30) }}</span>
-                        </div>
-                    </li>
-                </ol>
+            <nav class="mb-6 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold text-slate-500" aria-label="Breadcrumb">
+                <a href="{{ route('home') }}" class="transition hover:text-unmaris-blue">Beranda</a>
+                <span class="text-slate-300" aria-hidden="true">/</span>
+                <a href="{{ route('announcements.index') }}" class="transition hover:text-unmaris-blue">Pengumuman &amp; Agenda</a>
+                <span class="text-slate-300" aria-hidden="true">/</span>
+                <span class="text-unmaris-blue" aria-current="page">{{ Str::limit($announcement->title, 40) }}</span>
             </nav>
 
             <!-- Kotak Artikel Pengumuman -->
@@ -76,7 +55,7 @@
                     </h1>
 
                     <!-- Isi Konten (Diambil dari RichEditor) -->
-                    <div class="prose prose-lg max-w-none prose-a:text-unmaris-blue hover:prose-a:text-unmaris-yellow prose-headings:text-unmaris-blue prose-img:rounded-xl">
+                    <div class="prose-unmaris max-w-none">
                         {!! $announcement->content !!}
                     </div>
 
@@ -90,7 +69,7 @@
                                 </svg>
                             </div>
                             <div>
-                                <h4 class="text-lg font-bold text-gray-900">Lampiran Dokumen Resmi</h4>
+                                <h2 class="heading-3 text-lg">Lampiran Dokumen Resmi</h2>
                                 <p class="text-sm text-gray-500 mt-1">Unduh file lampiran untuk melihat informasi lebih detail.</p>
                             </div>
                         </div>

@@ -1,35 +1,23 @@
 <x-layouts.app title="Organisasi Mahasiswa & UKM - UNMARIS" description="Kenali berbagai Badan Eksekutif Mahasiswa (BEM), HMPS, dan Unit Kegiatan Mahasiswa (UKM) di Universitas Stella Maris Sumba.">
 
-    <!-- Header Section (Energik & Dinamis) -->
-    <section class="bg-unmaris-blue text-white py-16 md:py-24 relative overflow-hidden border-b-8 border-unmaris-yellow">
-        <!-- Pattern Dekoratif -->
-        <div class="absolute inset-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
-                <polygon points="100,100 0,0 100,0" />
-            </svg>
-        </div>
-        <div class="absolute top-0 right-10 w-64 h-64 bg-unmaris-yellow rounded-full blur-[100px] opacity-20 z-0 pointer-events-none"></div>
-        <div class="absolute bottom-0 left-0 w-48 h-48 bg-blue-400 rounded-full blur-[80px] opacity-20 z-0 pointer-events-none"></div>
-        
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-white/10 border border-white/20 text-white text-[10px] md:text-xs font-bold tracking-widest uppercase mb-4 md:mb-6 shadow-sm backdrop-blur-sm">Kehidupan Kampus</span>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 leading-tight tracking-tighter">Organisasi <span class="text-unmaris-yellow">Mahasiswa</span></h1>
-            <p class="text-sm sm:text-base md:text-lg text-gray-200 max-w-3xl mx-auto font-medium px-2 leading-relaxed">Lebih dari sekadar ruang kuliah. UNMARIS menyediakan wadah bagi mahasiswa untuk mengembangkan jiwa kepemimpinan, bakat, dan kreativitas melalui berbagai organisasi kemahasiswaan.</p>
-        </div>
-    </section>
+    <x-ui.page-hero title="Organisasi Mahasiswa" eyebrow="Kehidupan Kampus"
+        description="Lebih dari sekadar ruang kuliah. UNMARIS menyediakan wadah bagi mahasiswa untuk mengembangkan jiwa kepemimpinan, bakat, dan kreativitas melalui berbagai organisasi kemahasiswaan."
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => 'Organisasi Mahasiswa'],
+        ]" />
 
     <!-- Konten Utama: Daftar Organisasi -->
-    <section class="py-16 md:py-24 bg-gray-50 min-h-screen relative -mt-8 md:-mt-10 z-20 rounded-t-3xl md:rounded-t-[3rem] shadow-sm">
-        <div class="container mx-auto px-4 max-w-7xl">
+    <section class="section-y bg-slate-50">
+        <div class="container-page">
             
             @if($organizationsGrouped->isEmpty())
-                <div class="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm px-4">
-                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-black text-gray-800">Data Organisasi Belum Tersedia</h3>
-                    <p class="text-gray-500 mt-2 text-sm md:text-base max-w-md mx-auto">Informasi profil BEM, HMPS, dan UKM sedang dalam tahap pembaruan data.</p>
-                </div>
+                <x-ui.empty-state title="Data Organisasi Belum Tersedia"
+                    description="Informasi profil BEM, HMPS, dan UKM sedang dalam tahap pembaruan data.">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </x-ui.empty-state>
             @else
                 
                 <div class="space-y-20 md:space-y-28">

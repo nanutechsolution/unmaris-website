@@ -1,34 +1,24 @@
 <x-layouts.app title="Informasi Beasiswa - UNMARIS" description="Daftar peluang beasiswa dan bantuan biaya pendidikan untuk mahasiswa Universitas Stella Maris Sumba.">
 
-    <!-- Header Section (Elegan & Memotivasi) -->
-    <section class="bg-unmaris-blue text-white py-16 md:py-24 relative overflow-hidden border-b-8 border-unmaris-yellow">
-        <!-- Pattern Dekoratif -->
-        <div class="absolute inset-0 opacity-10">
-            <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none" fill="currentColor">
-                <polygon points="0,100 100,0 100,100" />
-            </svg>
-        </div>
-        <div class="absolute top-1/2 right-0 -translate-y-1/2 w-64 h-64 bg-unmaris-yellow rounded-full blur-[100px] opacity-20 z-0 pointer-events-none"></div>
-        
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <span class="inline-block py-1.5 px-4 rounded-full bg-white/10 border border-white/20 text-white text-[10px] md:text-xs font-bold tracking-widest uppercase mb-4 md:mb-6 shadow-sm backdrop-blur-sm">Layanan Kemahasiswaan</span>
-            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 md:mb-6 leading-tight tracking-tighter">Peluang <span class="text-unmaris-yellow">Beasiswa</span></h1>
-            <p class="text-sm sm:text-base md:text-lg text-gray-200 max-w-3xl mx-auto font-medium px-2 leading-relaxed">Universitas Stella Maris Sumba berkomitmen agar tidak ada mahasiswa yang putus asa meraih cita-cita karena kendala biaya. Temukan program bantuan yang sesuai untuk Anda.</p>
-        </div>
-    </section>
+    <x-ui.page-hero title="Peluang Beasiswa" eyebrow="Layanan Kemahasiswaan"
+        description="Universitas Stella Maris Sumba berkomitmen agar tidak ada mahasiswa yang putus asa meraih cita-cita karena kendala biaya. Temukan program bantuan yang sesuai untuk Anda."
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => 'Beasiswa'],
+        ]" />
 
     <!-- Konten Utama: Daftar Beasiswa -->
-    <section class="py-12 md:py-20 bg-gray-50 min-h-screen relative -mt-8 md:-mt-10 z-20 rounded-t-3xl md:rounded-t-[3rem] shadow-sm">
-        <div class="container mx-auto px-4 max-w-5xl">
+    <section class="section-y bg-slate-50">
+        <div class="container-page max-w-5xl">
             
             @if($scholarships->isEmpty())
-                <div class="text-center py-20 bg-white rounded-[2rem] border border-gray-100 shadow-sm px-4">
-                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7"></path></svg>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-black text-gray-800">Informasi Belum Tersedia</h3>
-                    <p class="text-gray-500 mt-2 text-sm md:text-base max-w-md mx-auto">Saat ini belum ada informasi pendaftaran beasiswa yang dipublikasikan.</p>
-                </div>
+                <x-ui.empty-state title="Informasi Belum Tersedia"
+                    description="Saat ini belum ada informasi pendaftaran beasiswa yang dipublikasikan.">
+                    <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0v7" />
+                    </svg>
+                </x-ui.empty-state>
             @else
                 <div class="space-y-8 md:space-y-12">
                     @foreach($scholarships as $scholarship)

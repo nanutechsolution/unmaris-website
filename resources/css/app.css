@@ -220,3 +220,224 @@
 #student-statistics-map .leaflet-tooltip::before {
     border-top-color: var(--color-unmaris-blue);
 }
+
+/* ==========================================================================
+   Design system publik UNMARIS
+   Token, tipografi, fokus, dan komponen dasar yang dipakai lintas halaman.
+   ========================================================================== */
+
+@theme {
+    --font-display: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+    html {
+        scroll-padding-top: 7rem;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .font-display {
+        font-family: var(--font-display);
+        letter-spacing: -0.02em;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-unmaris-yellow);
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+
+    ::selection {
+        background: var(--color-unmaris-yellow);
+        color: var(--color-unmaris-blue);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+@layer components {
+    .container-page {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .section-y {
+        @apply py-16 md:py-24;
+    }
+
+    .eyebrow {
+        @apply inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.22em] text-unmaris-blue/70;
+    }
+
+    .eyebrow-light {
+        @apply inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.22em] text-unmaris-yellow;
+    }
+
+    .heading-1 {
+        @apply text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl;
+    }
+
+    .heading-2 {
+        @apply text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl;
+    }
+
+    .heading-3 {
+        @apply text-xl font-bold text-slate-900 md:text-2xl;
+    }
+
+    .lead {
+        @apply text-base leading-relaxed text-slate-600 md:text-lg;
+    }
+
+    .card {
+        @apply rounded-2xl border border-slate-200/80 bg-white shadow-sm;
+    }
+
+    .card-hover {
+        @apply transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl;
+    }
+
+    .btn {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold transition;
+    }
+
+    .btn-primary {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-unmaris-yellow px-6 text-sm font-bold text-unmaris-blue shadow-sm transition hover:bg-yellow-300;
+    }
+
+    .btn-navy {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-unmaris-blue px-6 text-sm font-bold text-white transition hover:bg-[#241b7a];
+    }
+
+    .btn-outline {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-6 text-sm font-bold text-slate-700 transition hover:border-unmaris-blue hover:text-unmaris-blue;
+    }
+
+    .btn-light-outline {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/30 px-6 text-sm font-bold text-white transition hover:border-white hover:bg-white/10;
+    }
+
+    .skip-link {
+        @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2.5 focus:text-sm focus:font-bold focus:text-unmaris-blue focus:shadow-2xl;
+    }
+
+    .nav-link {
+        @apply inline-flex items-center gap-1 rounded-lg px-2.5 py-2 text-[13px] font-bold text-white/85 transition hover:bg-white/10 hover:text-unmaris-yellow;
+    }
+
+    .nav-link-active {
+        @apply bg-white/10 text-unmaris-yellow;
+    }
+
+    .nav-item {
+        @apply block rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-unmaris-blue;
+    }
+
+    .nav-item-active {
+        @apply bg-yellow-50 text-unmaris-blue;
+    }
+
+    .prose-unmaris {
+        @apply text-base leading-relaxed text-slate-700;
+    }
+
+    .prose-unmaris :where(p) {
+        @apply mb-5;
+    }
+
+    .prose-unmaris :where(h2) {
+        @apply mb-4 mt-10 border-b-4 border-unmaris-yellow pb-2 text-2xl font-extrabold text-unmaris-blue;
+    }
+
+    .prose-unmaris :where(h3) {
+        @apply mb-3 mt-8 text-xl font-bold text-unmaris-blue;
+    }
+
+    .prose-unmaris :where(a) {
+        @apply font-semibold text-unmaris-blue underline decoration-unmaris-yellow decoration-2 underline-offset-2 hover:text-unmaris-blue/80;
+    }
+
+    .prose-unmaris :where(ul) {
+        @apply mb-5 list-disc space-y-2 pl-6;
+    }
+
+    .prose-unmaris :where(ol) {
+        @apply mb-5 list-decimal space-y-2 pl-6;
+    }
+
+    .prose-unmaris :where(blockquote) {
+        @apply mb-5 rounded-r-xl border-l-4 border-unmaris-yellow bg-slate-50 px-5 py-4 italic text-slate-600;
+    }
+
+    .prose-unmaris :where(img) {
+        @apply mx-auto mb-5 max-w-full rounded-xl shadow-md;
+    }
+
+    .prose-unmaris :where(table) {
+        @apply mb-5 w-full border-collapse overflow-hidden rounded-xl text-sm;
+    }
+
+    .prose-unmaris :where(th) {
+        @apply bg-unmaris-blue p-3 text-left text-white;
+    }
+
+    .prose-unmaris :where(td) {
+        @apply border-b border-slate-200 p-3;
+    }
+}
+
+@layer utilities {
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    .marquee {
+        mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+    }
+
+    .marquee-track {
+        animation: marquee 38s linear infinite;
+    }
+
+    .marquee:hover .marquee-track,
+    .marquee:focus-within .marquee-track {
+        animation-play-state: paused;
+    }
+
+    @keyframes marquee {
+        from {
+            transform: translateX(0);
+        }
+
+        to {
+            transform: translateX(-50%);
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation: none;
+    }
+}

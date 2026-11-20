@@ -1,15 +1,14 @@
 <x-layouts.app :title="$page->title . ' - UNMARIS'" :description="$page->meta_description">
     
-    <!-- Header Section -->
-    <section class="bg-unmaris-blue text-white py-16 md:py-24 relative overflow-hidden">
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 border-b-4 border-unmaris-yellow inline-block pb-2">{{ $page->title }}</h1>
-            <p class="text-lg text-gray-200 max-w-2xl mx-auto mt-4">{{ $page->meta_description }}</p>
-        </div>
-    </section>
+    <x-ui.page-hero :title="$page->title" eyebrow="Hubungi Kami"
+        :description="$page->meta_description"
+        :breadcrumbs="[
+            ['label' => 'Beranda', 'url' => route('home')],
+            ['label' => $page->title],
+        ]" />
 
-    <section class="py-16 md:py-24 bg-gray-50 relative -mt-10 z-20 rounded-t-3xl">
-        <div class="container mx-auto px-4 max-w-7xl">
+    <section class="section-y bg-slate-50">
+        <div class="container-page">
             <div class="flex flex-col lg:flex-row gap-12">
                 
                 <!-- Kiri: Informasi Kontak & Maps Dinamis -->

@@ -28,11 +28,12 @@ Route::get('/', function () {
     $countProdi = StudyProgram::count();
     $countFakultas = Faculty::count();
     $countBerita = News::where('is_published', true)->count();
+    $countTerakreditasi = StudyProgram::whereNotNull('accreditation')->where('accreditation', '!=', '')->count();
     $testimonials = Testimonial::where('is_active', true)->orderBy('order', 'asc')->take(6)->get();
     $partners = Partner::where('is_active', true)->orderBy('order', 'asc')->get();
 
     $faculties = Faculty::with('studyPrograms')->get();
-    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'popupPromo', 'testimonials', 'partners', 'faculties'));
+    return view('pages.home', compact('sliders', 'latestNews', 'countProdi', 'countFakultas', 'countBerita', 'countTerakreditasi', 'popupPromo', 'testimonials', 'partners', 'faculties'));
 })->name('home');
 
 Route::get('/fasilitas', function () {

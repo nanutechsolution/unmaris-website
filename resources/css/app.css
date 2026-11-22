@@ -234,6 +234,23 @@
         text-wrap: balance;
     }
 
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.5rem, 5.2vw, 4.6rem);
+        font-weight: 700;
+        line-height: 0.96;
+        letter-spacing: -0.045em;
+        color: #fff;
+        text-wrap: balance;
+    }
+
+    .hero-title span,
+    .hero-title strong,
+    .hero-title b {
+        color: var(--color-unmaris-yellow);
+        font-weight: inherit;
+    }
+
     .heading-1 {
         @apply text-balance text-4xl font-bold leading-[1.04] text-ink sm:text-5xl lg:text-6xl;
     }
@@ -550,6 +567,28 @@
     .hide-scrollbar {
         -ms-overflow-style: none;
         scrollbar-width: none;
+    }
+
+    .hero-grid {
+        background-image:
+            linear-gradient(to right, rgb(255 255 255 / 0.055) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(255 255 255 / 0.055) 1px, transparent 1px);
+        background-size: 64px 64px;
+    }
+
+    .pattern-dots-light {
+        background-image: radial-gradient(rgb(255 255 255 / 0.18) 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+
+    .pattern-dots-navy {
+        background-image: radial-gradient(rgb(27 15 82 / 0.22) 1px, transparent 1px);
+        background-size: 18px 18px;
+    }
+
+    .pattern-dots-muted {
+        background-image: radial-gradient(var(--c-line-strong) 1px, transparent 1px);
+        background-size: 22px 22px;
     }
 
     .hide-scrollbar::-webkit-scrollbar {

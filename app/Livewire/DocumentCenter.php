@@ -70,6 +70,17 @@ class DocumentCenter extends Component
         $this->resetPage();
     }
 
+    /**
+     * Mengembalikan seluruh filter ke kondisi awal.
+     */
+    public function resetFilters()
+    {
+        $this->activeTab = 'semua';
+        $this->search = '';
+        $this->sort = 'terbaru';
+        $this->resetPage();
+    }
+
     public function updatingSearch()
     {
         $this->resetPage();

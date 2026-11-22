@@ -159,6 +159,15 @@
         color: var(--c-ink);
     }
 
+    /* Judul di atas bidang kuning selalu memakai navy, termasuk mode gelap */
+    .bg-unmaris-yellow h1,
+    .bg-unmaris-yellow h2,
+    .bg-unmaris-yellow h3,
+    .bg-unmaris-yellow h4,
+    .bg-unmaris-yellow .font-display {
+        color: #1b0f52;
+    }
+
     :focus-visible {
         outline: 3px solid var(--c-navy);
         outline-offset: 3px;

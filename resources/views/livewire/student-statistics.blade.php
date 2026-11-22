@@ -1,5 +1,4 @@
 <div x-on:document:student-statistics-drill="$wire.drillDown($event.detail.code, $event.detail.name)">
-    <!-- Header -->
     <x-ui.page-hero title="GIS Statistik Mahasiswa" eyebrow="Promosi Kampus Berbasis Data"
         description="Jelajahi persebaran mahasiswa Universitas Stella Maris Sumba berdasarkan wilayah. Data disajikan secara agregat dan tidak memuat nama, NIM, NIK, maupun data pribadi lainnya."
         :breadcrumbs="[
@@ -8,68 +7,79 @@
             ['label' => 'Statistik Mahasiswa'],
         ]" />
 
-    <!-- Konten -->
-    <section class="min-h-screen bg-slate-50 py-10 md:py-14">
+    <section class="section-y bg-canvas">
         <div class="container-page space-y-6">
+            <!-- Kontrol wilayah -->
+            <section aria-labelledby="kontrol-wilayah"
+                class="rounded-3xl border border-line bg-surface p-5 shadow-[var(--shadow-soft)] md:p-6">
+                <h2 id="kontrol-wilayah" class="sr-only">Kontrol wilayah dan status mahasiswa</h2>
 
-            <!-- Kontrol -->
-            <div class="bg-white rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm p-5 md:p-7">
-                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
                     <div class="min-w-0">
-                        <p class="text-[10px] font-black tracking-widest uppercase text-unmaris-blue">Wilayah ditampilkan</p>
-                        <nav class="flex flex-wrap items-center gap-2 mt-2 text-sm font-bold" aria-label="Navigasi wilayah">
-                            <button wire:click="resetToRoot" class="text-unmaris-blue hover:underline {{ $canGoBack ? '' : 'cursor-default' }}">Indonesia</button>
-                            @foreach($crumbs as $crumb)
-                                <span class="text-gray-300" aria-hidden="true">/</span>
-                                <span class="text-gray-600 truncate">{{ $crumb['name'] }}</span>
+                        <p class="text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted">Wilayah ditampilkan</p>
+                        <nav class="mt-2 flex flex-wrap items-center gap-2 text-sm font-bold" aria-label="Navigasi wilayah">
+                            <button type="button" wire:click="resetToRoot"
+                                class="focus-navy rounded text-brand-ink underline decoration-unmaris-yellow decoration-2 underline-offset-2 transition hover:text-unmaris-blue">
+                                Indonesia
+                            </button>
+                            @foreach ($crumbs as $crumb)
+                                <span class="text-line-strong" aria-hidden="true">/</span>
+                                <span class="max-w-40 truncate text-body">{{ $crumb['name'] }}</span>
                             @endforeach
-                            <span class="text-gray-300" aria-hidden="true">/</span>
-                            <span class="text-unmaris-blue uppercase tracking-wide">{{ $current['level'] }}</span>
+                            <span class="text-line-strong" aria-hidden="true">/</span>
+                            <span class="rounded-full bg-unmaris-yellow/20 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.08em] text-brand-ink">
+                                {{ $current['level'] }}
+                            </span>
                         </nav>
                     </div>
 
                     <div class="flex flex-wrap items-center gap-3">
-                        @if($canGoBack)
-                            <button wire:click="back" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-unmaris-blue text-white text-xs font-black uppercase tracking-widest hover:bg-unmaris-blue/90 transition">
-                                <span aria-hidden="true">←</span> Kembali
+                        @if ($canGoBack)
+                            <button type="button" wire:click="back"
+                                class="focus-navy inline-flex min-h-11 items-center gap-2 rounded-full bg-unmaris-blue px-4 text-[12px] font-bold text-white transition hover:bg-navy-soft">
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                                Kembali
                             </button>
                         @endif
 
-                        <div class="flex items-center gap-1 p-1 bg-gray-100 rounded-full" role="group" aria-label="Filter status mahasiswa">
-                            <button wire:click="setStatus('aktif')" class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest transition {{ $status === 'aktif' ? 'bg-unmaris-blue text-white' : 'text-gray-500 hover:text-unmaris-blue' }}" aria-pressed="{{ $status === 'aktif' ? 'true' : 'false' }}">Aktif</button>
-                            <button wire:click="setStatus('semua')" class="px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest transition {{ $status === 'semua' ? 'bg-unmaris-yellow text-unmaris-blue' : 'text-gray-500 hover:text-unmaris-blue' }}" aria-pressed="{{ $status === 'semua' ? 'true' : 'false' }}">Semua</button>
+                        <div class="flex items-center gap-1 rounded-full border border-line bg-surface-2 p-1" role="group" aria-label="Filter status mahasiswa">
+                            <button type="button" wire:click="setStatus('aktif')"
+                                class="focus-navy min-h-9 rounded-full px-4 text-[11px] font-extrabold uppercase tracking-[0.06em] transition {{ $status === 'aktif' ? 'bg-unmaris-blue text-white' : 'text-body hover:text-brand-ink' }}"
+                                aria-pressed="{{ $status === 'aktif' ? 'true' : 'false' }}">Aktif</button>
+                            <button type="button" wire:click="setStatus('semua')"
+                                class="focus-navy min-h-9 rounded-full px-4 text-[11px] font-extrabold uppercase tracking-[0.06em] transition {{ $status === 'semua' ? 'bg-unmaris-yellow text-[#1b0f52]' : 'text-body hover:text-brand-ink' }}"
+                                aria-pressed="{{ $status === 'semua' ? 'true' : 'false' }}">Semua</button>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            @if($error)
-                <!-- Error state -->
-                <div class="bg-white rounded-2xl md:rounded-[2rem] border border-red-100 p-10 md:p-16 text-center" role="alert">
-                    <div class="w-16 h-16 mx-auto rounded-full bg-red-50 flex items-center justify-center mb-5">
-                        <svg class="w-8 h-8 text-red-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86a2 2 0 001.74-3L13.74 4a2 2 0 00-3.48 0L3.34 16a2 2 0 001.73 3z" /></svg>
-                    </div>
-                    <h2 class="text-xl md:text-2xl font-black text-gray-900">Statistik tidak dapat dimuat</h2>
-                    <p class="text-sm text-gray-500 mt-3 max-w-md mx-auto">{{ $error }}</p>
-                    <button wire:click="retry" class="mt-6 px-8 py-3 bg-unmaris-yellow text-unmaris-blue font-black rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all uppercase tracking-widest text-sm">Coba lagi</button>
+            @if ($error)
+                <div class="rounded-3xl border border-ember/30 bg-surface p-8 text-center shadow-[var(--shadow-soft)] md:p-12" role="alert">
+                    <span class="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-ember/10 text-ember">
+                        <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86a2 2 0 001.74-3L13.74 4a2 2 0 00-3.48 0L3.34 16a2 2 0 001.73 3z" />
+                        </svg>
+                    </span>
+                    <h2 class="mt-4 heading-3">Statistik tidak dapat dimuat</h2>
+                    <p class="mx-auto mt-2 max-w-md text-sm leading-relaxed text-body">{{ $error }}</p>
+                    <button type="button" wire:click="retry" class="btn-primary mt-6">Coba lagi</button>
                 </div>
-
-            @elseif($loading)
-                <!-- Loading state -->
-                <div class="bg-white rounded-2xl md:rounded-[2rem] border border-gray-100 p-12 md:p-20 text-center" aria-live="polite" aria-busy="true">
-                    <div class="w-14 h-14 mx-auto rounded-full border-4 border-unmaris-blue/20 border-t-unmaris-blue animate-spin mb-5"></div>
-                    <p class="font-black text-gray-900">Memuat statistik wilayah…</p>
+            @elseif ($loading)
+                <div class="rounded-3xl border border-line bg-surface p-12 text-center shadow-[var(--shadow-soft)] md:p-20" aria-live="polite" aria-busy="true">
+                    <span class="mx-auto block h-12 w-12 animate-spin rounded-full border-4 border-line border-t-unmaris-blue motion-reduce:animate-none" aria-hidden="true"></span>
+                    <p class="mt-4 text-sm font-bold text-ink">Memuat statistik wilayah…</p>
                 </div>
-
             @else
-                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-
+                <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
                     <!-- Peta -->
-                    <div class="xl:col-span-2 bg-white rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden">
-                        <div class="p-5 md:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                    <div class="overflow-hidden rounded-3xl border border-line bg-surface shadow-[var(--shadow-soft)] xl:col-span-2">
+                        <div class="flex flex-col gap-3 border-b border-line p-5 sm:flex-row sm:items-center sm:justify-between md:p-6">
                             <div>
-                                <h2 class="font-black text-lg md:text-xl text-unmaris-blue">Peta Persebaran</h2>
-                                <p class="text-xs text-gray-500 mt-1">{{ $current['name'] }} · {{ ucfirst($current['level']) }}</p>
+                                <h2 class="heading-3">Peta Persebaran</h2>
+                                <p class="mt-1 text-[12px] text-muted">{{ $current['name'] }} · {{ ucfirst($current['level']) }}</p>
                             </div>
                             <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Mode peta">
                                 <button type="button" data-gis-reset class="gis-mode-button">Reset Tampilan</button>
@@ -80,8 +90,7 @@
                         </div>
 
                         <div wire:ignore class="relative p-3 md:p-6">
-                            <div
-                                id="student-statistics-map"
+                            <div id="student-statistics-map"
                                 data-stats="{{ json_encode([
                                     'rows' => $rows,
                                     'level' => $current['level'],
@@ -93,64 +102,73 @@
                                     'status' => $status,
                                     'bands' => $markerBands,
                                 ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_TAG) }}"
-                                class="h-[360px] md:h-[520px] rounded-2xl overflow-hidden relative z-0 border border-gray-200"
-                            ></div>
-                            <div id="student-statistics-no-data" aria-hidden="true" style="display:none" class="absolute inset-0 m-3 md:m-6 rounded-2xl bg-white/85 backdrop-blur-[1px] z-[999] flex flex-col items-center justify-center gap-3 pointer-events-none">
-                                <div class="rounded-2xl bg-white border border-gray-100 shadow-md px-7 py-6 text-center">
-                                    <p class="font-black text-unmaris-blue">Tidak ada data pada filter ini</p>
-                                    <p class="text-xs text-gray-500 mt-1">Coba ganti status filter atau wilayah untuk melihat persebaran mahasiswa.</p>
+                                class="relative z-0 h-[360px] overflow-hidden rounded-2xl border border-line md:h-[520px]"></div>
+
+                            <div id="student-statistics-no-data" aria-hidden="true" style="display:none"
+                                class="pointer-events-none absolute inset-0 z-[999] m-3 flex flex-col items-center justify-center gap-3 rounded-2xl bg-surface/85 backdrop-blur-[1px] md:m-6">
+                                <div class="rounded-2xl border border-line bg-surface px-7 py-6 text-center shadow-[var(--shadow-soft)]">
+                                    <p class="font-display text-base font-bold text-ink">Tidak ada data pada filter ini</p>
+                                    <p class="mt-1 text-[12px] text-muted">Coba ganti status filter atau wilayah untuk melihat persebaran mahasiswa.</p>
                                 </div>
                             </div>
-                            <div id="student-statistics-loading" style="display:none" class="absolute inset-0 m-3 md:m-6 rounded-2xl bg-white/70 backdrop-blur-[2px] z-[1000] flex items-center justify-center pointer-events-none">
-                                <div class="flex items-center gap-3 rounded-full bg-white px-5 py-3 shadow-lg border border-gray-100 text-xs font-bold text-unmaris-blue">
-                                    <span class="w-4 h-4 rounded-full border-2 border-unmaris-blue/20 border-t-unmaris-blue animate-spin"></span>
+
+                            <div id="student-statistics-loading" style="display:none"
+                                class="pointer-events-none absolute inset-0 z-[1000] m-3 flex items-center justify-center rounded-2xl bg-surface/70 backdrop-blur-[2px] md:m-6">
+                                <div class="flex items-center gap-3 rounded-full border border-line bg-surface px-5 py-3 text-[11px] font-bold text-brand-ink shadow-[var(--shadow-soft)]">
+                                    <span class="h-4 w-4 animate-spin rounded-full border-2 border-line border-t-unmaris-blue motion-reduce:animate-none"></span>
                                     Memuat peta…
                                 </div>
                             </div>
                         </div>
 
-                        <div class="px-5 md:px-6 pb-5 md:pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-gray-500">
-                                <span class="font-bold uppercase tracking-wider text-gray-400">Jumlah mahasiswa · klik marker untuk detail</span>
+                        <div class="flex flex-col gap-3 border-t border-line px-5 py-4 sm:flex-row sm:items-center sm:justify-between md:px-6">
+                            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-muted">
+                                <span class="font-bold uppercase tracking-[0.08em]">Jumlah mahasiswa · klik marker untuk detail</span>
                                 <div id="student-statistics-legend" class="flex flex-wrap items-center gap-x-3 gap-y-2" aria-label="Legenda jumlah mahasiswa"></div>
                             </div>
-                            <span class="text-[11px] text-gray-400">Sumber batas wilayah: GeoJSON administratif</span>
+                            <span class="text-[10px] text-muted">Sumber batas wilayah: GeoJSON administratif</span>
                         </div>
                     </div>
 
                     <!-- Top wilayah -->
-                    <div class="bg-white rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm p-5 md:p-7">
-                        <h2 class="font-black text-lg md:text-xl text-unmaris-blue">Top Wilayah</h2>
-                        <p class="text-xs text-gray-500 mt-1">Diurutkan dari jumlah mahasiswa terbanyak</p>
+                    <div class="rounded-3xl border border-line bg-surface p-5 shadow-[var(--shadow-soft)] md:p-6">
+                        <span class="eyebrow">Peringkat Wilayah</span>
+                        <h2 class="mt-2 heading-3">Top Wilayah</h2>
+                        <p class="mt-1 text-[12px] text-muted">Diurutkan dari jumlah mahasiswa terbanyak.</p>
 
-                        <ol class="mt-5 space-y-3" aria-label="Daftar wilayah dengan jumlah mahasiswa terbanyak">
-                            @forelse($topRows as $index => $row)
-                                <li class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition">
-                                    <span class="shrink-0 w-7 h-7 rounded-full bg-unmaris-blue text-white text-xs font-black flex items-center justify-center">{{ $index + 1 }}</span>
+                        <ol class="mt-5 space-y-2" aria-label="Daftar wilayah dengan jumlah mahasiswa terbanyak">
+                            @forelse ($topRows as $index => $row)
+                                <li class="flex items-center gap-3 rounded-xl border border-transparent p-2.5 transition hover:border-line hover:bg-surface-2">
+                                    <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-unmaris-blue text-[11px] font-extrabold text-white">
+                                        {{ $index + 1 }}
+                                    </span>
                                     <div class="min-w-0 flex-1">
-                                        <p class="font-bold text-sm truncate" title="{{ $row['name'] }}">{{ $row['name'] }}</p>
-                                        <p class="text-xs text-gray-500">{{ number_format($row['jumlah_mahasiswa'], 0, ',', '.') }} mahasiswa</p>
+                                        <p class="truncate text-[13px] font-bold text-ink" title="{{ $row['name'] }}">{{ $row['name'] }}</p>
+                                        <p class="text-[11px] text-muted">{{ number_format($row['jumlah_mahasiswa'], 0, ',', '.') }} mahasiswa</p>
                                     </div>
-                                    @if($nextLevel)
-                                        <button wire:click="drillDown('{{ $row['code'] }}')" class="shrink-0 text-xs font-black text-unmaris-blue hover:text-unmaris-yellow transition" aria-label="Lihat wilayah {{ $row['name'] }}">Lihat</button>
+                                    @if ($nextLevel)
+                                        <button type="button" wire:click="drillDown('{{ $row['code'] }}')"
+                                            class="focus-navy min-h-9 shrink-0 rounded-full px-2.5 text-[11px] font-bold text-brand-ink transition hover:bg-unmaris-yellow/20"
+                                            aria-label="Lihat wilayah {{ $row['name'] }}">Lihat</button>
                                     @endif
                                 </li>
                             @empty
-                                <li class="text-sm text-gray-500 py-10 text-center bg-gray-50 rounded-xl">
+                                <li class="rounded-2xl border border-dashed border-line-strong bg-surface-2/60 px-4 py-8 text-center text-[13px] text-muted">
                                     Belum ada data untuk wilayah ini.
                                 </li>
                             @endforelse
                         </ol>
 
-                        @if(count($rows) > count($topRows))
-                            <p class="text-[11px] text-gray-400 mt-4">Menampilkan {{ count($topRows) }} teratas dari {{ number_format(count($rows)) }} wilayah.</p>
+                        @if (count($rows) > count($topRows))
+                            <p class="mt-4 text-[11px] text-muted">
+                                Menampilkan {{ count($topRows) }} teratas dari {{ number_format(count($rows)) }} wilayah.
+                            </p>
                         @endif
                     </div>
                 </div>
 
-                <!-- Footer meta -->
-                <div class="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs text-gray-500">
-                    <p>Total wilayah ditampilkan: <strong class="text-unmaris-blue">{{ number_format(count($rows)) }}</strong></p>
+                <div class="flex flex-col gap-2 rounded-2xl border border-line bg-surface px-5 py-4 text-[11px] text-muted sm:flex-row sm:items-center sm:justify-between">
+                    <p>Total wilayah ditampilkan: <strong class="text-brand-ink">{{ number_format(count($rows)) }}</strong></p>
                     <p>{{ $meta['generated_at'] ?? 'Diperbarui secara berkala' }} · Data agregat dari SIAKAD</p>
                 </div>
             @endif

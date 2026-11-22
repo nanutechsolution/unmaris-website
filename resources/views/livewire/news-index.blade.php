@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-white pb-16 md:pb-24">
+<div class="min-h-screen bg-slate-50 pb-16 md:pb-24">
     <x-ui.page-hero title="Berita & Publikasi" eyebrow="Pusat Media Resmi"
         description="Jendela informasi mengenai terobosan riset, prestasi global, dan dinamika akademik di Universitas Stella Maris Sumba."
         :breadcrumbs="[
@@ -6,230 +6,250 @@
             ['label' => 'Berita & Publikasi'],
         ]" />
 
-    <div class="container-page py-10 md:py-14">
-        <!-- Search & Filter Bar -->
-        <div class="mb-10 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:mb-14 md:p-5">
-            <div class="flex flex-col items-center justify-between gap-4 lg:flex-row md:gap-6">
+    <div class="container-page py-8 md:py-12">
+        @php
+            $activeCategory = $selectedCategory ? $categories->firstWhere('id', $selectedCategory) : null;
+        @endphp
 
-                <!-- Category Tabs (Horizontal Scroll on Mobile) -->
-                <div class="hide-scrollbar flex w-full min-w-0 flex-1 snap-x items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
-                    <button wire:click="filterCategory(null)"
-                        class="shrink-0 snap-start rounded-full px-5 py-2 text-xs font-bold transition md:text-sm {{ is_null($selectedCategory) ? 'bg-unmaris-blue text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+        <!-- Panel Pencarian & Filter -->
+        <section aria-labelledby="filter-heading" class="mb-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:mb-12 md:p-5">
+            <h2 id="filter-heading" class="sr-only">Filter berita</h2>
+
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <!-- Tab Kategori -->
+                <div class="hide-scrollbar -mx-1 flex w-full min-w-0 snap-x items-center gap-2 overflow-x-auto px-1 pb-1">
+                    <button type="button" wire:click="filterCategory(null)" wire:key="category-all"
+                        aria-pressed="{{ is_null($selectedCategory) ? 'true' : 'false' }}"
+                        class="focus-navy inline-flex min-h-11 shrink-0 snap-start items-center justify-center rounded-full px-4 text-sm font-semibold transition {{ is_null($selectedCategory) ? 'bg-unmaris-blue text-white shadow-sm' : 'border border-slate-300 bg-white text-slate-700 hover:border-unmaris-blue hover:text-unmaris-blue' }}">
                         Semua Berita
                     </button>
                     @foreach($categories as $cat)
-                    <button wire:click="filterCategory('{{ $cat->id }}')"
-                        class="shrink-0 snap-start rounded-full px-5 py-2 text-xs font-bold transition md:text-sm {{ $selectedCategory == $cat->id ? 'bg-unmaris-blue text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
+                    <button type="button" wire:click="filterCategory('{{ $cat->id }}')" wire:key="category-{{ $cat->id }}"
+                        aria-pressed="{{ $selectedCategory == $cat->id ? 'true' : 'false' }}"
+                        class="focus-navy inline-flex min-h-11 shrink-0 snap-start items-center justify-center rounded-full px-4 text-sm font-semibold transition {{ $selectedCategory == $cat->id ? 'bg-unmaris-blue text-white shadow-sm' : 'border border-slate-300 bg-white text-slate-700 hover:border-unmaris-blue hover:text-unmaris-blue' }}">
                         {{ $cat->name }}
                     </button>
                     @endforeach
                 </div>
 
-                <!-- Search Input -->
+                <!-- Pencarian -->
                 <div class="relative w-full shrink-0 lg:w-80">
                     <label for="pencarian-berita" class="sr-only">Cari artikel atau berita</label>
                     <input id="pencarian-berita" wire:model.live.debounce.500ms="search" type="search"
                         placeholder="Cari artikel atau berita..."
-                        class="w-full rounded-full border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm font-medium outline-none transition focus:border-unmaris-yellow focus:ring-2 focus:ring-unmaris-yellow md:pl-11 md:pr-6">
-                    <svg class="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 md:h-5 md:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        class="min-h-11 w-full rounded-full border border-slate-300 bg-slate-50 py-2.5 pl-11 pr-4 text-sm font-medium text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue">
+                    <svg class="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
             </div>
 
-            <!-- Indikator Filter Tagar (Hanya Muncul Jika Sedang Memfilter Tag) -->
-            @if($tag)
-            <div class="mt-5 flex flex-wrap items-center gap-3 border-t border-slate-100 pt-4">
-                <span class="text-sm font-medium text-slate-500">Menampilkan hasil untuk tagar:</span>
-                <span class="inline-flex items-center rounded-full bg-unmaris-yellow px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-unmaris-blue shadow-sm">
+            <!-- Ringkasan Hasil -->
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
+                <p class="text-[13px] font-medium text-slate-600" role="status" aria-live="polite">
+                    Menampilkan <span class="font-bold text-unmaris-blue">{{ $news->total() }}</span> berita
+                    @if($activeCategory)
+                    dalam kategori <span class="font-bold text-slate-900">{{ $activeCategory->name }}</span>
+                    @endif
+                    @if($search)
+                    untuk pencarian <span class="font-bold text-slate-900">&ldquo;{{ $search }}&rdquo;</span>
+                    @endif
+                </p>
+
+                @if($tag)
+                <span class="inline-flex min-h-11 items-center gap-1 rounded-full bg-unmaris-yellow py-1 pl-3 pr-1 text-[12px] font-extrabold uppercase tracking-wider text-unmaris-blue">
                     #{{ $tag }}
-                    <button wire:click="clearTag" class="ml-2 transition-colors hover:text-red-600" title="Hapus Filter Tagar"
-                        aria-label="Hapus filter tagar {{ $tag }}">
+                    <button type="button" wire:click="clearTag"
+                        class="focus-navy inline-flex h-11 w-11 items-center justify-center rounded-full transition hover:bg-unmaris-blue hover:text-white"
+                        aria-label="Hapus filter tagar {{ $tag }}" title="Hapus filter tagar">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </span>
+                @endif
             </div>
-            @endif
-        </div>
+        </section>
 
-        <!-- 1. FEATURED HERO NEWS (Hanya di Halaman 1 & Tanpa Filter) -->
+        <!-- Laporan Utama -->
         @if($featuredNews && $news->onFirstPage() && !$search && !$selectedCategory && !$tag)
-        <div class="mb-12 md:mb-20 group">
-            <article class="group relative flex flex-col overflow-hidden rounded-3xl bg-slate-900 shadow-xl ring-1 ring-slate-800 md:min-h-[460px] md:justify-end">
+        @php
+            $heroReadTime = ceil(str_word_count(strip_tags($featuredNews->content)) / 200) ?: 1;
+        @endphp
+        <section aria-labelledby="lead-story-heading" class="mb-10 md:mb-14">
+            <div class="mb-4 flex items-center gap-3">
+                <span class="h-5 w-1 rounded-full bg-unmaris-blue" aria-hidden="true"></span>
+                <p class="text-[12px] font-extrabold uppercase tracking-[0.2em] text-unmaris-blue">Laporan Utama</p>
+                <div class="h-px flex-1 bg-slate-200" aria-hidden="true"></div>
+            </div>
 
-                <!-- Image / Latar -->
-                <div class="relative h-64 w-full shrink-0 overflow-hidden md:absolute md:inset-0 md:h-full">
-                    @if($featuredNews->featured_image)
-                    <img src="{{ \Illuminate\Support\Facades\Storage::url($featuredNews->featured_image) }}"
-                        class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        alt="{{ $featuredNews->title }}">
-                    @else
-                    <div class="absolute inset-0 bg-gradient-to-br from-unmaris-blue via-[#241b7a] to-slate-900">
-                        <svg class="absolute inset-0 h-full w-full text-white opacity-[0.08]" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                            <pattern id="featured-dots" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                                <circle cx="2" cy="2" r="1.3" fill="currentColor" />
-                            </pattern>
-                            <rect width="100" height="100" fill="url(#featured-dots)" />
-                        </svg>
-                        <img src="{{ asset('images/logo-unmaris.png') }}" alt=""
-                            class="absolute right-10 top-1/2 hidden h-28 w-auto -translate-y-1/2 opacity-20 md:block" loading="lazy">
-                    </div>
-                    @endif
+            <article class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <div class="grid grid-cols-1 lg:grid-cols-12">
+                    <!-- Gambar (tanpa teks di atas foto) -->
+                    <a href="{{ route('news.detail', $featuredNews->slug) }}"
+                        class="focus-navy group relative block overflow-hidden bg-slate-100 lg:col-span-7">
+                        @if($featuredNews->featured_image)
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($featuredNews->featured_image) }}"
+                            alt="{{ $featuredNews->title }}"
+                            class="aspect-[16/10] h-full w-full object-cover transition duration-500 group-hover:scale-[1.03] motion-reduce:transition-none">
+                        @else
+                        <div class="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-unmaris-blue">
+                            <svg class="absolute inset-0 h-full w-full text-white opacity-10" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                                <pattern id="lead-pattern-{{ $featuredNews->id }}" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                                    <circle cx="2" cy="2" r="1.4" fill="currentColor" />
+                                </pattern>
+                                <rect width="100" height="100" fill="url(#lead-pattern-{{ $featuredNews->id }})" />
+                            </svg>
+                            <img src="{{ asset('images/logo-unmaris.png') }}" alt=""
+                                class="relative h-16 w-auto opacity-25 md:h-20" loading="lazy">
+                        </div>
+                        @endif
 
-                    <!-- Indikator Video -->
-                    @if($featuredNews->video_url)
-                    <div class="absolute inset-0 z-10 flex items-center justify-center">
-                        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-unmaris-yellow/90 text-unmaris-blue shadow-[0_0_30px_rgba(253,224,26,0.4)] backdrop-blur-sm transition-transform duration-500 group-hover:scale-110 md:h-20 md:w-20">
-                            <svg class="ml-1 h-8 w-8 md:h-10 md:w-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        @if($featuredNews->video_url)
+                        <span class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-unmaris-blue px-3 py-1.5 text-[12px] font-bold text-white">
+                            <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M8 5v14l11-7z" />
                             </svg>
-                        </div>
-                    </div>
-                    @endif
-
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/80 to-slate-900/20"></div>
-                </div>
-
-                <!-- Content -->
-                <div class="relative z-10 flex w-full flex-col p-6 sm:p-8 md:w-11/12 md:p-12 lg:w-4/5 lg:p-14">
-
-                    <!-- Kategori, Tanggal & Masa Membaca -->
-                    <div class="mb-4 flex flex-wrap items-center gap-3 md:mb-6 md:gap-4">
-                        <span class="rounded-full bg-unmaris-yellow px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-unmaris-blue shadow-lg md:text-[11px]">
-                            {{ $featuredNews->category->name }}
+                            Video
                         </span>
-                        <div class="flex flex-wrap items-center gap-x-2 text-[10px] font-bold uppercase tracking-widest text-slate-300 md:text-xs">
-                            <svg class="h-3.5 w-3.5 text-unmaris-yellow md:h-4 md:w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <time datetime="{{ $featuredNews->published_at?->toDateString() }}">{{ $featuredNews->published_at->format('d M Y') }}</time>
-                            @php $heroReadTime = ceil(str_word_count(strip_tags($featuredNews->content)) / 200) ?: 1; @endphp
-                            <span class="text-slate-500" aria-hidden="true">•</span>
-                            <span class="text-unmaris-yellow">{{ $heroReadTime }} menit baca</span>
+                        @endif
+                    </a>
+
+                    <!-- Panel Konten -->
+                    <div class="flex flex-col justify-center p-5 sm:p-7 lg:col-span-5 lg:p-8">
+                        <div class="mb-3 flex flex-wrap items-center gap-2">
+                            <span class="inline-flex rounded-full bg-unmaris-yellow px-3 py-1 text-[12px] font-extrabold uppercase tracking-wider text-unmaris-blue">
+                                {{ $featuredNews->category->name }}
+                            </span>
                         </div>
-                    </div>
 
-                    <!-- Judul Utama -->
-                    <h2 class="mb-4 text-balance font-display text-2xl font-extrabold leading-tight text-white transition-colors md:mb-6 md:text-4xl lg:text-5xl">
-                        <a href="{{ route('news.detail', $featuredNews->slug) }}" class="transition hover:text-unmaris-yellow">
-                            {{ $featuredNews->title }}
-                        </a>
-                    </h2>
+                        <h2 id="lead-story-heading" class="text-balance font-display text-2xl font-extrabold leading-tight text-slate-900 sm:text-3xl lg:text-4xl">
+                            <a href="{{ route('news.detail', $featuredNews->slug) }}"
+                                class="focus-navy rounded transition-colors hover:text-unmaris-blue">
+                                {{ $featuredNews->title }}
+                            </a>
+                        </h2>
 
-                    <!-- Excerpt -->
-                    <p class="mb-7 line-clamp-3 max-w-2xl text-sm leading-relaxed text-slate-300 md:mb-9 md:text-base">
-                        {{ $featuredNews->excerpt }}
-                    </p>
+                        <p class="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-600 sm:text-base">
+                            {{ $featuredNews->excerpt }}
+                        </p>
 
-                    <!-- Aksi & Meta Stats -->
-                    <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:gap-8">
-                        <a href="{{ route('news.detail', $featuredNews->slug) }}" class="btn-primary w-full sm:w-auto">
-                            @if($featuredNews->video_url) Tonton Video @else Baca Artikel @endif
-                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                        </a>
+                        <div class="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 text-[13px] font-medium text-slate-600">
+                            <time datetime="{{ $featuredNews->published_at?->toDateString() }}">
+                                {{ $featuredNews->published_at?->locale('id')->translatedFormat('d M Y') ?? '-' }}
+                            </time>
+                            <span aria-hidden="true">&bull;</span>
+                            <span>{{ $heroReadTime }} menit baca</span>
+                        </div>
 
-                        <div class="flex items-center justify-center gap-5 text-[10px] font-bold uppercase tracking-widest text-slate-400 sm:justify-start md:text-xs">
-                            <span class="flex items-center gap-1.5">
+                        <div class="mt-6 flex flex-wrap items-center gap-4">
+                            <a href="{{ route('news.detail', $featuredNews->slug) }}" class="btn-navy focus-navy w-full sm:w-auto">
+                                {{ $featuredNews->video_url ? 'Tonton Video' : 'Baca Selengkapnya' }}
+                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </a>
+                            <span class="inline-flex items-center gap-1.5 text-[13px] font-medium text-slate-600">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
-                                {{ number_format($featuredNews->views) }} Tayangan
-                            </span>
-                            <div class="h-1 w-1 rounded-full bg-slate-600" aria-hidden="true"></div>
-                            <span class="flex items-center gap-1.5">
-                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                                </svg>
-                                {{ number_format($featuredNews->shares) }} Dibagikan
+                                {{ number_format($featuredNews->views) }} tayangan
                             </span>
                         </div>
                     </div>
                 </div>
             </article>
-        </div>
+        </section>
         @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16">
-            <!-- 2. MAIN NEWS GRID (Kiri) -->
+        <div class="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+            <!-- Feed Berita -->
             <div class="lg:col-span-8">
-                <div class="flex items-center gap-4 mb-6 md:mb-10">
+                <div class="mb-5 flex items-center gap-3 md:mb-7">
+                    <span class="h-5 w-1 rounded-full bg-unmaris-blue" aria-hidden="true"></span>
                     <h2 class="heading-3">Berita Terbaru</h2>
-                    <div class="h-px flex-grow bg-slate-200" aria-hidden="true"></div>
+                    <div class="h-px flex-1 bg-slate-200" aria-hidden="true"></div>
+                    <span class="inline-flex min-h-7 min-w-7 items-center justify-center rounded-full bg-slate-100 px-2 text-[12px] font-bold text-slate-600">
+                        {{ $news->total() }}
+                    </span>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 md:gap-x-10 gap-y-10 md:gap-y-16 mb-12 md:mb-20">
+                <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 md:gap-6">
                     @forelse($news as $item)
                     @php
-                    $readTime = ceil(str_word_count(strip_tags($item->content)) / 200) ?: 1;
+                        $readTime = ceil(str_word_count(strip_tags($item->content)) / 200) ?: 1;
                     @endphp
-                    <article class="group flex flex-col h-full bg-white rounded-2xl md:rounded-[2.5rem] p-3 md:p-4 border border-gray-50 hover:border-gray-100 hover:shadow-xl transition-all duration-500">
-                        <a href="{{ route('news.detail', $item->slug) }}" class="block relative aspect-[4/3] rounded-xl md:rounded-[2rem] overflow-hidden mb-5 md:mb-8 shadow-sm">
+                    <article wire:key="news-{{ $item->id }}"
+                        class="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition hover:border-slate-300 hover:shadow-lg motion-reduce:transition-none">
+                        <a href="{{ route('news.detail', $item->slug) }}"
+                            class="focus-navy group relative block overflow-hidden bg-slate-100">
                             @if($item->featured_image)
-                            <img src="{{ \Illuminate\Support\Facades\Storage::url($item->featured_image) }}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt="{{ $item->title }}">
+                            <img src="{{ \Illuminate\Support\Facades\Storage::url($item->featured_image) }}"
+                                alt="{{ $item->title }}"
+                                class="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-105 motion-reduce:transition-none">
                             @else
-                            <div class="w-full h-full bg-gray-50 flex items-center justify-center">
-                                <svg class="w-12 h-12 md:w-16 md:h-16 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <div class="relative flex aspect-[16/9] items-center justify-center overflow-hidden bg-unmaris-blue">
+                                <svg class="absolute inset-0 h-full w-full text-white opacity-10" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                                    <pattern id="card-pattern-{{ $item->id }}" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                                        <circle cx="2" cy="2" r="1.4" fill="currentColor" />
+                                    </pattern>
+                                    <rect width="100" height="100" fill="url(#card-pattern-{{ $item->id }})" />
                                 </svg>
+                                <img src="{{ asset('images/logo-unmaris.png') }}" alt=""
+                                    class="relative h-12 w-auto opacity-25" loading="lazy">
                             </div>
                             @endif
 
-                            <!-- Video Overlay Indicator -->
                             @if($item->video_url)
-                            <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10 flex items-center justify-center">
-                                <div class="w-12 h-12 bg-white/30 backdrop-blur-md rounded-full flex items-center justify-center border border-white/50 group-hover:bg-unmaris-yellow group-hover:border-unmaris-yellow group-hover:text-unmaris-blue text-white transition-all duration-500 shadow-lg group-hover:scale-110">
-                                    <svg class="w-5 h-5 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M8 5v14l11-7z" />
-                                    </svg>
-                                </div>
-                            </div>
+                            <span class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-unmaris-blue px-2.5 py-1 text-[12px] font-bold text-white">
+                                <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                Video
+                            </span>
                             @endif
-
-                            <div class="absolute top-4 left-4 md:top-6 md:left-6 z-20">
-                                <span class="bg-unmaris-blue/90 backdrop-blur-md text-white text-[8px] md:text-[9px] font-black px-3 md:px-4 py-1.5 rounded-full uppercase tracking-tighter shadow-sm">
-                                    {{ $item->category->name }}
-                                </span>
-                            </div>
                         </a>
 
-                        <div class="px-2 md:px-4 flex flex-col flex-grow">
-                            <div class="flex items-center gap-3 mb-3 md:mb-4 text-[9px] md:text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                                <span class="flex items-center gap-1.5">
-                                    <div class="w-1.5 h-1.5 bg-unmaris-yellow rounded-full"></div>
-                                    {{ $item->published_at->format('d M Y') }}
-                                </span>
-                                <div class="w-1 h-1 bg-gray-200 rounded-full"></div>
-                                <span class="text-unmaris-blue">{{ $readTime }} Mnt Baca</span>
-                            </div>
+                        <div class="flex flex-1 flex-col p-4 md:p-5">
+                            <span class="mb-2 inline-flex w-fit rounded-full bg-yellow-50 px-2.5 py-1 text-[12px] font-extrabold uppercase tracking-wider text-unmaris-blue">
+                                {{ $item->category->name }}
+                            </span>
 
-                            <h3 class="text-lg md:text-xl lg:text-2xl font-black text-gray-900 leading-snug md:leading-tight mb-3 md:mb-4 group-hover:text-unmaris-blue transition-colors duration-300">
-                                <a href="{{ route('news.detail', $item->slug) }}">
-                                    {{ Str::limit($item->title, 60) }}
+                            <h3 class="text-lg font-bold leading-snug text-slate-900 md:text-xl">
+                                <a href="{{ route('news.detail', $item->slug) }}"
+                                    class="focus-navy rounded transition-colors hover:text-unmaris-blue">
+                                    {{ $item->title }}
                                 </a>
                             </h3>
 
-                            <p class="text-gray-500 text-xs md:text-sm leading-relaxed mb-6 md:mb-8 line-clamp-3 font-medium">
+                            <p class="mt-2 line-clamp-2 text-[13px] leading-relaxed text-slate-600 md:text-sm">
                                 {{ $item->excerpt }}
                             </p>
 
-                            <div class="mt-auto pt-4 md:pt-6 border-t border-gray-50 flex justify-between items-center">
-                                <a href="{{ route('news.detail', $item->slug) }}" class="text-unmaris-blue font-black text-[10px] md:text-xs uppercase tracking-widest flex items-center gap-1.5 md:gap-2 group/link hover:text-unmaris-yellow transition-colors">
-                                    {{ $item->video_url ? 'Tonton Video' : 'Selengkapnya' }}
-                                    <svg class="w-3.5 h-3.5 md:w-4 md:h-4 transform group-hover/link:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            <div class="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12px] font-medium text-slate-600 md:text-[13px]">
+                                <time datetime="{{ $item->published_at?->toDateString() }}">
+                                    {{ $item->published_at?->locale('id')->translatedFormat('d M Y') ?? '-' }}
+                                </time>
+                                <span aria-hidden="true">&bull;</span>
+                                <span>{{ $readTime }} menit baca</span>
+                            </div>
+
+                            <div class="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-3">
+                                <a href="{{ route('news.detail', $item->slug) }}"
+                                    class="focus-navy inline-flex min-h-11 items-center gap-1.5 rounded text-sm font-bold text-unmaris-blue transition hover:underline">
+                                    {{ $item->video_url ? 'Tonton Video' : 'Baca Artikel' }}
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                     </svg>
                                 </a>
-                                <div class="flex items-center gap-2 text-gray-400">
-                                    <span class="text-[9px] md:text-[10px] font-bold flex items-center">{{ number_format($item->views) }} <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                        </svg></span>
-                                </div>
+                                <span class="inline-flex items-center gap-1 text-[12px] font-medium text-slate-600">
+                                    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    {{ number_format($item->views) }}
+                                </span>
                             </div>
                         </div>
                     </article>
@@ -245,74 +265,60 @@
                     @endforelse
                 </div>
 
-                <!-- Pagination -->
-                <div class="mt-8 md:mt-12 flex justify-center">
+                <div class="news-pagination mt-8 flex justify-center md:mt-10">
                     {{ $news->links() }}
                 </div>
             </div>
 
-            <!-- 3. TRENDING SIDEBAR (Kanan) -->
-            <aside class="lg:col-span-4 mt-12 lg:mt-0">
-                <div class="sticky top-24">
-                    <div class="flex items-center gap-4 mb-8 md:mb-10">
-                        <h2 class="heading-3">Terpopuler</h2>
-                        <div class="h-1 flex-grow rounded-full bg-unmaris-yellow" aria-hidden="true"></div>
-                    </div>
+            <!-- Sidebar -->
+            <aside class="lg:col-span-4" aria-labelledby="terpopuler-heading">
+                <div class="space-y-6 lg:sticky lg:top-24">
+                    <section class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-5">
+                        <div class="mb-2 flex items-center gap-3">
+                            <span class="h-5 w-1 rounded-full bg-unmaris-blue" aria-hidden="true"></span>
+                            <h2 id="terpopuler-heading" class="text-lg font-extrabold text-slate-900">Terpopuler</h2>
+                        </div>
 
-                    <div class="space-y-6 md:space-y-10">
-                        @foreach($trendingNews as $index => $trend)
-                        <article class="flex gap-4 md:gap-6 group/trend items-start relative">
-                            <div class="relative shrink-0 pt-1">
-                                <span class="text-3xl md:text-5xl font-black text-gray-200 group-hover/trend:text-unmaris-yellow transition-colors duration-300">
-                                    {{ sprintf("%02d", $index + 1) }}
-                                </span>
-                            </div>
-                            <div class="flex flex-col">
-                                <span class="text-[8px] md:text-[9px] font-black text-unmaris-blue uppercase tracking-widest mb-1 md:mb-2">
-                                    {{ $trend->category->name }}
-                                </span>
-                                <h4 class="text-base md:text-lg font-bold text-gray-900 leading-snug group-hover/trend:text-unmaris-blue transition-colors pr-6">
-                                    <a href="{{ route('news.detail', $trend->slug) }}">
-                                        {{ Str::limit($trend->title, 55) }}
-                                    </a>
-                                </h4>
-                                <div class="flex items-center gap-2 md:gap-3 mt-2 md:mt-3 text-[9px] md:text-[10px] text-gray-400 font-bold">
-                                    <span class="flex items-center gap-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                        </svg>
-                                        {{ number_format($trend->views) }}
+                        <ol class="divide-y divide-slate-100">
+                            @forelse($trendingNews as $index => $trend)
+                            <li wire:key="trend-{{ $trend->id }}" class="py-3 first:pt-1 last:pb-0">
+                                <article class="group flex items-start gap-3">
+                                    <span class="w-6 shrink-0 pt-0.5 text-xl font-extrabold tabular-nums text-slate-300 transition-colors group-hover:text-unmaris-blue" aria-hidden="true">
+                                        {{ sprintf('%02d', $index + 1) }}
                                     </span>
-                                    <span>•</span>
-                                    <span>{{ $trend->published_at->diffForHumans() }}</span>
-                                </div>
-                            </div>
+                                    <div class="min-w-0">
+                                        <h3 class="text-sm font-bold leading-snug text-slate-900 md:text-[15px]">
+                                            <a href="{{ route('news.detail', $trend->slug) }}"
+                                                class="focus-navy rounded transition-colors hover:text-unmaris-blue">
+                                                {{ $trend->title }}
+                                            </a>
+                                        </h3>
+                                        <div class="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-[12px] font-medium text-slate-600">
+                                            <span>{{ $trend->category->name }}</span>
+                                            <span aria-hidden="true">&bull;</span>
+                                            <span>{{ number_format($trend->views) }} tayangan</span>
+                                        </div>
+                                    </div>
+                                </article>
+                            </li>
+                            @empty
+                            <li class="py-3 text-sm text-slate-600">Belum ada data berita populer.</li>
+                            @endforelse
+                        </ol>
+                    </section>
 
-                            <!-- Small Video Icon in Trending -->
-                            @if($trend->video_url)
-                            <div class="absolute right-0 top-1.5 text-unmaris-blue bg-blue-50 p-1 rounded-md">
-                                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                            </div>
-                            @endif
-                        </article>
-                        @endforeach
-                    </div>
-
-                    <!-- Newsletter or Call to Action in Sidebar -->
-                    <div class="mt-12 md:mt-16 bg-gray-900 rounded-3xl md:rounded-[2.5rem] p-6 md:p-8 text-white relative overflow-hidden">
-                        <div class="absolute -right-10 -top-10 w-   32 h-32 bg-unmaris-yellow/10 rounded-full blur-2xl"></div>
-                        <h3 class="text-lg md:text-xl font-black mb-3 md:mb-4 relative z-10">Dapatkan Pembaruan.</h3>
-                        <p class="text-gray-400 text-xs md:text-sm mb-5 md:mb-6 relative z-10 leading-relaxed">Dapatkan informasi riset dan berita akademik terkini langsung di kotak masuk Anda.</p>
-                        <a href="{{ route('contact') }}" class="inline-block w-full text-center bg-unmaris-yellow text-unmaris-blue py-3 md:py-3.5 rounded-full font-black text-[10px] md:text-xs uppercase tracking-widest hover:bg-white transition-all">
+                    <section class="relative overflow-hidden rounded-2xl bg-unmaris-blue p-5 text-white md:p-6">
+                        <div class="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-unmaris-yellow/20 blur-2xl" aria-hidden="true"></div>
+                        <h2 class="relative text-lg font-extrabold">Dapatkan Pembaruan</h2>
+                        <p class="relative mt-2 text-sm leading-relaxed text-slate-200">
+                            Ikuti kanal resmi UNMARIS untuk kabar akademik, riset, dan prestasi terbaru.
+                        </p>
+                        <a href="{{ route('contact') }}" class="btn-primary focus-navy relative mt-5 w-full">
                             Hubungi Kami
                         </a>
-                    </div>
+                    </section>
                 </div>
             </aside>
         </div>
     </div>
-
 </div>

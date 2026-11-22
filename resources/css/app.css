@@ -282,7 +282,7 @@
     }
 
     .eyebrow-light {
-        @apply inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.22em] text-unmaris-yellow;
+        @apply inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.22em] text-unmaris-yellow;
     }
 
     .heading-1 {
@@ -334,19 +334,27 @@
     }
 
     .nav-link {
-        @apply inline-flex items-center gap-1 rounded-lg px-2.5 py-2 text-[13px] font-bold text-white/85 transition hover:bg-white/10 hover:text-unmaris-yellow;
+        @apply inline-flex min-h-11 items-center gap-1 border-b-2 border-transparent rounded-lg px-2.5 py-2 text-[13px] font-medium text-white/85 transition hover:bg-white/10 hover:text-unmaris-yellow;
     }
 
     .nav-link-active {
-        @apply bg-white/10 text-unmaris-yellow;
+        @apply border-unmaris-yellow bg-white/12 font-semibold text-white hover:bg-white/12 hover:text-white;
     }
 
     .nav-item {
-        @apply block rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-unmaris-blue;
+        @apply flex min-h-11 items-center rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-unmaris-blue;
     }
 
     .nav-item-active {
         @apply bg-yellow-50 text-unmaris-blue;
+    }
+
+    .footer-link {
+        @apply inline-flex min-h-11 items-center text-slate-400 transition hover:text-unmaris-yellow;
+    }
+
+    .footer-meta-link {
+        @apply inline-flex min-h-11 items-center transition hover:text-white;
     }
 
     .prose-unmaris {
@@ -395,6 +403,75 @@
 
     .prose-unmaris :where(td) {
         @apply border-b border-slate-200 p-3;
+    }
+
+    /* Fokus khusus area putih: outline navy (kontras 15.78), bukan kuning (1.32). */
+    .focus-navy:focus-visible {
+        outline: 3px solid var(--color-unmaris-blue);
+        outline-offset: 2px;
+    }
+
+    /* Tipografi artikel berita. Tidak mengubah perilaku .prose-unmaris. */
+    .prose-berita {
+        @apply text-[17px] leading-8 text-slate-700 sm:text-lg sm:leading-9;
+    }
+
+    .prose-berita :where(p) {
+        @apply mb-6;
+    }
+
+    .prose-berita :where(h2) {
+        @apply mb-4 mt-10 text-2xl font-extrabold text-unmaris-blue sm:text-3xl;
+    }
+
+    .prose-berita :where(h3) {
+        @apply mb-3 mt-8 text-xl font-bold text-unmaris-blue sm:text-2xl;
+    }
+
+    .prose-berita :where(a) {
+        @apply font-semibold text-unmaris-blue underline decoration-2 underline-offset-2 hover:text-unmaris-blue/80;
+    }
+
+    .prose-berita :where(strong) {
+        @apply font-extrabold text-slate-900;
+    }
+
+    .prose-berita :where(ul) {
+        @apply mb-6 list-disc space-y-2 pl-6 marker:text-unmaris-blue;
+    }
+
+    .prose-berita :where(ol) {
+        @apply mb-6 list-decimal space-y-2 pl-6 marker:font-bold marker:text-unmaris-blue;
+    }
+
+    .prose-berita :where(blockquote) {
+        @apply mb-8 rounded-r-xl border-l-4 border-unmaris-blue bg-slate-50 px-6 py-5 italic text-slate-600;
+    }
+
+    .prose-berita :where(img) {
+        @apply mx-auto my-8 h-auto max-w-full rounded-xl shadow-sm;
+    }
+
+    .prose-berita :where(iframe) {
+        @apply max-w-full;
+    }
+
+    .prose-berita :where(table) {
+        @apply mb-6 w-full border-collapse text-left text-sm;
+    }
+
+    .prose-berita :where(th) {
+        @apply bg-unmaris-blue p-3 text-left font-bold text-white;
+    }
+
+    .prose-berita :where(td) {
+        @apply border-b border-slate-200 p-3;
+    }
+
+    /* Pagination berita: area sentuh minimal 44px. */
+    .news-pagination nav a,
+    .news-pagination nav span[aria-current="page"] {
+        @apply inline-flex min-h-11 min-w-11 items-center justify-center;
     }
 }
 

@@ -1,16 +1,21 @@
 @props(['label', 'active' => false])
 
+@php $menuId = 'nav-menu-' . \Illuminate\Support\Str::slug($label); @endphp
+
 <div class="relative"
     x-data="{ open: false }"
-    @mouseenter="open = true"
-    @mouseleave="open = false"
-    @focusin="open = true"
+    @mouseenter="if (window.matchMedia('(hover: hover)').matches) { open = true; $dispatch('nav-menu-open', $root) }"
+    @mouseleave="if (window.matchMedia('(hover: hover)').matches) open = false"
     @focusout="if (! $el.contains($event.relatedTarget)) open = false"
-    @keydown.escape="open = false">
+    @click.outside="open = false"
+    @nav-menu-open.window="if ($event.detail !== $root) open = false"
+    @keydown.escape.window="if (open) { open = false; $refs.trigger.focus() }">
     <button type="button"
-        @click="open = ! open"
-        :aria-expanded="open"
+        x-ref="trigger"
+        @click="open = ! open; if (open) $dispatch('nav-menu-open', $root)"
+        :aria-expanded="open ? 'true' : 'false'"
         aria-haspopup="true"
+        aria-controls="{{ $menuId }}"
         class="nav-link {{ $active ? 'nav-link-active' : '' }}">
         {{ $label }}
         <svg class="h-3.5 w-3.5 transition-transform duration-200" :class="{ 'rotate-180': open }"
@@ -19,7 +24,7 @@
         </svg>
     </button>
 
-    <div x-show="open" x-cloak
+    <div id="{{ $menuId }}" x-show="open" x-cloak
         x-transition:enter="transition ease-out duration-150"
         x-transition:enter-start="opacity-0 translate-y-1"
         x-transition:enter-end="opacity-100 translate-y-0"

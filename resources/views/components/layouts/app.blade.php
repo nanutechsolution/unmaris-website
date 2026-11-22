@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? 'Universitas Stella Maris Sumba - UNMARIS' }}</title>
 
     <!-- icon -->
@@ -71,31 +72,6 @@
         @keydown.escape.window="mobileOpen = false"
         x-effect="document.documentElement.style.overflow = mobileOpen ? 'hidden' : ''">
 
-        <!-- Top utility bar -->
-        <div class="hidden border-b border-white/10 bg-unmaris-blue text-white/75 lg:block">
-            <div class="container-page flex h-9 items-center justify-between gap-4 text-[11px] font-semibold">
-                <div class="flex items-center gap-5">
-                    <a href="mailto:{{ $contactEmail }}" class="inline-flex items-center gap-2 transition hover:text-unmaris-yellow">
-                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        {{ $contactEmail }}
-                    </a>
-                    <span class="inline-flex items-center gap-2">
-                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                        {{ $contactPhone }}
-                    </span>
-                </div>
-                <div class="flex items-center gap-5">
-                    <a href="{{ route('akademik.unduhan') }}" class="transition hover:text-unmaris-yellow">Pusat Unduhan</a>
-                    <a href="{{ route('kemahasiswaan.statistik') }}" class="transition hover:text-unmaris-yellow">Statistik Mahasiswa</a>
-                    <a href="{{ route('complaint.index') }}" class="transition hover:text-unmaris-yellow">Pengaduan</a>
-                </div>
-            </div>
-        </div>
-
         <!-- Main bar -->
         <div class="transition-all duration-300"
             :class="scrolled ? 'bg-unmaris-blue/95 shadow-lg backdrop-blur-md' : 'bg-unmaris-blue'">
@@ -107,7 +83,7 @@
                     </span>
                     <span class="leading-tight">
                         <span class="block font-display text-lg font-extrabold tracking-tight text-unmaris-yellow">UNMARIS</span>
-                        <span class="hidden text-[10px] font-semibold uppercase tracking-[0.16em] text-white/70 sm:block">Universitas Stella Maris Sumba</span>
+                        <span class="block text-[9px] font-semibold uppercase tracking-[0.08em] text-white/70 max-[420px]:hidden min-[640px]:text-[10px] min-[640px]:tracking-[0.16em]">Universitas Stella Maris Sumba</span>
                     </span>
                 </a>
 
@@ -131,12 +107,6 @@
                     <x-ui.nav-menu label="Kemahasiswaan" :active="request()->routeIs('scholarships.*', 'organizations.*', 'kemahasiswaan.*')">
                         <a href="{{ route('scholarships.index') }}" class="nav-item {{ request()->routeIs('scholarships.*') ? 'nav-item-active' : '' }}">Informasi Beasiswa</a>
                         <a href="{{ route('organizations.index') }}" class="nav-item {{ request()->routeIs('organizations.*') ? 'nav-item-active' : '' }}">Organisasi Mahasiswa</a>
-                        <a href="{{ route('kemahasiswaan.statistik') }}" class="nav-item {{ request()->routeIs('kemahasiswaan.statistik') ? 'nav-item-active' : '' }}">Statistik Mahasiswa</a>
-                    </x-ui.nav-menu>
-
-                    <x-ui.nav-menu label="Penelitian" :active="request()->routeIs('lppm.*')">
-                        <a href="{{ route('lppm.profil') }}" class="nav-item {{ request()->routeIs('lppm.profil') ? 'nav-item-active' : '' }}">Profil LPPM</a>
-                        <a href="{{ route('lppm.publikasi') }}" class="nav-item {{ request()->routeIs('lppm.publikasi') ? 'nav-item-active' : '' }}">Jurnal &amp; Publikasi</a>
                     </x-ui.nav-menu>
 
                     <x-ui.nav-menu label="Media" :active="request()->routeIs('news.*', 'announcements.*')">
@@ -144,18 +114,21 @@
                         <a href="{{ route('announcements.index') }}" class="nav-item {{ request()->routeIs('announcements.*') ? 'nav-item-active' : '' }}">Pengumuman &amp; Agenda</a>
                     </x-ui.nav-menu>
 
-                    <a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'nav-link-active' : '' }}" @if (request()->routeIs('contact')) aria-current="page" @endif>Kontak</a>
-                    <a href="{{ route('complaint.index') }}" class="nav-link {{ request()->routeIs('complaint.index') ? 'nav-link-active' : '' }}" @if (request()->routeIs('complaint.index')) aria-current="page" @endif>Pengaduan</a>
+                    <x-ui.nav-menu label="Kontak" :active="request()->routeIs('contact', 'complaint.*')">
+                        <a href="{{ route('contact') }}" class="nav-item {{ request()->routeIs('contact') ? 'nav-item-active' : '' }}">Hubungi Kami</a>
+                        <a href="{{ route('complaint.index') }}" class="nav-item {{ request()->routeIs('complaint.*') ? 'nav-item-active' : '' }}">Pengaduan</a>
+                    </x-ui.nav-menu>
                 </div>
 
                 <div class="flex items-center gap-2">
                     <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
-                        class="hidden items-center justify-center gap-2 rounded-full bg-unmaris-yellow px-5 py-2.5 text-[11px] font-extrabold uppercase tracking-widest text-unmaris-blue shadow-md transition hover:bg-yellow-300 sm:inline-flex">
-                        Daftar PMB
+                        class="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-unmaris-yellow px-3 py-2.5 text-[10px] font-extrabold uppercase tracking-widest text-unmaris-blue shadow-md transition hover:bg-yellow-300 min-[640px]:px-5 min-[640px]:text-[11px]">
+                        <span class="min-[640px]:hidden">PMB</span>
+                        <span class="hidden min-[640px]:inline">Daftar PMB</span>
                     </a>
 
                     <button type="button" @click="mobileOpen = true" :aria-expanded="mobileOpen" aria-controls="menu-seluler"
-                        class="inline-flex h-11 w-11 items-center justify-center rounded-lg text-white transition hover:bg-white/10 xl:hidden"
+                        class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-white transition hover:bg-white/10 xl:hidden"
                         aria-label="Buka menu navigasi">
                         <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -195,7 +168,7 @@
                 </div>
 
                 <nav class="flex-1 overflow-y-auto px-4 py-5" aria-label="Navigasi seluler">
-                    <a href="{{ route('home') }}" class="mb-1 block rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:bg-white/10 {{ request()->routeIs('home') ? 'bg-white/10 text-unmaris-yellow' : '' }}">Beranda</a>
+                    <a href="{{ route('home') }}" class="mb-1 block rounded-xl border-b-2 border-transparent px-4 py-3 text-sm font-bold text-white transition hover:bg-white/10 {{ request()->routeIs('home') ? 'border-unmaris-yellow bg-white/12' : '' }}" @if (request()->routeIs('home')) aria-current="page" @endif>Beranda</a>
 
                     @php
                         $mobileGroups = [
@@ -212,22 +185,21 @@
                             ['label' => 'Kemahasiswaan', 'active' => request()->routeIs('scholarships.*', 'organizations.*', 'kemahasiswaan.*'), 'links' => [
                                 ['label' => 'Informasi Beasiswa', 'route' => 'scholarships.index'],
                                 ['label' => 'Organisasi Mahasiswa', 'route' => 'organizations.index'],
-                                ['label' => 'Statistik Mahasiswa', 'route' => 'kemahasiswaan.statistik'],
-                            ]],
-                            ['label' => 'Penelitian & LPPM', 'active' => request()->routeIs('lppm.*'), 'links' => [
-                                ['label' => 'Profil LPPM', 'route' => 'lppm.profil'],
-                                ['label' => 'Jurnal & Publikasi', 'route' => 'lppm.publikasi'],
                             ]],
                             ['label' => 'Media & Informasi', 'active' => request()->routeIs('news.*', 'announcements.*'), 'links' => [
                                 ['label' => 'Berita Kampus', 'route' => 'news.index'],
                                 ['label' => 'Pengumuman & Agenda', 'route' => 'announcements.index'],
+                            ]],
+                            ['label' => 'Kontak', 'active' => request()->routeIs('contact', 'complaint.*'), 'links' => [
+                                ['label' => 'Hubungi Kami', 'route' => 'contact'],
+                                ['label' => 'Pengaduan', 'route' => 'complaint.index'],
                             ]],
                         ];
                     @endphp
 
                     @foreach ($mobileGroups as $group)
                         <details class="group rounded-xl">
-                            <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:bg-white/10 {{ $group['active'] ? 'text-unmaris-yellow' : '' }}">
+                            <summary class="flex cursor-pointer list-none items-center justify-between rounded-xl border-b-2 border-transparent px-4 py-3 text-sm font-bold text-white transition hover:bg-white/10 {{ $group['active'] ? 'border-unmaris-yellow bg-white/12' : '' }}">
                                 <span>{{ $group['label'] }}</span>
                                 <svg class="h-4 w-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
@@ -235,17 +207,16 @@
                             </summary>
                             <div class="mb-1 space-y-0.5 pb-1 pl-3">
                                 @foreach ($group['links'] as $link)
+                                    @php $subAktif = request()->routeIs($link['route']); @endphp
                                     <a href="{{ route($link['route']) }}"
-                                        class="block rounded-lg px-4 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-white/10 hover:text-white {{ request()->routeIs($link['route']) ? 'bg-white/10 text-unmaris-yellow' : '' }}">
+                                        class="block rounded-lg border-b-2 px-4 py-3 text-sm transition hover:bg-white/10 {{ $subAktif ? 'border-unmaris-yellow bg-white/12 font-semibold text-white' : 'border-transparent font-semibold text-slate-300 hover:text-white' }}"
+                                        @if ($subAktif) aria-current="page" @endif>
                                         {{ $link['label'] }}
                                     </a>
                                 @endforeach
                             </div>
                         </details>
                     @endforeach
-
-                    <a href="{{ route('contact') }}" class="mt-1 block rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:bg-white/10 {{ request()->routeIs('contact') ? 'bg-white/10 text-unmaris-yellow' : '' }}">Kontak Kami</a>
-                    <a href="{{ route('complaint.index') }}" class="block rounded-xl px-4 py-3 text-sm font-bold text-white transition hover:bg-white/10 {{ request()->routeIs('complaint.index') ? 'bg-white/10 text-unmaris-yellow' : '' }}">Layanan Pengaduan</a>
                 </nav>
 
                 <div class="border-t border-white/10 p-4">
@@ -285,12 +256,12 @@
                     </div>
                     <p class="mb-6 text-sm leading-relaxed text-slate-400">Membangun peradaban Sumba dan kawasan Timur Indonesia melalui pendidikan tinggi yang berkualitas, berkarakter, dan berdaya saing global.</p>
                     <div class="flex gap-3">
-                        <a href="#" aria-label="Facebook UNMARIS" class="grid h-10 w-10 place-items-center rounded-full bg-slate-800 text-slate-400 transition hover:bg-unmaris-yellow hover:text-unmaris-blue">
+                        <a href="#" aria-label="Facebook UNMARIS" class="grid h-11 w-11 place-items-center rounded-full bg-slate-800 text-slate-400 transition hover:bg-unmaris-yellow hover:text-unmaris-blue">
                             <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                             </svg>
                         </a>
-                        <a href="#" aria-label="Instagram UNMARIS" class="grid h-10 w-10 place-items-center rounded-full bg-slate-800 text-slate-400 transition hover:bg-unmaris-yellow hover:text-unmaris-blue">
+                        <a href="#" aria-label="Instagram UNMARIS" class="grid h-11 w-11 place-items-center rounded-full bg-slate-800 text-slate-400 transition hover:bg-unmaris-yellow hover:text-unmaris-blue">
                             <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                             </svg>
@@ -302,12 +273,12 @@
                 <div>
                     <h4 class="mb-5 border-b-2 border-slate-700 pb-2 text-sm font-bold uppercase tracking-widest text-white">Akademik &amp; PMB</h4>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="{{ route('faculties.index') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Fakultas &amp; Program Studi</a></li>
-                        <li><a href="{{ route('akademik.sistem') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Sistem Pembelajaran</a></li>
-                        <li><a href="{{ route('akademik.unduhan') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Pusat Unduhan</a></li>
-                        <li><a href="{{ route('lppm.profil') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Profil LPPM</a></li>
-                        <li><a href="{{ route('lppm.publikasi') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Publikasi Ilmiah</a></li>
-                        <li><a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener" class="font-bold text-unmaris-yellow transition hover:text-white">Pendaftaran Mahasiswa Baru</a></li>
+                        <li><a href="{{ route('faculties.index') }}" class="footer-link">Fakultas &amp; Program Studi</a></li>
+                        <li><a href="{{ route('akademik.sistem') }}" class="footer-link">Sistem Pembelajaran</a></li>
+                        <li><a href="{{ route('akademik.unduhan') }}" class="footer-link">Pusat Unduhan</a></li>
+                        <li><a href="{{ route('lppm.profil') }}" class="footer-link">Profil LPPM</a></li>
+                        <li><a href="{{ route('lppm.publikasi') }}" class="footer-link">Publikasi Ilmiah</a></li>
+                        <li><a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center font-bold text-unmaris-yellow transition hover:text-white">Pendaftaran Mahasiswa Baru</a></li>
                     </ul>
                 </div>
 
@@ -315,12 +286,13 @@
                 <div>
                     <h4 class="mb-5 border-b-2 border-slate-700 pb-2 text-sm font-bold uppercase tracking-widest text-white">Layanan &amp; Informasi</h4>
                     <ul class="space-y-2.5 text-sm">
-                        <li><a href="{{ route('complaint.index') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Pengaduan &amp; Aspirasi</a></li>
-                        <li><a href="{{ route('facilities.index') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Fasilitas Kampus</a></li>
-                        <li><a href="{{ route('scholarships.index') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Informasi Beasiswa</a></li>
-                        <li><a href="{{ route('organizations.index') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Organisasi Mahasiswa</a></li>
-                        <li><a href="{{ route('news.index') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Berita &amp; Artikel</a></li>
-                        <li><a href="{{ route('announcements.index') }}" class="text-slate-400 transition hover:text-unmaris-yellow">Pengumuman &amp; Agenda</a></li>
+                        <li><a href="{{ route('complaint.index') }}" class="footer-link">Pengaduan &amp; Aspirasi</a></li>
+                        <li><a href="{{ route('facilities.index') }}" class="footer-link">Fasilitas Kampus</a></li>
+                        <li><a href="{{ route('scholarships.index') }}" class="footer-link">Informasi Beasiswa</a></li>
+                        <li><a href="{{ route('organizations.index') }}" class="footer-link">Organisasi Mahasiswa</a></li>
+                        <li><a href="{{ route('kemahasiswaan.statistik') }}" class="footer-link">Statistik Mahasiswa</a></li>
+                        <li><a href="{{ route('news.index') }}" class="footer-link">Berita &amp; Artikel</a></li>
+                        <li><a href="{{ route('announcements.index') }}" class="footer-link">Pengumuman &amp; Agenda</a></li>
                     </ul>
                 </div>
 
@@ -339,7 +311,7 @@
                             <svg class="h-5 w-5 shrink-0 text-unmaris-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                             </svg>
-                            <a href="mailto:{{ $contactEmail }}" class="transition hover:text-unmaris-yellow">{{ $contactEmail }}</a>
+                            <a href="mailto:{{ $contactEmail }}" class="footer-link">{{ $contactEmail }}</a>
                         </li>
                         <li class="flex items-center gap-3">
                             <svg class="h-5 w-5 shrink-0 text-unmaris-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -354,10 +326,10 @@
             <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-8 text-xs text-slate-500 md:flex-row">
                 <p>&copy; {{ date('Y') }} Universitas Stella Maris Sumba (UNMARIS). Hak cipta dilindungi.</p>
                 <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-                    <a href="{{ route('contact') }}" class="transition hover:text-white">Hubungi Kami</a>
-                    <a href="#" class="transition hover:text-white">Kebijakan Privasi</a>
-                    <a href="#" class="transition hover:text-white">Syarat &amp; Ketentuan</a>
-                    <a href="#konten-utama" class="inline-flex items-center gap-1.5 font-semibold text-slate-400 transition hover:text-unmaris-yellow">
+                    <a href="{{ route('contact') }}" class="footer-meta-link">Hubungi Kami</a>
+                    <a href="#" class="footer-meta-link">Kebijakan Privasi</a>
+                    <a href="#" class="footer-meta-link">Syarat &amp; Ketentuan</a>
+                    <a href="#konten-utama" class="footer-link gap-1.5 font-semibold">
                         Kembali ke atas
                         <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />

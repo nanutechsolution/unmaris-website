@@ -23,7 +23,7 @@ class NewsController extends Controller
             session()->put('viewed_news_' . $news->id, true);
         }
 
-        // Ambil berita terkait
+        // Berita terkait: utamakan kategori yang sama, lalu lengkapi dari berita terbaru lain.
         $relatedNews = News::with(['category', 'tags'])
             ->where('category_id', $news->category_id)
             ->where('id', '!=', $news->id)
@@ -32,7 +32,28 @@ class NewsController extends Controller
             ->take(3)
             ->get();
 
-        return view('pages.news-detail', compact('news', 'relatedNews'));
+        if ($relatedNews->count() < 3) {
+            $fallbackNews = News::with(['category', 'tags'])
+                ->where('id', '!=', $news->id)
+                ->whereNotIn('id', $relatedNews->pluck('id'))
+                ->where('is_published', true)
+                ->latest('published_at')
+                ->take(3 - $relatedNews->count())
+                ->get();
+
+            $relatedNews = $relatedNews->concat($fallbackNews);
+        }
+
+        // Berita terpopuler untuk sidebar (display-only).
+        $popularNews = News::with('category')
+            ->where('is_published', true)
+            ->where('id', '!=', $news->id)
+            ->orderByDesc('views')
+            ->latest('published_at')
+            ->take(5)
+            ->get();
+
+        return view('pages.news-detail', compact('news', 'relatedNews', 'popularNews'));
     }
 
     /**

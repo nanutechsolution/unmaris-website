@@ -92,8 +92,8 @@ class NewsIndex extends Component
             'trendingNews' => $trendingNews,
             'news' => $news
         ])->layout('components.layouts.app', [
-            'title' => 'News & Media Center - Universitas Stella Maris Sumba',
-            'description' => 'Pusat informasi resmi mengenai riset, inovasi, dan prestasi civitas akademika UNMARIS.'
+            'title' => 'Berita & Publikasi - Universitas Stella Maris Sumba',
+            'description' => 'Kabar terbaru seputar akademik, riset, kemahasiswaan, dan prestasi civitas akademika UNMARIS.'
         ]);
     }
 }

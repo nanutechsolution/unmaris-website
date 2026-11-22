@@ -23,14 +23,14 @@
         <div class="{{ $centered ? 'mx-auto max-w-3xl text-center' : 'max-w-4xl' }}">
             @if (! empty($breadcrumbs))
                 <nav aria-label="Breadcrumb" class="mb-5 {{ $centered ? 'flex justify-center' : '' }}">
-                    <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold text-white/60">
+                    <ol class="flex flex-wrap items-center gap-x-2 gap-y-4 text-xs font-semibold text-white/60">
                         @foreach ($breadcrumbs as $crumb)
                             <li class="flex items-center gap-2">
                                 @if (! $loop->first)
                                     <span class="text-white/30" aria-hidden="true">/</span>
                                 @endif
                                 @if (! empty($crumb['url']))
-                                    <a href="{{ $crumb['url'] }}" class="rounded transition hover:text-unmaris-yellow">{{ $crumb['label'] }}</a>
+                                    <a href="{{ $crumb['url'] }}" class="-my-3.5 inline-flex min-h-11 items-center rounded transition hover:text-unmaris-yellow">{{ $crumb['label'] }}</a>
                                 @else
                                     <span class="text-unmaris-yellow" aria-current="page">{{ $crumb['label'] }}</span>
                                 @endif

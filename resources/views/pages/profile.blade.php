@@ -1,192 +1,297 @@
 <x-layouts.app :title="$page->title . ' - UNMARIS'" :description="$page->meta_description">
-    
-    <x-ui.page-hero :title="$page->title" eyebrow="Tentang Kami"
-        :description="$page->meta_description"
+
+    @php
+        $hasSambutan = filled($page->content['sambutan'] ?? null);
+        $hasVisi = filled($page->content['visi'] ?? null);
+        $hasMisi = filled($page->content['misi'] ?? null);
+        $hasTujuan = filled($page->content['tujuan'] ?? null);
+        $hasKasih = filled($page->content['ciri_khas_kasih'] ?? null);
+        $hasSasaran = filled($page->content['sasaran_strategi'] ?? null);
+        $hasSejarah = filled($page->content['sejarah'] ?? null);
+        $hasStruktur = filled($page->content['struktur_organisasi'] ?? null);
+        $hasLeaders = isset($leaders) && $leaders->count() > 0;
+        $rektor = $hasLeaders ? $leaders->first() : null;
+        $navItems = array_values(array_filter([
+            $hasSambutan ? ['id' => 'sambutan', 'label' => 'Sambutan'] : null,
+            ($hasVisi || $hasMisi) ? ['id' => 'visi-misi', 'label' => 'Visi & Misi'] : null,
+            $hasTujuan ? ['id' => 'tujuan', 'label' => 'Tujuan'] : null,
+            $hasKasih ? ['id' => 'ciri-khas', 'label' => 'Ciri Khas KASIH'] : null,
+            $hasSasaran ? ['id' => 'sasaran', 'label' => 'Sasaran & Strategi'] : null,
+            $hasSejarah ? ['id' => 'sejarah', 'label' => 'Sejarah'] : null,
+            ['id' => 'struktur', 'label' => 'Struktur Organisasi'],
+            $hasLeaders ? ['id' => 'pimpinan', 'label' => 'Jajaran Pimpinan'] : null,
+        ]));
+    @endphp
+
+    <x-ui.page-hero :title="$page->title" eyebrow="Tentang Kami" :description="$page->meta_description"
         :breadcrumbs="[
             ['label' => 'Beranda', 'url' => route('home')],
             ['label' => $page->title],
         ]" />
 
-    <!-- Content Section (Menggunakan Key Spesifik dari JSON/Array) -->
-    <section class="section-y border-b border-slate-100 bg-white">
-        <div class="container-page max-w-4xl">
-            
-            <!-- Sambutan Rektor -->
-            @if(!empty($page->content['sambutan']))
-            @php
-                // Mengambil data Rektor (Pimpinan urutan pertama) secara otomatis
-                $rektor = isset($leaders) && $leaders->count() > 0 ? $leaders->first() : null;
-            @endphp
-            <div class="flex flex-col md:flex-row gap-8 items-center mb-16 bg-gray-50 p-8 md:p-10 rounded-3xl border-t-4 border-unmaris-yellow shadow-sm">
-                <div class="w-full md:w-1/3 flex justify-center">
-                    <div class="w-48 h-48 bg-gray-200 rounded-full overflow-hidden border-4 border-unmaris-blue shadow-lg relative">
-                        <!-- Tampilkan foto rektor dari modul Pimpinan jika ada -->
-                        @if($rektor && $rektor->image)
-                            <img src="{{ \Illuminate\Support\Facades\Storage::url($rektor->image) }}" alt="{{ $rektor->name }}" class="w-full h-full object-cover">
-                        @else
-                            <!-- Placeholder jika tidak ada foto -->
-                            <div class="absolute inset-0 flex items-center justify-center bg-unmaris-blue/10">
-                                 <svg class="w-20 h-20 text-unmaris-blue opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/></svg>
+    <section class="section-y bg-canvas">
+        <div class="container-page">
+            <div class="grid gap-8 lg:grid-cols-12 lg:gap-10">
+                <!-- Daftar isi -->
+                <aside class="lg:col-span-3" aria-labelledby="daftar-isi-profil">
+                    <div class="lg:sticky lg:top-24">
+                        <div class="card p-5">
+                            <div class="mb-3 flex items-center gap-3">
+                                <span class="divider-yellow" aria-hidden="true"></span>
+                                <h2 id="daftar-isi-profil" class="text-[11px] font-extrabold uppercase tracking-[0.16em] text-ink">Daftar Isi</h2>
                             </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="w-full md:w-2/3">
-                    <h2 class="text-2xl font-bold text-unmaris-blue mb-4 flex items-center gap-2">
-                        Sambutan Plt. Rektor
-                    </h2>
-                    <div class="text-gray-600 mb-4 italic text-lg leading-relaxed">
-                        "{!! strip_tags($page->content['sambutan']) !!}"
-                    </div>
-                    <!-- Menampilkan nama rektor secara dinamis dari modul Pimpinan -->
-                    <p class="font-bold text-gray-900">- {{ $rektor ? $rektor->name : 'Rektor Universitas Stella Maris Sumba' }}</p>
-                </div>
-            </div>
-            @endif
 
-            <!-- Visi & Misi -->
-            <div class="mb-16">
-                <div class="text-center md:text-left mb-8">
-                    <h2 class="text-3xl font-bold text-unmaris-blue border-b-4 border-unmaris-yellow inline-block pb-2">Visi & Misi</h2>
-                </div>
-
-                @if(!empty($page->content['visi']))
-                <div class="bg-unmaris-blue text-white p-8 md:p-10 rounded-3xl shadow-lg mb-8 relative overflow-hidden transform transition hover:-translate-y-1">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-unmaris-yellow rounded-full opacity-20 blur-2xl"></div>
-                    <h3 class="text-2xl font-bold mb-4 text-unmaris-yellow flex items-center gap-3">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                        Visi
-                    </h3>
-                    <div class="text-gray-100 text-lg md:text-xl leading-relaxed font-medium">
-                        {!! strip_tags($page->content['visi']) !!}
-                    </div>
-                </div>
-                @endif
-
-                @if(!empty($page->content['misi']))
-                <div class="bg-gray-50 p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100 border-l-8 border-unmaris-yellow transform transition hover:-translate-y-1">
-                    <h3 class="text-2xl font-bold mb-6 text-unmaris-blue flex items-center gap-3">
-                        <svg class="w-8 h-8 text-unmaris-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                        Misi
-                    </h3>
-                    <div class="text-gray-700 text-lg space-y-3 pl-5 [&>ul]:list-disc [&>ul]:space-y-3 marker:text-unmaris-yellow marker:font-bold">
-                        {!! $page->content['misi'] !!}
-                    </div>
-                </div>
-                @endif
-            </div>
-
-            <!-- Tujuan Institusi -->
-            @if(!empty($page->content['tujuan']))
-            <div class="mb-16">
-                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Tujuan Institusi</h2>
-                <!-- Styling khusus untuk list bersarang (ol > li > ol > li) -->
-                <div class="text-gray-700 text-lg leading-relaxed space-y-4 [&>ol]:list-decimal [&>ol]:pl-5 [&>ol>li]:mb-4 [&>ol>li>ol]:list-[lower-alpha] [&>ol>li>ol]:pl-6 [&>ol>li>ol>li]:mt-2 [&>p]:mb-4 marker:font-bold marker:text-unmaris-blue">
-                    {!! $page->content['tujuan'] !!}
-                </div>
-            </div>
-            @endif
-
-            <!-- Ciri Khas "KASIH" -->
-            @if(!empty($page->content['ciri_khas_kasih']))
-            <div class="mb-16">
-                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Ciri Khas "KASIH"</h2>
-                <div class="bg-gray-50 p-8 md:p-10 rounded-3xl shadow-sm border border-gray-100 border-l-8 border-unmaris-blue transform transition hover:-translate-y-1">
-                    <div class="text-gray-700 text-lg space-y-4 pl-2 [&>ul]:space-y-4 [&>ul>li>strong]:text-unmaris-blue [&>ul>li>strong]:text-xl [&>ul>li>strong]:mr-2">
-                        {!! $page->content['ciri_khas_kasih'] !!}
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            <!-- Sasaran & Strategi -->
-            @if(!empty($page->content['sasaran_strategi']))
-            <div class="mb-16">
-                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Sasaran & Strategi</h2>
-                <div class="bg-unmaris-blue text-white p-8 md:p-10 rounded-3xl shadow-lg relative overflow-hidden transform transition hover:-translate-y-1">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-unmaris-yellow rounded-full opacity-10 blur-2xl"></div>
-                    <div class="text-gray-100 text-lg space-y-3 pl-5 [&>ul]:list-disc [&>ul]:space-y-4 marker:text-unmaris-yellow">
-                        {!! $page->content['sasaran_strategi'] !!}
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            <!-- Sejarah Singkat -->
-            @if(!empty($page->content['sejarah']))
-            <div class="mb-16">
-                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Sejarah Singkat</h2>
-                <div class="text-gray-700 text-lg leading-relaxed space-y-6 [&>p]:mb-4 [&>h2]:text-2xl [&>h2]:font-bold [&>h2]:text-unmaris-blue [&>h2]:mt-8 [&>h2]:mb-4 [&>h3]:text-xl [&>h3]:font-bold [&>h3]:text-gray-800">
-                    {!! $page->content['sejarah'] !!}
-                </div>
-            </div>
-            @endif
-
-            <!-- BAGAN STRUKTUR ORGANISASI (Dari JSON Content Page) -->
-            <div class="mb-10">
-                <h2 class="text-3xl font-bold text-unmaris-blue mb-6 border-b-4 border-unmaris-yellow inline-block pb-2">Struktur Organisasi</h2>
-                <div class="bg-gray-50 p-4 md:p-8 rounded-3xl shadow-sm border border-gray-100 flex justify-center items-center min-h-[300px]">
-                    @if(!empty($page->content['struktur_organisasi']))
-                        <!-- Jika Admin sudah upload gambar bagan organisasi -->
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($page->content['struktur_organisasi']) }}" alt="Bagan Struktur Organisasi UNMARIS" class="max-w-full h-auto rounded-xl shadow-sm">
-                    @else
-                        <!-- Placeholder jika Admin belum upload gambar -->
-                        <div class="text-center py-10">
-                            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002 2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-                            </svg>
-                            <p class="text-gray-500 font-medium">Bagan Struktur Organisasi belum diunggah.</p>
-                            <p class="text-sm text-gray-400 mt-2">Gambar bagan dapat diperbarui melalui panel admin.</p>
+                            <nav aria-label="Bagian profil universitas">
+                                <ol class="space-y-1">
+                                    @foreach ($navItems as $item)
+                                        <li>
+                                            <a href="#{{ $item['id'] }}"
+                                                class="focus-navy group flex min-h-11 items-center gap-2.5 rounded-xl px-3 text-[13px] font-semibold text-body transition hover:bg-surface-2 hover:text-brand-ink">
+                                                <span class="font-display text-[11px] font-bold tabular-nums text-line-strong transition group-hover:text-brand-ink">
+                                                    {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
+                                                </span>
+                                                {{ $item['label'] }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ol>
+                            </nav>
                         </div>
+
+                        <div class="relative mt-5 hidden overflow-hidden rounded-3xl bg-navy-deep p-5 text-white lg:block">
+                            <div class="pointer-events-none absolute inset-0 hero-grid opacity-60" aria-hidden="true"></div>
+                            <div class="relative">
+                                <p class="text-[10px] font-extrabold uppercase tracking-[0.18em] text-unmaris-yellow">Kampus Peradaban</p>
+                                <p class="mt-2 text-sm leading-relaxed text-white/70">
+                                    Universitas Stella Maris Sumba tumbuh dari Sumba dan terbuka untuk dunia.
+                                </p>
+                                <a href="{{ route('contact') }}" class="btn-primary btn-sm mt-4 w-full">Hubungi Kami</a>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <div class="space-y-6 lg:col-span-9 lg:space-y-8">
+                    @if ($hasSambutan)
+                        <section id="sambutan" aria-labelledby="sambutan-heading" class="scroll-mt-28">
+                            <article class="overflow-hidden rounded-3xl border border-line bg-surface shadow-[var(--shadow-soft)]">
+                                <div class="grid grid-cols-1 sm:grid-cols-[15rem_1fr]">
+                                    <div class="relative flex min-h-56 items-center justify-center overflow-hidden bg-navy-deep p-6 sm:min-h-full">
+                                        <div class="pointer-events-none absolute inset-0 hero-grid opacity-60" aria-hidden="true"></div>
+                                        <div class="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-unmaris-yellow/20 blur-2xl" aria-hidden="true"></div>
+
+                                        @if ($rektor && $rektor->image)
+                                            <img src="{{ Storage::url($rektor->image) }}" alt="Foto {{ $rektor->name }}"
+                                                width="240" height="240" loading="lazy"
+                                                class="relative h-40 w-40 rounded-2xl border-4 border-white/15 object-cover shadow-xl">
+                                        @else
+                                            <div class="relative text-center">
+                                                <span class="mx-auto grid h-24 w-24 place-items-center rounded-full bg-unmaris-yellow font-display text-3xl font-bold text-[#1b0f52]">
+                                                    U
+                                                </span>
+                                                <p class="mt-4 text-[9px] font-extrabold uppercase tracking-[0.2em] text-unmaris-yellow">UNMARIS</p>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <div class="p-6 sm:p-8 md:p-10">
+                                        <span class="eyebrow">Sambutan Pimpinan</span>
+                                        <h2 id="sambutan-heading" class="mt-3 heading-3">Sambutan Plt. Rektor</h2>
+
+                                        <blockquote class="mt-5 border-l-4 border-unmaris-yellow pl-4">
+                                            <div class="prose-unmaris text-base italic leading-relaxed text-body md:text-lg">
+                                                {!! $page->content['sambutan'] !!}
+                                            </div>
+                                        </blockquote>
+
+                                        <div class="mt-6 flex items-center gap-3 border-t border-line pt-5">
+                                            <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-unmaris-yellow font-display text-sm font-bold text-[#1b0f52]" aria-hidden="true">
+                                                {{ $rektor ? mb_substr($rektor->name, 0, 1) : 'U' }}
+                                            </span>
+                                            <div>
+                                                <p class="text-sm font-bold text-ink">{{ $rektor ? $rektor->name : 'Pimpinan Universitas Stella Maris Sumba' }}</p>
+                                                @if ($rektor && $rektor->position)
+                                                    <p class="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">{{ $rektor->position }}</p>
+                                                @else
+                                                    <p class="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">Universitas Stella Maris Sumba</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </section>
+                    @endif
+
+                    @if ($hasVisi || $hasMisi)
+                        <section id="visi-misi" aria-labelledby="visi-misi-heading" class="scroll-mt-28">
+                            <div class="mb-5 flex items-center gap-3">
+                                <span class="divider-yellow" aria-hidden="true"></span>
+                                <h2 id="visi-misi-heading" class="heading-2">Visi &amp; Misi</h2>
+                            </div>
+
+                            <div class="grid gap-5 md:grid-cols-2">
+                                @if ($hasVisi)
+                                    <article class="relative overflow-hidden rounded-3xl bg-navy-deep p-6 text-white shadow-[var(--shadow-soft)] md:p-8">
+                                        <div class="pointer-events-none absolute inset-0 hero-grid opacity-60" aria-hidden="true"></div>
+                                        <div class="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full bg-unmaris-yellow/20 blur-2xl" aria-hidden="true"></div>
+                                        <div class="relative">
+                                            <span class="eyebrow-light">Arah Institusi</span>
+                                            <h3 class="mt-3 font-display text-2xl font-bold text-unmaris-yellow">Visi</h3>
+                                            <div class="mt-4 text-base leading-relaxed text-white/85">
+                                                {!! $page->content['visi'] !!}
+                                            </div>
+                                        </div>
+                                    </article>
+                                @endif
+
+                                @if ($hasMisi)
+                                    <article class="rounded-3xl border border-line border-l-4 border-l-unmaris-yellow bg-surface p-6 shadow-[var(--shadow-soft)] md:p-8">
+                                        <span class="eyebrow">Langkah Strategis</span>
+                                        <h3 class="mt-3 heading-3">Misi</h3>
+                                        <div class="prose-unmaris mt-4 text-sm">
+                                            {!! $page->content['misi'] !!}
+                                        </div>
+                                    </article>
+                                @endif
+                            </div>
+                        </section>
+                    @endif
+
+                    @if ($hasTujuan)
+                        <section id="tujuan" aria-labelledby="tujuan-heading" class="scroll-mt-28">
+                            <article class="rounded-3xl border border-line bg-surface p-6 shadow-[var(--shadow-soft)] md:p-8">
+                                <div class="mb-5 flex items-center gap-3">
+                                    <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-unmaris-yellow text-[#1b0f52]">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </span>
+                                    <h2 id="tujuan-heading" class="heading-2">Tujuan Institusi</h2>
+                                </div>
+                                <div class="prose-unmaris text-sm md:text-base">
+                                    {!! $page->content['tujuan'] !!}
+                                </div>
+                            </article>
+                        </section>
+                    @endif
+
+                    @if ($hasKasih)
+                        <section id="ciri-khas" aria-labelledby="ciri-khas-heading" class="scroll-mt-28">
+                            <article class="overflow-hidden rounded-3xl border border-line bg-surface shadow-[var(--shadow-soft)]">
+                                <div class="border-b border-line bg-unmaris-yellow/15 px-6 py-5 md:px-8">
+                                    <span class="eyebrow">Identitas Lulusan</span>
+                                    <h2 id="ciri-khas-heading" class="mt-2 heading-2">Ciri Khas &ldquo;KASIH&rdquo;</h2>
+                                </div>
+                                <div class="p-6 md:p-8">
+                                    <div class="prose-unmaris text-sm [&_li>strong]:text-base [&_li>strong]:text-brand-ink md:text-base">
+                                        {!! $page->content['ciri_khas_kasih'] !!}
+                                    </div>
+                                </div>
+                            </article>
+                        </section>
+                    @endif
+
+                    @if ($hasSasaran)
+                        <section id="sasaran" aria-labelledby="sasaran-heading" class="scroll-mt-28">
+                            <article class="relative overflow-hidden rounded-3xl bg-unmaris-blue p-6 text-white shadow-[var(--shadow-soft)] md:p-8">
+                                <div class="pointer-events-none absolute inset-0 pattern-dots-light opacity-40" aria-hidden="true"></div>
+                                <div class="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-unmaris-yellow/20 blur-2xl" aria-hidden="true"></div>
+                                <div class="relative">
+                                    <span class="eyebrow-light">Rencana Kerja</span>
+                                    <h2 id="sasaran-heading" class="mt-2 font-display text-2xl font-bold text-unmaris-yellow md:text-3xl">Sasaran &amp; Strategi</h2>
+                                    <div class="mt-4 text-sm leading-relaxed text-white/85 md:text-base [&_li]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5">
+                                        {!! $page->content['sasaran_strategi'] !!}
+                                    </div>
+                                </div>
+                            </article>
+                        </section>
+                    @endif
+
+                    @if ($hasSejarah)
+                        <section id="sejarah" aria-labelledby="sejarah-heading" class="scroll-mt-28">
+                            <article class="rounded-3xl border border-line bg-surface p-6 shadow-[var(--shadow-soft)] md:p-8">
+                                <div class="mb-4 flex items-center gap-3">
+                                    <span class="divider-yellow" aria-hidden="true"></span>
+                                    <h2 id="sejarah-heading" class="heading-2">Sejarah Singkat</h2>
+                                </div>
+                                <div class="prose-unmaris text-sm md:text-base">
+                                    {!! $page->content['sejarah'] !!}
+                                </div>
+                            </article>
+                        </section>
+                    @endif
+
+                    <section id="struktur" aria-labelledby="struktur-heading" class="scroll-mt-28">
+                        <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                            <div>
+                                <span class="eyebrow">Tata Kelola</span>
+                                <h2 id="struktur-heading" class="mt-2 heading-2">Struktur Organisasi</h2>
+                            </div>
+                            @if ($hasStruktur)
+                                <a href="{{ Storage::url($page->content['struktur_organisasi']) }}" target="_blank" rel="noopener" class="btn-outline btn-sm self-start sm:self-auto">
+                                    Buka ukuran penuh
+                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
+                                </a>
+                            @endif
+                        </div>
+
+                        @if ($hasStruktur)
+                            <div class="overflow-hidden rounded-3xl border border-line bg-surface-2 p-2 shadow-[var(--shadow-soft)] sm:p-4">
+                                <div class="overflow-x-auto rounded-2xl bg-surface">
+                                    <img src="{{ Storage::url($page->content['struktur_organisasi']) }}"
+                                        alt="Bagan struktur organisasi Universitas Stella Maris Sumba"
+                                        width="1600" height="1000" loading="lazy"
+                                        class="h-auto w-full min-w-[640px]">
+                                </div>
+                            </div>
+                            <p class="mt-3 text-center text-[11px] text-muted sm:hidden">Geser gambar ke samping untuk melihat bagan secara lengkap.</p>
+                        @else
+                            <x-ui.empty-state title="Bagan organisasi belum diunggah"
+                                description="Bagan struktur organisasi universitas belum dipublikasikan. Silakan periksa kembali secara berkala atau hubungi kami untuk informasi tata kelola.">
+                                <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                </svg>
+                            </x-ui.empty-state>
+                        @endif
+                    </section>
+
+                    @if ($hasLeaders)
+                        <section id="pimpinan" aria-labelledby="pimpinan-heading" class="scroll-mt-28">
+                            <div class="mb-6">
+                                <span class="eyebrow">Kepemimpinan</span>
+                                <h2 id="pimpinan-heading" class="mt-2 heading-2">Jajaran Pimpinan</h2>
+                                <p class="mt-2 max-w-2xl text-sm leading-relaxed text-body">
+                                    Pimpinan Universitas Stella Maris Sumba yang berdedikasi membangun generasi penerus bangsa.
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                                @foreach ($leaders as $leader)
+                                    <article class="flex h-full flex-col items-center rounded-3xl border border-line bg-surface p-6 text-center shadow-[var(--shadow-soft)]">
+                                        @if ($leader->image)
+                                            <img src="{{ Storage::url($leader->image) }}" alt="Foto {{ $leader->name }}"
+                                                width="160" height="160" loading="lazy"
+                                                class="h-28 w-28 rounded-full border-4 border-unmaris-yellow object-cover shadow-md">
+                                        @else
+                                            <span class="grid h-28 w-28 place-items-center rounded-full bg-unmaris-yellow font-display text-3xl font-bold text-[#1b0f52]">
+                                                {{ mb_substr($leader->name, 0, 1) }}
+                                            </span>
+                                        @endif
+
+                                        <h3 class="mt-5 font-display text-lg font-bold leading-snug text-ink">{{ $leader->name }}</h3>
+                                        @if ($leader->position)
+                                            <p class="mt-1 text-[11px] font-extrabold uppercase tracking-[0.1em] text-brand-ink">{{ $leader->position }}</p>
+                                        @endif
+                                    </article>
+                                @endforeach
+                            </div>
+                        </section>
                     @endif
                 </div>
             </div>
-
         </div>
     </section>
-
-    <!-- Section Struktur Kepemimpinan Dinamis (Diambil dari Model Leader) -->
-    @if(isset($leaders) && $leaders->count() > 0)
-    <section class="py-16 md:py-24 bg-gray-50">
-        <div class="container mx-auto px-4 max-w-6xl">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-unmaris-blue inline-block border-b-4 border-unmaris-yellow pb-2">Jajaran Pimpinan</h2>
-                <p class="text-gray-500 mt-4 text-lg">Pimpinan Universitas Stella Maris Sumba yang berdedikasi tinggi membangun generasi penerus bangsa.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center justify-center">
-                @foreach($leaders as $index => $leader)
-                    <!-- Highlight untuk urutan pertama (Rektor) -->
-                    <div class="{{ $index === 0 ? 'md:col-span-3 flex justify-center mb-10' : 'flex justify-center' }}">
-                        <div class="bg-white p-8 rounded-3xl shadow-sm hover:shadow-2xl border-t-4 {{ $index === 0 ? 'border-unmaris-blue w-full max-w-lg' : 'border-unmaris-yellow w-full max-w-sm' }} transition-all duration-300 transform hover:-translate-y-2 group">
-                            
-                            <!-- Foto Pimpinan dengan Efek Glow -->
-                            <div class="{{ $index === 0 ? 'w-44 h-44' : 'w-32 h-32' }} mx-auto mb-6 relative">
-                                <div class="absolute inset-0 bg-unmaris-blue rounded-full blur-lg opacity-10 group-hover:opacity-20 transition duration-300 transform translate-y-3"></div>
-                                
-                                @if($leader->image)
-                                    <img src="{{ \Illuminate\Support\Facades\Storage::url($leader->image) }}" alt="{{ $leader->name }}" class="w-full h-full rounded-full border-4 border-white object-cover shadow-md relative z-10" onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ urlencode($leader->name) }}&background=f3f4f6&color=1B1464&size=256';">
-                                @else
-                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($leader->name) }}&background=f3f4f6&color=1B1464&size=256" alt="{{ $leader->name }}" class="w-full h-full rounded-full border-4 border-white object-cover shadow-md relative z-10">
-                                @endif
-                            </div>
-
-                            <!-- Detail Pimpinan -->
-                            <h4 class="font-bold text-gray-900 {{ $index === 0 ? 'text-2xl mb-2' : 'text-xl mb-1' }}">{{ $leader->name }}</h4>
-                            
-                            @if($index === 0)
-                                <p class="text-unmaris-blue font-bold mt-3 bg-unmaris-yellow bg-opacity-30 inline-block px-6 py-2 rounded-full text-sm tracking-widest uppercase shadow-sm">
-                                    {{ $leader->position }}
-                                </p>
-                            @else
-                                <p class="text-unmaris-blue font-semibold mt-2">{{ $leader->position }}</p>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-    @endif
-
 </x-layouts.app>

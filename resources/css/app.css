@@ -6,234 +6,147 @@
 @source "../**/*.js";
 @source "../**/*.vue";
 
-@theme {
-    --color-unmaris-blue: #1B1464;
-    /* Biru Navy (teks, salib, garis tepi) */
-    --color-unmaris-yellow: #FDE01A;
-    /* Kuning Terang (latar segi lima) */
-    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-}
-
-.hero-title strong,
-.hero-title b {
-    color: var(--color-unmaris-yellow);
-    font-weight: inherit;
-}
-
-/* GIS Statistik Mahasiswa - penampilan Leaflet mengikuti identitas UNMARIS */
-#student-statistics-map .leaflet-container {
-    font-family: var(--font-sans);
-    background: #f1f5f9;
-}
-
-#student-statistics-map .leaflet-control-zoom a {
-    border-radius: 0.75rem !important;
-    width: 34px !important;
-    height: 34px !important;
-    line-height: 34px !important;
-    font-weight: 800;
-    color: var(--color-unmaris-blue);
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
-}
-
-#student-statistics-map .leaflet-control-zoom a:first-child {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
-}
-
-#student-statistics-map .leaflet-control-zoom a:last-child {
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-}
-
-#student-statistics-map .leaflet-control-zoom a:hover {
-    background: var(--color-unmaris-yellow);
-    color: var(--color-unmaris-blue);
-}
-
-#student-statistics-map .leaflet-control-scale-line {
-    background: rgb(255 255 255 / 0.85);
-    border-color: var(--color-unmaris-blue);
-    color: var(--color-unmaris-blue);
-    font-weight: 700;
-    font-size: 10px;
-    padding: 2px 6px;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
-}
-
-.gis-tooltip {
-    background: var(--color-unmaris-blue);
-    color: #fff;
-    border: none;
-    border-radius: 0.875rem;
-    padding: 8px 12px;
-    box-shadow: 0 10px 25px rgb(0 0 0 / 0.25);
-    pointer-events: none;
-    white-space: nowrap;
-}
-
-.gis-tooltip::before {
-    border-top-color: var(--color-unmaris-blue);
-}
-
-.gis-tooltip-title {
-    display: block;
-    font-weight: 800;
-    font-size: 13px;
-    line-height: 1.3;
-}
-
-.gis-tooltip-value {
-    display: block;
-    font-size: 11px;
-    color: var(--color-unmaris-yellow);
-    font-weight: 700;
-}
-
-.gis-tooltip-value.is-empty {
-    color: #cbd5e1;
-    font-weight: 500;
-}
-
-.leaflet-interactive:focus {
-    outline: 3px solid var(--color-unmaris-yellow);
-    outline-offset: 1px;
-}
-
-/* GIS marker mode */
-.gis-mode-button {
-    border: 1px solid #e5e7eb;
-    border-radius: 9999px;
-    padding: 0.45rem 0.7rem;
-    color: #64748b;
-    background: #f8fafc;
-    font-size: 0.68rem;
-    font-weight: 800;
-    transition: all 160ms ease;
-}
-
-.gis-mode-button:hover:not(:disabled),
-.gis-mode-button.is-active,
-.gis-mode-button[data-gis-reset]:hover {
-    color: var(--color-unmaris-blue);
-    background: #fef9c3;
-    border-color: var(--color-unmaris-yellow);
-}
-
-.gis-mode-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-}
-
-.gis-cluster-icon {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid white;
-    border-radius: 9999px;
-    background: var(--color-unmaris-blue);
-    box-shadow: 0 4px 14px rgb(27 20 100 / 0.35);
-}
-
-.gis-cluster-icon span {
-    color: white;
-    font-size: 11px;
-    font-weight: 900;
-}
-
-.gis-popup {
-    min-width: 190px;
-    padding: 2px;
-}
-
-.gis-popup-kicker {
-    margin: 0 0 3px;
-    color: #94a3b8;
-    font-size: 9px;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-}
-
-.gis-popup-title {
-    margin: 0;
-    color: var(--color-unmaris-blue);
-    font-size: 15px;
-    font-weight: 900;
-}
-
-.gis-popup-count {
-    margin: 5px 0 8px;
-    font-size: 18px;
-    font-weight: 900;
-}
-
-.gis-popup-parent,
-.gis-popup-note {
-    margin: 3px 0;
-    color: #64748b;
-    font-size: 10px;
-}
-
-.gis-popup-note {
-    margin-top: 9px;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 7px;
-    font-size: 9px;
-}
-
-.gis-popup-action {
-    width: 100%;
-    margin-top: 9px;
-    border: 0;
-    border-radius: 9999px;
-    padding: 7px 10px;
-    color: var(--color-unmaris-blue);
-    background: var(--color-unmaris-yellow);
-    font-size: 10px;
-    font-weight: 900;
-    cursor: pointer;
-}
-
-.gis-popup-action:hover {
-    filter: brightness(0.96);
-}
-
-#student-statistics-map .leaflet-popup-content-wrapper {
-    border-radius: 1rem;
-}
-
-#student-statistics-map .leaflet-popup-content {
-    margin: 13px 15px;
-}
-
-#student-statistics-map .leaflet-tooltip {
-    border: 0;
-    border-radius: 0.75rem;
-    padding: 7px 10px;
-    color: white;
-    background: var(--color-unmaris-blue);
-    box-shadow: 0 8px 20px rgb(0 0 0 / 0.2);
-}
-
-#student-statistics-map .leaflet-tooltip::before {
-    border-top-color: var(--color-unmaris-blue);
-}
-
 /* ==========================================================================
-   Design system publik UNMARIS
-   Token, tipografi, fokus, dan komponen dasar yang dipakai lintas halaman.
+   UNMARIS Design System 2026
+   Identitas: kuning #F5D900 dominan, navy #28166F / #1B0F52, krem sebagai dasar.
+   Tipografi: Bricolage Grotesque (display) + Public Sans (teks), dihosting sendiri.
    ========================================================================== */
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@font-face {
+    font-family: 'Bricolage Grotesque';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url('/fonts/bricolage-grotesque-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Bricolage Grotesque';
+    font-style: normal;
+    font-weight: 200 800;
+    font-display: swap;
+    src: url('/fonts/bricolage-grotesque-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/fonts/public-sans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: 'Public Sans';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/fonts/public-sans-latin-ext.woff2') format('woff2');
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 @theme {
-    --font-display: 'Plus Jakarta Sans', 'Inter', ui-sans-serif, system-ui, sans-serif;
+    /* Merek inti (dipertahankan agar kelas lama tetap bekerja) */
+    --color-unmaris-blue: #28166f;
+    --color-unmaris-yellow: #f5d900;
+
+    /* Palet semantik */
+    --color-canvas: var(--c-canvas);
+    --color-surface: var(--c-surface);
+    --color-surface-2: var(--c-surface-2);
+    --color-surface-3: var(--c-surface-3);
+    --color-ink: var(--c-ink);
+    --color-body: var(--c-body);
+    --color-muted: var(--c-muted);
+    --color-line: var(--c-line);
+    --color-line-strong: var(--c-line-strong);
+    --color-navy: var(--c-navy);
+    --color-navy-deep: var(--c-navy-deep);
+    --color-navy-soft: var(--c-navy-soft);
+    --color-brand-ink: var(--c-brand-ink);
+    --color-yellow-soft: var(--c-yellow-soft);
+    --color-yellow-deep: var(--c-yellow-deep);
+    --color-leaf: var(--c-leaf);
+    --color-ember: var(--c-ember);
+
+    --font-sans: 'Public Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-display: 'Bricolage Grotesque', 'Public Sans', ui-sans-serif, system-ui, sans-serif;
+
+    --radius-card: 1.5rem;
+    --shadow-soft: 0 1px 2px rgb(27 15 82 / 0.04), 0 18px 40px -24px rgb(27 15 82 / 0.22);
+    --shadow-lift: 0 24px 48px -24px rgb(27 15 82 / 0.35);
+}
+
+:root {
+    --c-canvas: #fffdf4;
+    --c-surface: #ffffff;
+    --c-surface-2: #f8f4e6;
+    --c-surface-3: #f1ebd8;
+    --c-ink: #171030;
+    --c-body: #3d3654;
+    --c-muted: #68617e;
+    --c-line: #e7e0cc;
+    --c-line-strong: #d5cbaf;
+    --c-navy: #28166f;
+    --c-navy-deep: #1b0f52;
+    --c-navy-soft: #3a2a94;
+    --c-brand-ink: #28166f;
+    --c-yellow-soft: #fff3a3;
+    --c-yellow-deep: #e6c900;
+    --c-leaf: #187651;
+    --c-ember: #b8460c;
+    color-scheme: light;
+}
+
+.dark {
+    --c-canvas: #0b0720;
+    --c-surface: #14102c;
+    --c-surface-2: #1b1538;
+    --c-surface-3: #241c47;
+    --c-ink: #f7f3e7;
+    --c-body: #d9d3e8;
+    --c-muted: #aaa2c2;
+    --c-line: #2e2553;
+    --c-line-strong: #41356a;
+    --c-navy: #8d7bf0;
+    --c-navy-deep: #100a2e;
+    --c-navy-soft: #6c5ae0;
+    --c-brand-ink: #efeaff;
+    --c-yellow-soft: #3a3410;
+    --c-yellow-deep: #f5d900;
+    --c-leaf: #5ed3a3;
+    --c-ember: #ff9a63;
+    color-scheme: dark;
 }
 
 @layer base {
     html {
         scroll-padding-top: 7rem;
         -webkit-tap-highlight-color: transparent;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
+    }
+
+    body {
+        background-color: var(--c-canvas);
+        color: var(--c-body);
+        font-family: var(--font-sans);
+        font-feature-settings: 'kern', 'liga', 'calt';
+        text-rendering: optimizeLegibility;
+    }
+
+    [x-cloak] {
+        display: none !important;
     }
 
     h1,
@@ -242,18 +155,32 @@
     h4,
     .font-display {
         font-family: var(--font-display);
-        letter-spacing: -0.02em;
+        letter-spacing: -0.025em;
+        color: var(--c-ink);
     }
 
     :focus-visible {
-        outline: 2px solid var(--color-unmaris-yellow);
+        outline: 3px solid var(--c-navy);
         outline-offset: 3px;
         border-radius: 4px;
     }
 
+    .dark :focus-visible {
+        outline-color: var(--c-yellow);
+    }
+
     ::selection {
-        background: var(--color-unmaris-yellow);
-        color: var(--color-unmaris-blue);
+        background: var(--c-yellow);
+        color: #1b0f52;
+    }
+
+    ::placeholder {
+        color: var(--c-muted);
+        opacity: 1;
+    }
+
+    hr {
+        border-color: var(--c-line);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -270,95 +197,237 @@
 
 @layer components {
     .container-page {
-        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+        @apply mx-auto w-full max-w-[1280px] px-4 sm:px-6 lg:px-8;
     }
 
     .section-y {
         @apply py-16 md:py-24;
     }
 
-    .eyebrow {
-        @apply inline-flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.22em] text-unmaris-blue/70;
+    /* ---------- Tipografi ---------- */
+
+    .display-1 {
+        font-family: var(--font-display);
+        font-size: clamp(2.75rem, 6.2vw, 5.25rem);
+        font-weight: 700;
+        line-height: 0.94;
+        letter-spacing: -0.04em;
+        color: var(--c-ink);
     }
 
-    .eyebrow-light {
-        @apply inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.22em] text-unmaris-yellow;
+    .display-2 {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.035em;
+        color: var(--c-ink);
+    }
+
+    .page-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.25rem, 4.8vw, 4rem);
+        font-weight: 700;
+        line-height: 0.98;
+        letter-spacing: -0.04em;
+        color: var(--c-ink);
+        text-wrap: balance;
     }
 
     .heading-1 {
-        @apply text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl;
+        @apply text-balance text-4xl font-bold leading-[1.04] text-ink sm:text-5xl lg:text-6xl;
     }
 
     .heading-2 {
-        @apply text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl;
+        @apply text-balance text-3xl font-bold leading-[1.08] text-ink md:text-4xl lg:text-[2.75rem];
     }
 
     .heading-3 {
-        @apply text-xl font-bold text-slate-900 md:text-2xl;
+        @apply text-xl font-bold leading-snug text-ink md:text-2xl;
     }
 
     .lead {
-        @apply text-base leading-relaxed text-slate-600 md:text-lg;
+        @apply text-base leading-relaxed text-body md:text-lg;
     }
 
+    .eyebrow {
+        @apply inline-flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-brand-ink;
+    }
+
+    .eyebrow::before {
+        content: '';
+        @apply inline-block h-2 w-2 shrink-0 rounded-full bg-unmaris-yellow ring-4 ring-unmaris-yellow/25;
+    }
+
+    .eyebrow-light {
+        @apply inline-flex items-center gap-2.5 text-[11px] font-extrabold uppercase tracking-[0.2em] text-unmaris-yellow;
+    }
+
+    .eyebrow-light::before {
+        content: '';
+        @apply inline-block h-2 w-2 shrink-0 rounded-full bg-unmaris-yellow;
+    }
+
+    .text-balance {
+        text-wrap: balance;
+    }
+
+    /* ---------- Permukaan ---------- */
+
     .card {
-        @apply rounded-2xl border border-slate-200/80 bg-white shadow-sm;
+        @apply rounded-3xl border border-line bg-surface shadow-[var(--shadow-soft)];
     }
 
     .card-hover {
-        @apply transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-xl;
+        @apply transition duration-300 hover:-translate-y-1 hover:border-line-strong hover:shadow-[var(--shadow-lift)];
     }
 
+    .card-flat {
+        @apply rounded-3xl border border-line bg-surface;
+    }
+
+    .panel-navy {
+        @apply rounded-3xl bg-navy-deep text-white;
+    }
+
+    .panel-yellow {
+        @apply rounded-3xl bg-unmaris-yellow text-navy-deep;
+    }
+
+    .surface-grid {
+        background-image:
+            linear-gradient(to right, var(--c-line) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--c-line) 1px, transparent 1px);
+        background-size: 72px 72px;
+    }
+
+    .surface-dots {
+        background-image: radial-gradient(var(--c-line-strong) 1px, transparent 1px);
+        background-size: 22px 22px;
+    }
+
+    /* ---------- Tombol ---------- */
+
     .btn {
-        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold transition;
+        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-bold transition duration-200;
     }
 
     .btn-primary {
-        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-unmaris-yellow px-6 text-sm font-bold text-unmaris-blue shadow-sm transition hover:bg-yellow-300;
+        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-unmaris-yellow px-6 text-sm font-extrabold text-[#1b0f52] shadow-[0_8px_22px_-10px_rgba(245,217,0,0.9)] transition duration-200 hover:bg-yellow-deep hover:text-[#1b0f52] active:translate-y-px;
     }
 
     .btn-navy {
-        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-unmaris-blue px-6 text-sm font-bold text-white transition hover:bg-[#241b7a];
+        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-unmaris-blue px-6 text-sm font-bold text-white transition duration-200 hover:bg-navy-soft active:translate-y-px;
     }
 
     .btn-outline {
-        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-slate-300 bg-white px-6 text-sm font-bold text-slate-700 transition hover:border-unmaris-blue hover:text-unmaris-blue;
+        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface px-6 text-sm font-bold text-ink transition duration-200 hover:border-unmaris-blue hover:text-brand-ink;
     }
 
     .btn-light-outline {
-        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/30 px-6 text-sm font-bold text-white transition hover:border-white hover:bg-white/10;
+        @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/30 px-6 text-sm font-bold text-white transition duration-200 hover:border-unmaris-yellow hover:bg-white/10 hover:text-unmaris-yellow;
     }
 
-    .skip-link {
-        @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2.5 focus:text-sm focus:font-bold focus:text-unmaris-blue focus:shadow-2xl;
+    .btn-ghost {
+        @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-4 text-sm font-bold text-brand-ink transition hover:bg-surface-2;
     }
+
+    .btn-sm {
+        @apply min-h-11 px-4 text-xs;
+    }
+
+    .icon-btn {
+        @apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full transition;
+    }
+
+    .link-arrow {
+        @apply inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.14em] text-brand-ink transition hover:text-navy-soft;
+    }
+
+    .link-arrow svg {
+        @apply transition-transform duration-200;
+    }
+
+    .link-arrow:hover svg {
+        transform: translateX(3px);
+    }
+
+    /* ---------- Navigasi ---------- */
 
     .nav-link {
-        @apply inline-flex min-h-11 items-center gap-1 border-b-2 border-transparent rounded-lg px-2.5 py-2 text-[13px] font-medium text-white/85 transition hover:bg-white/10 hover:text-unmaris-yellow;
+        @apply relative inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 py-2 text-[13.5px] font-semibold text-white/80 transition hover:text-unmaris-yellow;
+    }
+
+    .nav-link::after {
+        content: '';
+        @apply absolute inset-x-3 bottom-1 h-0.5 origin-left scale-x-0 rounded-full bg-unmaris-yellow transition-transform duration-200;
+    }
+
+    .nav-link:hover::after,
+    .nav-link-active::after {
+        @apply scale-x-100;
     }
 
     .nav-link-active {
-        @apply border-unmaris-yellow bg-white/12 font-semibold text-white hover:bg-white/12 hover:text-white;
+        @apply font-bold text-white;
     }
 
     .nav-item {
-        @apply flex min-h-11 items-center rounded-lg px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-unmaris-blue;
+        @apply flex min-h-11 items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold text-body transition hover:bg-surface-2 hover:text-brand-ink;
     }
 
     .nav-item-active {
-        @apply bg-yellow-50 text-unmaris-blue;
+        @apply bg-surface-2 font-bold text-brand-ink;
     }
 
     .footer-link {
-        @apply inline-flex min-h-11 items-center text-slate-400 transition hover:text-unmaris-yellow;
+        @apply inline-flex min-h-10 items-center text-sm text-white/65 transition hover:text-unmaris-yellow;
     }
 
-    .footer-meta-link {
-        @apply inline-flex min-h-11 items-center transition hover:text-white;
+    .footer-heading {
+        @apply mb-4 text-[11px] font-extrabold uppercase tracking-[0.18em] text-unmaris-yellow;
     }
+
+    /* ---------- Label / chip ---------- */
+
+    .chip {
+        @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-body;
+    }
+
+    .chip-yellow {
+        @apply inline-flex items-center gap-1.5 rounded-full bg-unmaris-yellow px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#1b0f52];
+    }
+
+    .chip-navy {
+        @apply inline-flex items-center gap-1.5 rounded-full bg-unmaris-blue px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-white;
+    }
+
+    .meta {
+        @apply text-xs font-medium text-muted;
+    }
+
+    /* ---------- Formulir ---------- */
+
+    .form-label {
+        @apply mb-1.5 block text-sm font-bold text-ink;
+    }
+
+    .form-input {
+        @apply block w-full rounded-xl border-line bg-surface px-4 py-3 text-sm text-ink shadow-sm transition placeholder:text-muted focus:border-unmaris-blue focus:ring-2 focus:ring-unmaris-blue/20;
+    }
+
+    .form-help {
+        @apply mt-1.5 text-xs text-muted;
+    }
+
+    .form-error {
+        @apply mt-1.5 text-xs font-semibold text-ember;
+    }
+
+    /* ---------- Prosa ---------- */
 
     .prose-unmaris {
-        @apply text-base leading-relaxed text-slate-700;
+        @apply text-base leading-relaxed text-body;
     }
 
     .prose-unmaris :where(p) {
@@ -366,31 +435,31 @@
     }
 
     .prose-unmaris :where(h2) {
-        @apply mb-4 mt-10 border-b-4 border-unmaris-yellow pb-2 text-2xl font-extrabold text-unmaris-blue;
+        @apply mb-4 mt-10 border-b-2 border-unmaris-yellow pb-2 text-2xl font-bold text-ink;
     }
 
     .prose-unmaris :where(h3) {
-        @apply mb-3 mt-8 text-xl font-bold text-unmaris-blue;
+        @apply mb-3 mt-8 text-xl font-bold text-ink;
     }
 
     .prose-unmaris :where(a) {
-        @apply font-semibold text-unmaris-blue underline decoration-unmaris-yellow decoration-2 underline-offset-2 hover:text-unmaris-blue/80;
+        @apply font-semibold text-brand-ink underline decoration-unmaris-yellow decoration-[3px] underline-offset-2 hover:text-navy-soft;
     }
 
     .prose-unmaris :where(ul) {
-        @apply mb-5 list-disc space-y-2 pl-6;
+        @apply mb-5 list-disc space-y-2 pl-6 marker:text-unmaris-blue;
     }
 
     .prose-unmaris :where(ol) {
-        @apply mb-5 list-decimal space-y-2 pl-6;
+        @apply mb-5 list-decimal space-y-2 pl-6 marker:font-bold marker:text-brand-ink;
     }
 
     .prose-unmaris :where(blockquote) {
-        @apply mb-5 rounded-r-xl border-l-4 border-unmaris-yellow bg-slate-50 px-5 py-4 italic text-slate-600;
+        @apply mb-5 rounded-r-xl border-l-4 border-unmaris-yellow bg-surface-2 px-5 py-4 italic text-body;
     }
 
     .prose-unmaris :where(img) {
-        @apply mx-auto mb-5 max-w-full rounded-xl shadow-md;
+        @apply mx-auto mb-5 h-auto max-w-full rounded-xl shadow-md;
     }
 
     .prose-unmaris :where(table) {
@@ -402,18 +471,11 @@
     }
 
     .prose-unmaris :where(td) {
-        @apply border-b border-slate-200 p-3;
+        @apply border-b border-line p-3;
     }
 
-    /* Fokus khusus area putih: outline navy (kontras 15.78), bukan kuning (1.32). */
-    .focus-navy:focus-visible {
-        outline: 3px solid var(--color-unmaris-blue);
-        outline-offset: 2px;
-    }
-
-    /* Tipografi artikel berita. Tidak mengubah perilaku .prose-unmaris. */
     .prose-berita {
-        @apply text-[17px] leading-8 text-slate-700 sm:text-lg sm:leading-9;
+        @apply text-[17px] leading-8 text-body sm:text-lg sm:leading-9;
     }
 
     .prose-berita :where(p) {
@@ -421,19 +483,19 @@
     }
 
     .prose-berita :where(h2) {
-        @apply mb-4 mt-10 text-2xl font-extrabold text-unmaris-blue sm:text-3xl;
+        @apply mb-4 mt-10 text-2xl font-bold text-ink sm:text-3xl;
     }
 
     .prose-berita :where(h3) {
-        @apply mb-3 mt-8 text-xl font-bold text-unmaris-blue sm:text-2xl;
+        @apply mb-3 mt-8 text-xl font-bold text-ink sm:text-2xl;
     }
 
     .prose-berita :where(a) {
-        @apply font-semibold text-unmaris-blue underline decoration-2 underline-offset-2 hover:text-unmaris-blue/80;
+        @apply font-semibold text-brand-ink underline decoration-unmaris-yellow decoration-[3px] underline-offset-2 hover:text-navy-soft;
     }
 
     .prose-berita :where(strong) {
-        @apply font-extrabold text-slate-900;
+        @apply font-extrabold text-ink;
     }
 
     .prose-berita :where(ul) {
@@ -441,11 +503,11 @@
     }
 
     .prose-berita :where(ol) {
-        @apply mb-6 list-decimal space-y-2 pl-6 marker:font-bold marker:text-unmaris-blue;
+        @apply mb-6 list-decimal space-y-2 pl-6 marker:font-bold marker:text-brand-ink;
     }
 
     .prose-berita :where(blockquote) {
-        @apply mb-8 rounded-r-xl border-l-4 border-unmaris-blue bg-slate-50 px-6 py-5 italic text-slate-600;
+        @apply mb-8 rounded-r-xl border-l-4 border-unmaris-blue bg-surface-2 px-6 py-5 italic text-body;
     }
 
     .prose-berita :where(img) {
@@ -465,10 +527,19 @@
     }
 
     .prose-berita :where(td) {
-        @apply border-b border-slate-200 p-3;
+        @apply border-b border-line p-3;
     }
 
-    /* Pagination berita: area sentuh minimal 44px. */
+    /* ---------- Lain-lain ---------- */
+
+    .skip-link {
+        @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-xl focus:bg-unmaris-yellow focus:px-5 focus:py-3 focus:text-sm focus:font-extrabold focus:text-[#1b0f52] focus:shadow-2xl;
+    }
+
+    .divider-yellow {
+        @apply h-1 w-14 rounded-full bg-unmaris-yellow;
+    }
+
     .news-pagination nav a,
     .news-pagination nav span[aria-current="page"] {
         @apply inline-flex min-h-11 min-w-11 items-center justify-center;
@@ -485,16 +556,12 @@
         display: none;
     }
 
-    .text-balance {
-        text-wrap: balance;
-    }
-
     .marquee {
         mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     }
 
     .marquee-track {
-        animation: marquee 38s linear infinite;
+        animation: marquee 42s linear infinite;
     }
 
     .marquee:hover .marquee-track,
@@ -511,10 +578,365 @@
             transform: translateX(-50%);
         }
     }
+
+    .text-shadow-deep {
+        text-shadow: 0 2px 24px rgb(11 7 32 / 0.45);
+    }
+
+    .no-scrollbar-x {
+        overflow-x: clip;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .marquee-track {
         animation: none;
     }
+}
+
+/* ==========================================================================
+   Kompatibilitas mode gelap untuk markup lama.
+   Markup baru memakai token semantik; aturan ini menjaga halaman lama tetap
+   terbaca tanpa menyentuh seluruh kelas utility satu per satu.
+   ========================================================================== */
+
+.dark .bg-white {
+    background-color: var(--c-surface);
+}
+
+.dark .bg-slate-50,
+.dark .bg-gray-50,
+.dark .bg-slate-100,
+.dark .bg-gray-100 {
+    background-color: var(--c-surface-2);
+}
+
+.dark .bg-slate-200,
+.dark .bg-gray-200 {
+    background-color: var(--c-surface-3);
+}
+
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-gray-900,
+.dark .text-gray-800 {
+    color: var(--c-ink);
+}
+
+.dark .text-slate-700,
+.dark .text-slate-600,
+.dark .text-gray-700,
+.dark .text-gray-600 {
+    color: var(--c-body);
+}
+
+.dark .text-slate-500,
+.dark .text-slate-400,
+.dark .text-gray-500,
+.dark .text-gray-400 {
+    color: var(--c-muted);
+}
+
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300,
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300 {
+    border-color: var(--c-line);
+}
+
+.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+    border-color: var(--c-line);
+}
+
+.dark .ring-slate-200,
+.dark .ring-slate-300 {
+    --tw-ring-color: var(--c-line);
+}
+
+.dark .text-unmaris-blue {
+    color: var(--c-brand-ink);
+}
+
+/* Elemen di atas latar kuning harus tetap navy, termasuk di mode gelap. */
+.dark .bg-unmaris-yellow.text-unmaris-blue,
+.dark .bg-unmaris-yellow .text-unmaris-blue,
+.dark .bg-unmaris-yellow .text-brand-ink,
+.dark .bg-unmaris-yellow .text-ink {
+    color: #1b0f52;
+}
+
+.dark .bg-unmaris-yellow .text-slate-900,
+.dark .bg-unmaris-yellow .text-slate-800 {
+    color: #1b0f52;
+}
+
+.dark .hover\:bg-slate-50:hover,
+.dark .hover\:bg-slate-100:hover,
+.dark .hover\:bg-gray-50:hover {
+    background-color: var(--c-surface-2);
+}
+
+.dark .hover\:text-unmaris-blue:hover {
+    color: var(--c-brand-ink);
+}
+
+.dark .hover\:border-slate-300:hover,
+.dark .hover\:border-slate-200:hover {
+    border-color: var(--c-line-strong);
+}
+
+.dark .bg-slate-900,
+.dark .bg-slate-950 {
+    background-color: #08041a;
+}
+
+.dark .from-slate-900,
+.dark .from-white {
+    --tw-gradient-from: var(--c-surface);
+}
+
+.dark .to-slate-900,
+.dark .to-white {
+    --tw-gradient-to: var(--c-surface);
+}
+
+.dark .via-slate-900 {
+    --tw-gradient-via: var(--c-surface);
+}
+
+.dark .shadow-sm,
+.dark .shadow,
+.dark .shadow-md,
+.dark .shadow-lg,
+.dark .shadow-xl,
+.dark .shadow-2xl {
+    --tw-shadow-color: rgb(0 0 0 / 0.5);
+}
+
+/* ==========================================================================
+   GIS Statistik Mahasiswa - Leaflet mengikuti identitas UNMARIS
+   ========================================================================== */
+
+#student-statistics-map .leaflet-container {
+    font-family: var(--font-sans);
+    background: var(--c-surface-2);
+}
+
+#student-statistics-map .leaflet-control-zoom a {
+    border-radius: 0.75rem !important;
+    width: 34px !important;
+    height: 34px !important;
+    line-height: 34px !important;
+    font-weight: 800;
+    color: var(--c-navy);
+    border: 1px solid var(--c-line) !important;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 0.12);
+}
+
+#student-statistics-map .leaflet-control-zoom a:first-child {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+#student-statistics-map .leaflet-control-zoom a:last-child {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+#student-statistics-map .leaflet-control-zoom a:hover {
+    background: var(--c-yellow);
+    color: #1b0f52;
+}
+
+#student-statistics-map .leaflet-control-scale-line {
+    background: rgb(255 255 255 / 0.85);
+    border-color: var(--c-navy);
+    color: var(--c-navy);
+    font-weight: 700;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.12);
+}
+
+.gis-tooltip {
+    background: var(--c-navy-deep);
+    color: #fff;
+    border: none;
+    border-radius: 0.875rem;
+    padding: 8px 12px;
+    box-shadow: 0 10px 25px rgb(0 0 0 / 0.25);
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.gis-tooltip::before {
+    border-top-color: var(--c-navy-deep);
+}
+
+.gis-tooltip-title {
+    display: block;
+    font-weight: 800;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.gis-tooltip-value {
+    display: block;
+    font-size: 11px;
+    color: var(--c-yellow);
+    font-weight: 700;
+}
+
+.gis-tooltip-value.is-empty {
+    color: #cbd5e1;
+    font-weight: 500;
+}
+
+.leaflet-interactive:focus {
+    outline: 3px solid var(--c-yellow);
+    outline-offset: 1px;
+}
+
+.gis-mode-button {
+    border: 1px solid var(--c-line);
+    border-radius: 9999px;
+    padding: 0.45rem 0.7rem;
+    color: var(--c-muted);
+    background: var(--c-surface-2);
+    font-size: 0.68rem;
+    font-weight: 800;
+    transition: all 160ms ease;
+}
+
+.gis-mode-button:hover:not(:disabled),
+.gis-mode-button.is-active,
+.gis-mode-button[data-gis-reset]:hover {
+    color: #1b0f52;
+    background: var(--c-yellow-soft);
+    border-color: var(--c-yellow);
+}
+
+.gis-mode-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.gis-cluster-icon {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    border-radius: 9999px;
+    background: var(--c-navy);
+    box-shadow: 0 4px 14px rgb(27 20 100 / 0.35);
+}
+
+.gis-cluster-icon span {
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.gis-popup {
+    min-width: 190px;
+    padding: 2px;
+}
+
+.gis-popup-kicker {
+    margin: 0 0 3px;
+    color: var(--c-muted);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+}
+
+.gis-popup-title {
+    margin: 0;
+    color: var(--c-brand-ink);
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.gis-popup-count {
+    margin: 5px 0 8px;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.gis-popup-parent,
+.gis-popup-note {
+    margin: 3px 0;
+    color: var(--c-muted);
+    font-size: 10px;
+}
+
+.gis-popup-note {
+    margin-top: 9px;
+    border-top: 1px solid var(--c-line);
+    padding-top: 7px;
+    font-size: 9px;
+}
+
+.gis-popup-action {
+    width: 100%;
+    margin-top: 9px;
+    border: 0;
+    border-radius: 9999px;
+    padding: 7px 10px;
+    color: #1b0f52;
+    background: var(--c-yellow);
+    font-size: 10px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.gis-popup-action:hover {
+    filter: brightness(0.96);
+}
+
+#student-statistics-map .leaflet-popup-content-wrapper {
+    border-radius: 1rem;
+    color: var(--c-body);
+    background: var(--c-surface);
+}
+
+#student-statistics-map .leaflet-popup-content {
+    margin: 13px 15px;
+}
+
+#student-statistics-map .leaflet-popup-tip {
+    background: var(--c-surface);
+}
+
+#student-statistics-map .leaflet-tooltip {
+    border: 0;
+    border-radius: 0.75rem;
+    padding: 7px 10px;
+    color: white;
+    background: var(--c-navy-deep);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 0.2);
+}
+
+#student-statistics-map .leaflet-tooltip::before {
+    border-top-color: var(--c-navy-deep);
+}
+
+.hero-title strong,
+.hero-title b {
+    color: var(--color-unmaris-yellow);
+    font-weight: inherit;
+}
+
+/* Fokus khusus area putih: outline navy (kontras tinggi), bukan kuning. */
+.focus-navy:focus-visible {
+    outline: 3px solid var(--c-navy);
+    outline-offset: 2px;
+}
+
+.dark .focus-navy:focus-visible {
+    outline-color: var(--c-yellow);
 }

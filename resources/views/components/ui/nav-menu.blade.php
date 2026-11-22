@@ -19,8 +19,8 @@
         class="nav-link {{ $active ? 'nav-link-active' : '' }}">
         {{ $label }}
         <svg class="h-3.5 w-3.5 transition-transform duration-200" :class="{ 'rotate-180': open }"
-            fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+            fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
         </svg>
     </button>
 
@@ -32,7 +32,11 @@
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 translate-y-1"
         class="absolute left-0 top-full z-50 pt-2">
-        <div class="w-64 overflow-hidden rounded-xl border-t-4 border-unmaris-yellow bg-white p-2 shadow-2xl ring-1 ring-slate-200/70">
+        <div class="w-72 overflow-hidden rounded-2xl border border-line bg-surface p-2 shadow-[0_24px_60px_-24px_rgba(11,7,32,0.55)]">
+            <div class="mb-1 flex items-center gap-2 px-3 py-2" aria-hidden="true">
+                <span class="h-1 w-6 rounded-full bg-unmaris-yellow"></span>
+                <span class="text-[9px] font-extrabold uppercase tracking-[0.18em] text-muted">{{ $label }}</span>
+            </div>
             {{ $slot }}
         </div>
     </div>

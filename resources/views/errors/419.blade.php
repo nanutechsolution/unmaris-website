@@ -1,5 +1,18 @@
-@extends('errors::minimal')
+@extends('errors::layout')
 
-@section('title', __('Page Expired'))
+@section('title', 'Sesi Kedaluwarsa')
 @section('code', '419')
-@section('message', __('Page Expired'))
+@section('eyebrow', 'Sesi Kedaluwarsa')
+@section('heading', 'Sesi Anda telah berakhir')
+@section('message', 'Halaman ini sudah kedaluwarsa karena tidak ada aktivitas dalam waktu tertentu. Demi keamanan, sesi Anda ditutup secara otomatis.')
+@section('hint', 'Jika Anda baru saja mengisi formulir, isian tersebut mungkin belum tersimpan. Muat ulang halaman, lalu isi kembali formulir Anda.')
+
+@section('actions')
+    <button type="button" class="btn btn-primary" onclick="location.reload()">
+        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        Muat Ulang Halaman
+    </button>
+    <a class="btn btn-outline" href="{{ url('/') }}">Kembali ke Beranda</a>
+@endsection

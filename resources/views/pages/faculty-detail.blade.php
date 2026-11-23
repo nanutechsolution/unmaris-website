@@ -182,7 +182,7 @@
                         <p class="mt-2 text-sm leading-relaxed text-body">
                             Daftarkan dirimu dan mulai perjalanan akademik bersama {{ $faculty->name }}.
                         </p>
-                        <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener" class="btn-primary mt-4 w-full">
+                        <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener" class="btn-primary mt-4 w-full">
                             Daftar PMB
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -378,7 +378,7 @@
                 </p>
             </div>
             <div class="flex flex-col gap-2.5 sm:flex-row md:shrink-0">
-                <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener"
                     class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#1b0f52] px-6 text-sm font-bold text-white transition hover:bg-[#28166f]">
                     Daftar Mahasiswa Baru
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">

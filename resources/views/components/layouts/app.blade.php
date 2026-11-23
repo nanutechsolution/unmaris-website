@@ -256,7 +256,7 @@
                     </svg>
                 </button>
 
-                <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener"
                     class="hidden min-h-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full bg-unmaris-yellow px-4 text-[11px] font-extrabold uppercase tracking-[0.08em] text-[#1b0f52] shadow-[0_8px_20px_-10px_rgba(245,217,0,0.8)] transition hover:bg-yellow-deep sm:inline-flex sm:px-5">
                     <span class="sm:hidden">PMB</span>
                     <span class="hidden sm:inline">Daftar PMB</span>
@@ -422,7 +422,7 @@
             </nav>
 
             <div class="border-t border-line bg-surface p-4">
-                <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener"
                     class="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-unmaris-yellow px-6 text-sm font-extrabold uppercase tracking-wider text-[#1b0f52] shadow-lg transition hover:bg-yellow-deep">
                     Daftar Mahasiswa Baru
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -455,7 +455,7 @@
                     </h2>
                 </div>
                 <div class="flex flex-col gap-3 sm:flex-row md:shrink-0">
-                    <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                    <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener"
                         class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#1b0f52] px-6 text-sm font-bold text-white transition hover:bg-[#28166f]">
                         Daftar Sekarang
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -541,7 +541,7 @@
                                 <a href="tel:{{ $contactPhoneLink }}" class="footer-link">{{ $contactPhone }}</a>
                             </p>
                         </address>
-                        <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                        <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener"
                             class="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-unmaris-yellow transition hover:text-white">
                             Portal PMB UNMARIS
                             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">

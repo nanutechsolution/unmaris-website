@@ -178,7 +178,7 @@
                                 Universitas Stella Maris Sumba membentuk karakter unggul, inovatif, dan berdaya saing global.
                             </p>
                             <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                                <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener" class="btn-primary w-full sm:w-auto">Daftar PMB</a>
+                                <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener" class="btn-primary w-full sm:w-auto">Daftar PMB</a>
                                 <a href="{{ route('profile') }}" class="btn-light-outline w-full sm:w-auto">Jelajahi UNMARIS</a>
                             </div>
                         </div>
@@ -282,7 +282,7 @@
     <section id="layanan-cepat" class="relative z-20 border-b border-line bg-canvas" aria-label="Layanan cepat">
         <div class="container-page -mt-12 md:-mt-14">
             <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-                <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener"
                     class="group flex min-h-[92px] flex-col justify-between gap-4 rounded-2xl bg-unmaris-yellow p-4 text-[#1b0f52] shadow-[0_18px_40px_-20px_rgba(245,217,0,0.55)] transition duration-300 hover:-translate-y-1 md:p-5">
                     <span class="grid h-9 w-9 place-items-center rounded-xl bg-[#1b0f52] text-unmaris-yellow">
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">

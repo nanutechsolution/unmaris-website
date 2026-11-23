@@ -158,7 +158,7 @@
                 </p>
             </div>
             <div class="flex flex-col gap-2.5 sm:flex-row md:shrink-0">
-                <a href="https://pmb.unmarissumba.ac.id" target="_blank" rel="noopener"
+                <a href="https://pmb.unmaris.ac.id" target="_blank" rel="noopener"
                     class="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#1b0f52] px-6 text-sm font-bold text-white transition hover:bg-[#28166f]">
                     Daftar Mahasiswa Baru
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">

@@ -18,12 +18,18 @@
             $hasKasih ? ['id' => 'ciri-khas', 'label' => 'Ciri Khas KASIH'] : null,
             $hasSasaran ? ['id' => 'sasaran', 'label' => 'Sasaran & Strategi'] : null,
             $hasSejarah ? ['id' => 'sejarah', 'label' => 'Sejarah'] : null,
+            ['id' => 'galeri', 'label' => 'Galeri Kampus'],
             ['id' => 'struktur', 'label' => 'Struktur Organisasi'],
             $hasLeaders ? ['id' => 'pimpinan', 'label' => 'Jajaran Pimpinan'] : null,
         ]));
     @endphp
 
     <x-ui.page-hero :title="$page->title" eyebrow="Tentang Kami" :description="$page->meta_description"
+        image="{{ asset('images/campus/depan-1600.jpg') }}"
+        image-srcset="{{ asset('images/campus/depan-480.webp') }} 480w, {{ asset('images/campus/depan-960.webp') }} 960w, {{ asset('images/campus/depan-1600.webp') }} 1600w"
+        image-alt="Gedung utama Universitas Stella Maris Sumba tampak depan"
+        image-position="40% 40%"
+        :image-width="1600" :image-height="1066"
         :breadcrumbs="[
             ['label' => 'Beranda', 'url' => route('home')],
             ['label' => $page->title],
@@ -221,6 +227,29 @@
                             </article>
                         </section>
                     @endif
+
+                    <section id="galeri" aria-labelledby="galeri-heading" class="scroll-mt-28">
+                        <div class="mb-5 flex items-center gap-3">
+                            <span class="divider-yellow" aria-hidden="true"></span>
+                            <h2 id="galeri-heading" class="heading-2">Galeri Kampus</h2>
+                        </div>
+
+                        <figure class="overflow-hidden rounded-3xl border border-line bg-surface shadow-[var(--shadow-soft)]">
+                            <picture>
+                                <source type="image/webp"
+                                    srcset="{{ asset('images/campus/samping-480.webp') }} 480w, {{ asset('images/campus/samping-960.webp') }} 960w, {{ asset('images/campus/samping-1600.webp') }} 1600w"
+                                    sizes="(min-width: 1024px) 66vw, 100vw">
+                                <img src="{{ asset('images/campus/samping-1600.jpg') }}"
+                                    alt="Gedung perkuliahan UNMARIS empat lantai tampak samping"
+                                    width="1600" height="874" loading="lazy" decoding="async"
+                                    class="w-full object-cover" style="aspect-ratio: 1600 / 874;">
+                            </picture>
+                            <figcaption class="flex flex-col gap-1 border-t border-line px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-sm font-semibold text-ink">Gedung perkuliahan empat lantai di Kampus UNMARIS Tambolaka.</span>
+                                <span class="text-[11px] font-extrabold uppercase tracking-[0.1em] text-muted">Dokumentasi UNMARIS</span>
+                            </figcaption>
+                        </figure>
+                    </section>
 
                     <section id="struktur" aria-labelledby="struktur-heading" class="scroll-mt-28">
                         <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

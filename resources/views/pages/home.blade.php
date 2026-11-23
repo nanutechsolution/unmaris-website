@@ -111,7 +111,7 @@
         @mouseenter="paused = true" @mouseleave="paused = false" @focusin="paused = true" @focusout="paused = false"
         @keydown="handleKeydown($event)" tabindex="0">
 
-        <div class="pointer-events-none absolute inset-0 hero-grid" aria-hidden="true"></div>
+        <div class="pointer-events-none absolute inset-0 hero-grid opacity-70" aria-hidden="true"></div>
         <div class="pointer-events-none absolute -left-32 top-1/4 h-80 w-80 rounded-full bg-unmaris-yellow/10 blur-[110px]" aria-hidden="true"></div>
         <div class="pointer-events-none absolute -right-20 bottom-0 h-96 w-96 rounded-full border-[60px] border-white/[0.03]" aria-hidden="true"></div>
 
@@ -233,10 +233,23 @@
                 @endif
             </div>
 
-            <!-- Panel identitas -->
-            <div class="relative hidden lg:block">
-                <div class="absolute -inset-3 rounded-[2.5rem] border border-white/10" aria-hidden="true"></div>
-                <div class="relative overflow-hidden rounded-[2rem] bg-unmaris-yellow p-7 text-[#1b0f52] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
+            <!-- Panel identitas + foto kampus -->
+            <div class="relative">
+                <figure class="relative overflow-hidden rounded-[2rem] border border-white/15 bg-[#100a2e] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]">
+                    <picture>
+                        <source type="image/webp"
+                            srcset="{{ asset('images/campus/depan-480.webp') }} 480w, {{ asset('images/campus/depan-960.webp') }} 960w, {{ asset('images/campus/depan-1600.webp') }} 1600w"
+                            sizes="(min-width: 1024px) 44vw, 100vw">
+                        <img src="{{ asset('images/campus/depan-1600.jpg') }}"
+                            alt="Gedung utama Universitas Stella Maris Sumba tampak depan"
+                            width="1600" height="1066" fetchpriority="high" decoding="async"
+                            class="w-full object-cover object-[40%_40%]">
+                    </picture>
+                    <span class="absolute left-4 top-4 chip-yellow">Kampus UNMARIS</span>
+                    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0d0729]/55 to-transparent" aria-hidden="true"></div>
+                </figure>
+
+                <div class="relative mt-5 hidden overflow-hidden rounded-[2rem] bg-unmaris-yellow p-6 text-[#1b0f52] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)] lg:block">
                     <div class="pointer-events-none absolute inset-0 pattern-dots-navy opacity-70" aria-hidden="true"></div>
                     <div class="relative">
                         <div class="flex items-start justify-between gap-4">
@@ -244,17 +257,13 @@
                                 <p class="text-[10px] font-extrabold uppercase tracking-[0.18em]">Universitas Stella Maris</p>
                                 <p class="mt-1 font-display text-4xl font-bold leading-none tracking-[-0.04em]">UNMARIS</p>
                             </div>
-                            <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-[#1b0f52]/10">
-                                <img src="{{ asset('images/logo-unmaris.png') }}" alt="" width="48" height="48"
+                            <span class="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-white p-1.5 shadow-sm ring-1 ring-[#1b0f52]/10">
+                                <img src="{{ asset('images/logo-unmaris.png') }}" alt="" width="44" height="44"
                                     class="h-full w-full object-contain">
                             </span>
                         </div>
 
-                        <p class="mt-9 max-w-[17rem] text-sm font-semibold leading-relaxed">
-                            Pendidikan tinggi yang tumbuh dari Sumba, terbuka untuk dunia.
-                        </p>
-
-                        <dl class="mt-8 grid grid-cols-2 gap-4 border-t border-[#1b0f52]/20 pt-6">
+                        <dl class="mt-5 grid grid-cols-2 gap-4 border-t border-[#1b0f52]/20 pt-4">
                             <div>
                                 <dd class="font-display text-4xl font-bold leading-none">{{ $countFakultas ?? 0 }}</dd>
                                 <dt class="mt-2 text-[10px] font-extrabold uppercase tracking-[0.14em]">Fakultas</dt>
@@ -265,7 +274,7 @@
                             </div>
                         </dl>
 
-                        <p class="mt-7 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.1em]">
+                        <p class="mt-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.1em]">
                             <svg class="h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -542,7 +551,16 @@
             <button type="button" @click="videoOpen = true; $nextTick(() => $refs.videoDialog.showModal())"
                 class="group relative block aspect-video w-full overflow-hidden rounded-3xl border border-white/15 bg-[#100a2e] text-left"
                 aria-label="Putar video profil kampus">
-                <span class="pointer-events-none absolute inset-0 pattern-dots-light opacity-40" aria-hidden="true"></span>
+                <picture class="absolute inset-0 block h-full w-full">
+                    <source type="image/webp"
+                        srcset="{{ asset('images/campus/samping-480.webp') }} 480w, {{ asset('images/campus/samping-960.webp') }} 960w, {{ asset('images/campus/samping-1600.webp') }} 1600w"
+                        sizes="(min-width: 1024px) 50vw, 100vw">
+                    <img src="{{ asset('images/campus/samping-1600.jpg') }}"
+                        alt="Gedung perkuliahan UNMARIS empat lantai tampak samping"
+                        width="1600" height="874" loading="lazy" decoding="async"
+                        class="h-full w-full object-cover">
+                </picture>
+                <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0d0729] via-[#0d0729]/45 to-[#0d0729]/10" aria-hidden="true"></span>
                 <span class="absolute left-5 top-5 chip-yellow">Video Profil</span>
                 <span class="absolute inset-0 grid place-items-center">
                     <span class="relative grid h-20 w-20 place-items-center rounded-full bg-unmaris-yellow text-[#1b0f52] shadow-[0_0_50px_rgba(245,217,0,0.35)] transition duration-300 group-hover:scale-105 md:h-24 md:w-24">

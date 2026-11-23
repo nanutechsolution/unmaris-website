@@ -140,7 +140,8 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="{{ $title ?? 'Universitas Stella Maris Sumba' }}">
     <meta property="og:description" content="{{ $description ?? 'Universitas Stella Maris Sumba - Pendidikan Unggul di NTT.' }}">
-    <meta property="og:image" content="{{ $ogImage ?? asset('images/logo-unmaris.png') }}">
+    <meta property="og:image" content="{{ $ogImage ?? asset('images/campus/og-default.jpg') }}">
+    <meta property="og:image:alt" content="{{ $ogImageAlt ?? 'Gedung utama Universitas Stella Maris Sumba tampak depan' }}">
     <meta property="og:site_name" content="Universitas Stella Maris Sumba">
     <meta property="og:locale" content="id_ID">
     <meta property="og:image:width" content="1200">
@@ -149,7 +150,8 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $title ?? 'Universitas Stella Maris Sumba' }}">
     <meta name="twitter:description" content="{{ $description ?? 'Universitas Stella Maris Sumba - Pendidikan Unggul di NTT.' }}">
-    <meta name="twitter:image" content="{{ $ogImage ?? asset('images/logo-unmaris.png') }}">
+    <meta name="twitter:image" content="{{ $ogImage ?? asset('images/campus/og-default.jpg') }}">
+    <meta name="twitter:image:alt" content="{{ $ogImageAlt ?? 'Gedung utama Universitas Stella Maris Sumba tampak depan' }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles

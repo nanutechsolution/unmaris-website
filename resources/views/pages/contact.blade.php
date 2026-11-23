@@ -9,6 +9,10 @@
 <x-layouts.app :title="$page->title . ' - UNMARIS'" :description="$page->meta_description">
 
     <x-ui.page-hero :title="$page->title" eyebrow="Hubungi Kami" :description="$page->meta_description"
+        image="{{ asset('images/campus/samping-1600.jpg') }}"
+        image-srcset="{{ asset('images/campus/samping-480.webp') }} 480w, {{ asset('images/campus/samping-960.webp') }} 960w, {{ asset('images/campus/samping-1600.webp') }} 1600w"
+        image-alt="Gedung perkuliahan UNMARIS empat lantai tampak samping"
+        :image-width="1600" :image-height="874"
         :breadcrumbs="[
             ['label' => 'Beranda', 'url' => route('home')],
             ['label' => $page->title],

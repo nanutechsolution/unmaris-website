@@ -1,107 +1,117 @@
 <div>
-    @if($successMessage)
-        <div class="mb-6 rounded-r-xl border-l-4 border-green-500 bg-green-50 p-6 shadow-sm" role="status" aria-live="polite">
-            <div class="flex items-start">
-                <svg class="mr-3 h-7 w-7 shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+    @if ($successMessage)
+        <div class="rounded-2xl border border-leaf/30 bg-leaf/10 p-5 md:p-6" role="status" aria-live="polite">
+            <div class="flex items-start gap-3">
+                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-leaf/15 text-leaf">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </span>
                 <div>
-                    <h3 class="text-lg font-bold text-green-800">Pesan Berhasil Terkirim!</h3>
-                    <p class="mt-1 text-sm leading-relaxed text-green-700">Terima kasih telah menghubungi kami. Tim UNMARIS akan segera membalas pesan Anda.</p>
+                    <h3 class="font-display text-lg font-bold text-ink">Pesan berhasil terkirim</h3>
+                    <p class="mt-1 text-sm leading-relaxed text-body">
+                        Terima kasih telah menghubungi kami. Tim UNMARIS akan segera membalas pesan Anda.
+                    </p>
+                    <button type="button" wire:click="$set('successMessage', false)"
+                        class="focus-navy mt-4 inline-flex min-h-11 items-center rounded-full text-[13px] font-bold text-brand-ink underline decoration-unmaris-yellow decoration-2 underline-offset-2 transition hover:text-unmaris-blue">
+                        Kirim pesan lainnya
+                    </button>
                 </div>
             </div>
-            <button type="button" wire:click="$set('successMessage', false)"
-                class="mt-4 text-sm font-semibold text-green-600 underline transition hover:text-green-800">
-                Kirim pesan lainnya
-            </button>
         </div>
     @else
-        <form wire:submit.prevent="submitMessage" class="space-y-6">
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <!-- Nama -->
+        <form wire:submit.prevent="submitMessage" class="space-y-5">
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
-                    <label for="kontak-nama" class="mb-2 block text-sm font-semibold text-slate-700">
-                        Nama Lengkap <span class="text-red-500" aria-hidden="true">*</span>
+                    <label for="kontak-nama" class="form-label">
+                        Nama Lengkap <span class="text-ember" aria-hidden="true">*</span>
                     </label>
-                    <input id="kontak-nama" type="text" wire:model.defer="name" required
+                    <input id="kontak-nama" type="text" wire:model.defer="name" required autocomplete="name"
+                        aria-required="true"
                         aria-invalid="{{ $errors->has('name') ? 'true' : 'false' }}"
                         aria-describedby="{{ $errors->has('name') ? 'kontak-nama-error' : '' }}"
-                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('name') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        class="form-input {{ $errors->has('name') ? 'border-ember focus:border-ember' : '' }}"
                         placeholder="Masukkan nama Anda">
                     @error('name')
-                        <span id="kontak-nama-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                        <span id="kontak-nama-error" class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
-                <!-- Email -->
+
                 <div>
-                    <label for="kontak-email" class="mb-2 block text-sm font-semibold text-slate-700">
-                        Alamat Email <span class="text-red-500" aria-hidden="true">*</span>
+                    <label for="kontak-email" class="form-label">
+                        Alamat Email <span class="text-ember" aria-hidden="true">*</span>
                     </label>
-                    <input id="kontak-email" type="email" wire:model.defer="email" required
+                    <input id="kontak-email" type="email" wire:model.defer="email" required autocomplete="email"
+                        aria-required="true"
                         aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}"
                         aria-describedby="{{ $errors->has('email') ? 'kontak-email-error' : '' }}"
-                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('email') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        class="form-input {{ $errors->has('email') ? 'border-ember focus:border-ember' : '' }}"
                         placeholder="nama@email.com">
                     @error('email')
-                        <span id="kontak-email-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                        <span id="kontak-email-error" class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
-            <!-- Telepon & Subjek -->
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
-                    <label for="kontak-telepon" class="mb-2 block text-sm font-semibold text-slate-700">Nomor Telepon/WA</label>
-                    <input id="kontak-telepon" type="tel" wire:model.defer="phone"
+                    <label for="kontak-telepon" class="form-label">Nomor Telepon/WA</label>
+                    <input id="kontak-telepon" type="tel" wire:model.defer="phone" autocomplete="tel"
                         aria-invalid="{{ $errors->has('phone') ? 'true' : 'false' }}"
                         aria-describedby="{{ $errors->has('phone') ? 'kontak-telepon-error' : '' }}"
-                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('phone') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        class="form-input {{ $errors->has('phone') ? 'border-ember focus:border-ember' : '' }}"
                         placeholder="08123456789">
                     @error('phone')
-                        <span id="kontak-telepon-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                        <span id="kontak-telepon-error" class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
+
                 <div>
-                    <label for="kontak-subjek" class="mb-2 block text-sm font-semibold text-slate-700">
-                        Subjek <span class="text-red-500" aria-hidden="true">*</span>
+                    <label for="kontak-subjek" class="form-label">
+                        Subjek <span class="text-ember" aria-hidden="true">*</span>
                     </label>
                     <input id="kontak-subjek" type="text" wire:model.defer="subject" required
+                        aria-required="true"
                         aria-invalid="{{ $errors->has('subject') ? 'true' : 'false' }}"
                         aria-describedby="{{ $errors->has('subject') ? 'kontak-subjek-error' : '' }}"
-                        class="w-full rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('subject') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
+                        class="form-input {{ $errors->has('subject') ? 'border-ember focus:border-ember' : '' }}"
                         placeholder="Contoh: Informasi Pendaftaran">
                     @error('subject')
-                        <span id="kontak-subjek-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                        <span id="kontak-subjek-error" class="form-error">{{ $message }}</span>
                     @enderror
                 </div>
             </div>
 
-            <!-- Isi Pesan -->
             <div>
-                <label for="kontak-pesan" class="mb-2 block text-sm font-semibold text-slate-700">
-                    Isi Pesan <span class="text-red-500" aria-hidden="true">*</span>
+                <label for="kontak-pesan" class="form-label">
+                    Isi Pesan <span class="text-ember" aria-hidden="true">*</span>
                 </label>
                 <textarea id="kontak-pesan" wire:model.defer="content" rows="5" required
+                    aria-required="true"
                     aria-invalid="{{ $errors->has('content') ? 'true' : 'false' }}"
                     aria-describedby="{{ $errors->has('content') ? 'kontak-pesan-error' : '' }}"
-                    class="w-full resize-none rounded-xl border px-4 py-3 outline-none transition focus:border-transparent focus:ring-2 focus:ring-unmaris-blue {{ $errors->has('content') ? 'border-red-500 bg-red-50' : 'border-slate-300 bg-slate-50' }}"
-                    placeholder="Tuliskan pesan atau pertanyaan Anda secara detail..."></textarea>
+                    class="form-input resize-none {{ $errors->has('content') ? 'border-ember focus:border-ember' : '' }}"
+                    placeholder="Tuliskan pesan atau pertanyaan Anda secara detail…"></textarea>
                 @error('content')
-                    <span id="kontak-pesan-error" class="mt-1 block text-xs font-medium text-red-500">{{ $message }}</span>
+                    <span id="kontak-pesan-error" class="form-error">{{ $message }}</span>
                 @enderror
             </div>
 
-            <!-- Submit Button dengan Loading State -->
-            <div class="text-right">
-                <button type="submit"
-                    class="btn-navy disabled:opacity-70">
-                    <span wire:loading.remove wire:target="submitMessage">Kirim Pesan Sekarang</span>
-                    <span wire:loading wire:target="submitMessage" class="flex items-center">
-                        <svg class="mr-3 -ml-1 h-5 w-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            <div class="flex flex-col gap-3 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
+                <p class="text-[11px] leading-relaxed text-muted">
+                    Kolom bertanda <span class="font-bold text-ember">*</span> wajib diisi.
+                </p>
+
+                <button type="submit" class="btn-primary" wire:loading.attr="disabled" wire:target="submitMessage">
+                    <span wire:loading.remove wire:target="submitMessage" class="inline-flex items-center gap-2">
+                        Kirim Pesan
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                         </svg>
-                        Mengirim...
+                    </span>
+                    <span wire:loading wire:target="submitMessage" class="inline-flex items-center gap-2">
+                        <span class="h-4 w-4 animate-spin rounded-full border-2 border-[#1b0f52]/30 border-t-[#1b0f52] motion-reduce:animate-none" aria-hidden="true"></span>
+                        Mengirim…
                     </span>
                 </button>
             </div>

@@ -6,237 +6,342 @@
             ['label' => 'Pengaduan & Aspirasi'],
         ]" />
 
-    <!-- Main Content -->
-    <div class="container-page py-10 md:py-14">
-        <div class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
-            
-            <!-- KOLOM KIRI: FORMULIR -->
-            <div class="lg:col-span-2">
-                @if($isSuccess)
-                    <!-- Tampilan Sukses -->
-                    <div class="bg-green-50 border border-green-200 rounded-2xl p-8 text-center shadow-sm">
-                        <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                            </svg>
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Pengaduan Berhasil Terkirim!</h2>
-                        <p class="text-gray-600 mb-6">Terima kasih telah menyampaikan aspirasi Anda. Silakan simpan nomor tiket di bawah ini untuk melacak status pengaduan Anda.</p>
-                        
-                        <div class="inline-block bg-white border-2 border-dashed border-gray-300 px-6 py-4 rounded-xl mb-8">
-                            <span class="block text-sm text-gray-500 font-medium mb-1">Nomor Tiket Anda:</span>
-                            <span class="block text-3xl font-black text-[#1B1464] tracking-wider">{{ $createdTicketNumber }}</span>
-                        </div>
-
-                        <div>
-                            <button wire:click="$set('isSuccess', false)" class="text-[#1B1464] font-bold hover:underline">
-                                Kirim Pengaduan Lainnya
-                            </button>
-                        </div>
-                    </div>
-                @else
-                    <!-- Tampilan Formulir -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-4">Formulir Pengaduan</h2>
-                        
-                        <form wire:submit.prevent="submit" class="space-y-6">
-                            <!-- Data Diri -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap <span class="text-red-500">*</span></label>
-                                    <input type="text" wire:model="name" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 shadow-sm outline-none focus:border-[#1B1464] focus:ring-2 focus:ring-[#1B1464]/20 transition-all" placeholder="Masukkan nama Anda">
-                                    @error('name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Alamat Email <span class="text-red-500">*</span></label>
-                                    <input type="email" wire:model="email" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 shadow-sm outline-none focus:border-[#1B1464] focus:ring-2 focus:ring-[#1B1464]/20 transition-all" placeholder="email@contoh.com">
-                                    @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Nomor Telepon/WA</label>
-                                    <input type="tel" wire:model="phone" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 shadow-sm outline-none focus:border-[#1B1464] focus:ring-2 focus:ring-[#1B1464]/20 transition-all" placeholder="0812xxxx">
-                                    @error('phone') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Kategori Pengaduan <span class="text-red-500">*</span></label>
-                                    <select wire:model="category" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 shadow-sm outline-none focus:border-[#1B1464] focus:ring-2 focus:ring-[#1B1464]/20 transition-all cursor-pointer">
-                                        <option value="">Pilih Kategori...</option>
-                                        <option value="akademik">Akademik & Perkuliahan</option>
-                                        <option value="fasilitas">Fasilitas Kampus</option>
-                                        <option value="layanan">Layanan Kemahasiswaan</option>
-                                        <option value="keuangan">Administrasi Keuangan</option>
-                                        <option value="lainnya">Lainnya</option>
-                                    </select>
-                                    @error('category') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                                </div>
-                            </div>
-
-                            <!-- Detail Pengaduan -->
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Perihal / Subjek <span class="text-red-500">*</span></label>
-                                <input type="text" wire:model="subject" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 shadow-sm outline-none focus:border-[#1B1464] focus:ring-2 focus:ring-[#1B1464]/20 transition-all" placeholder="Singkat dan jelas (Contoh: Proyektor di Ruang A1 Rusak)">
-                                @error('subject') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Isi Pengaduan <span class="text-red-500">*</span></label>
-                                <textarea wire:model="content" rows="6" class="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 shadow-sm outline-none focus:border-[#1B1464] focus:ring-2 focus:ring-[#1B1464]/20 transition-all" placeholder="Ceritakan detail keluhan atau aspirasi Anda di sini..."></textarea>
-                                @error('content') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Lampiran Bukti <span class="text-gray-400 font-normal">(Opsional)</span></label>
-                                <input type="file" wire:model="attachment" accept=".jpg,.jpeg,.png,.pdf" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-[#1B1464] hover:file:bg-blue-100 transition-colors cursor-pointer border border-dashed border-gray-300 p-2 bg-gray-50 rounded-xl">
-                                <p class="text-xs text-gray-500 mt-2">Maksimal 2MB. Format: JPG, PNG, atau PDF.</p>
-                                @error('attachment') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                                
-                                <div wire:loading wire:target="attachment" class="text-sm text-[#1B1464] font-medium mt-2">
-                                    Sedang mengunggah file...
-                                </div>
-                            </div>
-
-                            <!-- Keamanan & Validasi -->
-                            <div class="space-y-6 pt-6 border-t border-gray-100">
-                                
-                                <!-- Simple Math Captcha -->
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">Verifikasi Keamanan <span class="text-red-500">*</span></label>
-                                    <div class="flex flex-wrap sm:flex-nowrap items-center gap-3">
-                                        <span class="bg-gray-100 border border-gray-300 text-gray-800 font-bold px-4 py-3 rounded-xl select-none w-full sm:w-auto text-center sm:text-left">
-                                            Berapa hasil dari {{ $num1 }} + {{ $num2 }} ?
-                                        </span>
-                                        <input type="number" wire:model="captcha" class="w-full sm:w-24 rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-800 shadow-sm outline-none focus:border-[#1B1464] focus:ring-2 focus:ring-[#1B1464]/20 transition-all text-center" placeholder="?">
-                                    </div>
-                                    <p class="text-xs text-gray-500 mt-2">Ketikkan angka jawaban Anda untuk membuktikan Anda bukan robot.</p>
-                                    @error('captcha') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
-                                </div>
-
-                                <!-- Checkbox Persetujuan (Fix Visual & Area Klik) -->
-                                <div>
-                                    <label class="flex items-start gap-4 p-4 md:p-5 border border-gray-200 bg-gray-50 rounded-xl hover:bg-gray-100 transition-all w-full cursor-pointer">
-                                        <div class="flex items-center mt-0.5 shrink-0">
-                                            <!-- Menggunakan accent-color agar otomatis rapi tanpa plugin form -->
-                                            <input type="checkbox" wire:model="consent" class="w-6 h-6 cursor-pointer accent-[#1B1464]">
-                                        </div>
-                                        <div class="text-sm md:text-base text-gray-700 hover:text-gray-900 leading-relaxed w-full select-none">
-                                            Saya menyatakan bahwa informasi yang saya berikan adalah benar dan saya bertanggung jawab penuh atas isi pengaduan ini sesuai ketentuan yang berlaku. <span class="text-red-500 font-bold">*</span>
-                                        </div>
-                                    </label>
-                                    @error('consent') <span class="text-red-500 text-xs mt-2 block font-semibold">{{ $message }}</span> @enderror
-                                </div>
-                                
-                            </div>
-
-                            <div class="pt-6">
-                                <button type="submit" wire:loading.attr="disabled" class="w-full md:w-auto px-8 py-3 bg-[#1B1464] text-white font-bold rounded-xl shadow-lg hover:bg-blue-900 outline-none focus:ring-4 focus:ring-blue-300 transition-all disabled:opacity-70 flex items-center justify-center gap-2">
-                                    <span wire:loading.remove wire:target="submit">Kirim Pengaduan</span>
-                                    <span wire:loading wire:target="submit">Memproses...</span>
-                                    <svg wire:loading.remove wire:target="submit" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+    <section class="section-y bg-canvas">
+        <div class="container-page">
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+                <!-- Formulir / sukses -->
+                <div class="lg:col-span-8">
+                    @if ($isSuccess)
+                        <div class="overflow-hidden rounded-3xl border border-leaf/30 bg-surface shadow-[var(--shadow-soft)]">
+                            <div class="h-1.5 w-full bg-leaf" aria-hidden="true"></div>
+                            <div class="p-6 text-center sm:p-10 md:p-12">
+                                <span class="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-leaf/10 text-leaf">
+                                    <svg class="h-8 w-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                                     </svg>
-                                </button>
+                                </span>
+                                <h2 class="mt-5 heading-2">Pengaduan berhasil terkirim</h2>
+                                <p class="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-body">
+                                    Terima kasih telah menyampaikan aspirasi Anda. Simpan nomor tiket berikut untuk melacak
+                                    status tindak lanjut pengaduan.
+                                </p>
+
+                                <div class="mx-auto mt-6 inline-block rounded-2xl border border-dashed border-line-strong bg-surface-2 px-6 py-4">
+                                    <span class="block text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted">Nomor Tiket Anda</span>
+                                    <span class="mt-1 block font-display text-2xl font-bold tracking-[0.08em] text-brand-ink sm:text-3xl">
+                                        {{ $createdTicketNumber }}
+                                    </span>
+                                </div>
+
+                                <div class="mt-7 flex flex-wrap justify-center gap-3">
+                                    <button type="button" wire:click="$set('isSuccess', false)" class="btn-outline">
+                                        Kirim Pengaduan Lainnya
+                                    </button>
+                                    <a href="{{ route('contact') }}" class="btn-ghost">Hubungi Kami</a>
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                @endif
-            </div>
-
-            <!-- KOLOM KANAN: LACAK STATUS -->
-            <div class="lg:col-span-1 space-y-8">
-                <!-- Widget Cek Status -->
-                <div class="bg-gradient-to-br from-[#1B1464] to-blue-900 rounded-2xl shadow-xl p-6 md:p-8 text-white relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-4 opacity-10">
-                        <svg class="w-24 h-24" fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    </div>
-
-                    <h3 class="text-xl font-bold mb-2 relative z-10 text-[#FDE01A]">Lacak Pengaduan</h3>
-                    <p class="text-sm text-blue-100 mb-6 relative z-10">Masukkan nomor tiket untuk melihat perkembangan tindak lanjut pengaduan Anda.</p>
-
-                    <form wire:submit.prevent="checkStatus" class="relative z-10">
-                        <div class="mb-4">
-                            <input type="text" wire:model="searchTicket" placeholder="Contoh: ADU-2026..." class="w-full px-4 py-3 rounded-xl bg-white text-gray-900 outline-none focus:ring-4 focus:ring-[#FDE01A]/50 transition-all uppercase shadow-inner">
-                            @error('searchTicket') <span class="text-red-300 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
-                        <button type="submit" class="w-full bg-[#FDE01A] text-[#1B1464] font-black py-3 rounded-xl hover:bg-yellow-400 outline-none focus:ring-4 focus:ring-yellow-500/50 transition-all shadow-md">
-                            Cek Status Tiket
-                        </button>
-                    </form>
+                    @else
+                        <div class="overflow-hidden rounded-3xl border border-line bg-surface shadow-[var(--shadow-soft)]">
+                            <div class="h-1.5 w-full bg-unmaris-yellow" aria-hidden="true"></div>
+                            <div class="p-6 sm:p-8 md:p-10">
+                                <span class="eyebrow">Formulir Pengaduan</span>
+                                <h2 class="mt-3 heading-2">Sampaikan laporan Anda</h2>
+                                <p class="mt-2 text-sm leading-relaxed text-body">
+                                    Lengkapi data berikut agar laporan dapat ditindaklanjuti dengan tepat.
+                                </p>
 
-                    <!-- Error Alert -->
-                    @if($searchError)
-                        <div class="mt-4 bg-red-500/20 border border-red-400/50 rounded-xl p-3 text-sm text-white">
-                            {{ $searchError }}
+                                <form wire:submit.prevent="submit" class="mt-7 space-y-5">
+                                    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
+                                        <div>
+                                            <label for="aduan-nama" class="form-label">
+                                                Nama Lengkap <span class="text-ember" aria-hidden="true">*</span>
+                                            </label>
+                                            <input id="aduan-nama" type="text" wire:model="name" autocomplete="name" required
+                                                aria-required="true"
+                                                aria-invalid="{{ $errors->has('name') ? 'true' : 'false' }}"
+                                                aria-describedby="{{ $errors->has('name') ? 'aduan-nama-error' : '' }}"
+                                                class="form-input {{ $errors->has('name') ? 'border-ember focus:border-ember' : '' }}"
+                                                placeholder="Masukkan nama Anda">
+                                            @error('name') <span id="aduan-nama-error" class="form-error">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="aduan-email" class="form-label">
+                                                Alamat Email <span class="text-ember" aria-hidden="true">*</span>
+                                            </label>
+                                            <input id="aduan-email" type="email" wire:model="email" autocomplete="email" required
+                                                aria-required="true"
+                                                aria-invalid="{{ $errors->has('email') ? 'true' : 'false' }}"
+                                                aria-describedby="{{ $errors->has('email') ? 'aduan-email-error' : '' }}"
+                                                class="form-input {{ $errors->has('email') ? 'border-ember focus:border-ember' : '' }}"
+                                                placeholder="email@contoh.com">
+                                            @error('email') <span id="aduan-email-error" class="form-error">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="aduan-telepon" class="form-label">Nomor Telepon/WA</label>
+                                            <input id="aduan-telepon" type="tel" wire:model="phone" autocomplete="tel"
+                                                aria-invalid="{{ $errors->has('phone') ? 'true' : 'false' }}"
+                                                aria-describedby="{{ $errors->has('phone') ? 'aduan-telepon-error' : '' }}"
+                                                class="form-input {{ $errors->has('phone') ? 'border-ember focus:border-ember' : '' }}"
+                                                placeholder="0812xxxx">
+                                            @error('phone') <span id="aduan-telepon-error" class="form-error">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="aduan-kategori" class="form-label">
+                                                Kategori Pengaduan <span class="text-ember" aria-hidden="true">*</span>
+                                            </label>
+                                            <select id="aduan-kategori" wire:model="category" required aria-required="true"
+                                                aria-invalid="{{ $errors->has('category') ? 'true' : 'false' }}"
+                                                aria-describedby="{{ $errors->has('category') ? 'aduan-kategori-error' : '' }}"
+                                                class="form-input {{ $errors->has('category') ? 'border-ember focus:border-ember' : '' }}">
+                                                <option value="">Pilih kategori…</option>
+                                                <option value="akademik">Akademik &amp; Perkuliahan</option>
+                                                <option value="fasilitas">Fasilitas Kampus</option>
+                                                <option value="layanan">Layanan Kemahasiswaan</option>
+                                                <option value="keuangan">Administrasi Keuangan</option>
+                                                <option value="lainnya">Lainnya</option>
+                                            </select>
+                                            @error('category') <span id="aduan-kategori-error" class="form-error">{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label for="aduan-subjek" class="form-label">
+                                            Perihal / Subjek <span class="text-ember" aria-hidden="true">*</span>
+                                        </label>
+                                        <input id="aduan-subjek" type="text" wire:model="subject" required
+                                            aria-required="true"
+                                            aria-invalid="{{ $errors->has('subject') ? 'true' : 'false' }}"
+                                            aria-describedby="{{ $errors->has('subject') ? 'aduan-subjek-error' : '' }}"
+                                            class="form-input {{ $errors->has('subject') ? 'border-ember focus:border-ember' : '' }}"
+                                            placeholder="Contoh: Proyektor di Ruang A1 Rusak">
+                                        @error('subject') <span id="aduan-subjek-error" class="form-error">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    <div>
+                                        <label for="aduan-isi" class="form-label">
+                                            Isi Pengaduan <span class="text-ember" aria-hidden="true">*</span>
+                                        </label>
+                                        <textarea id="aduan-isi" wire:model="content" rows="6" required
+                                            aria-required="true"
+                                            aria-invalid="{{ $errors->has('content') ? 'true' : 'false' }}"
+                                            aria-describedby="{{ $errors->has('content') ? 'aduan-isi-error' : '' }}"
+                                            class="form-input resize-y {{ $errors->has('content') ? 'border-ember focus:border-ember' : '' }}"
+                                            placeholder="Ceritakan detail keluhan atau aspirasi Anda di sini…"></textarea>
+                                        @error('content') <span id="aduan-isi-error" class="form-error">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    <div>
+                                        <span class="form-label" id="aduan-lampiran-label">
+                                            Lampiran Bukti <span class="font-normal text-muted">(opsional)</span>
+                                        </span>
+                                        <div class="flex flex-col gap-3 rounded-xl border border-dashed border-line-strong bg-surface-2/60 p-4 transition has-[:focus-visible]:border-unmaris-blue has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-unmaris-blue/20 sm:flex-row sm:items-center sm:justify-between">
+                                            <div class="min-w-0">
+                                                <p class="truncate text-[13px] font-semibold text-ink">
+                                                    {{ $attachment ? $attachment->getClientOriginalName() : 'Belum ada berkas dipilih' }}
+                                                </p>
+                                                <p id="aduan-lampiran-bantuan" class="mt-1 text-[11px] leading-relaxed text-muted">
+                                                    Maksimal 2MB. Format: JPG, PNG, atau PDF.
+                                                </p>
+                                            </div>
+
+                                            <div class="flex shrink-0 items-center gap-2">
+                                                <label for="aduan-lampiran"
+                                                    class="btn-outline btn-sm cursor-pointer">
+                                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                                                    </svg>
+                                                    Pilih Berkas
+                                                </label>
+
+                                                @if ($attachment)
+                                                    <button type="button" wire:click="$set('attachment', null)"
+                                                        class="btn-ghost btn-sm">Hapus</button>
+                                                @endif
+                                            </div>
+
+                                            <input id="aduan-lampiran" type="file" wire:model="attachment"
+                                                accept=".jpg,.jpeg,.png,.pdf"
+                                                aria-labelledby="aduan-lampiran-label"
+                                                aria-invalid="{{ $errors->has('attachment') ? 'true' : 'false' }}"
+                                                aria-describedby="aduan-lampiran-bantuan{{ $errors->has('attachment') ? ' aduan-lampiran-error' : '' }}"
+                                                class="sr-only">
+                                        </div>
+
+                                        <div wire:loading wire:target="attachment" class="mt-2 text-[13px] font-semibold text-brand-ink" role="status">
+                                            Sedang mengunggah berkas…
+                                        </div>
+                                        @error('attachment') <span id="aduan-lampiran-error" class="form-error">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    <div class="space-y-5 border-t border-line pt-5">
+                                        <div>
+                                            <label for="aduan-captcha" class="form-label">
+                                                Verifikasi Keamanan <span class="text-ember" aria-hidden="true">*</span>
+                                            </label>
+                                            <div class="flex flex-wrap items-center gap-3 sm:flex-nowrap">
+                                                <span class="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-line bg-surface-2 px-4 text-sm font-bold text-ink sm:w-auto">
+                                                    Berapa hasil dari {{ $num1 }} + {{ $num2 }}?
+                                                </span>
+                                                <input id="aduan-captcha" type="number" wire:model="captcha" required
+                                                    aria-required="true"
+                                                    aria-invalid="{{ $errors->has('captcha') ? 'true' : 'false' }}"
+                                                    aria-describedby="aduan-captcha-bantuan{{ $errors->has('captcha') ? ' aduan-captcha-error' : '' }}"
+                                                    class="form-input w-full text-center sm:w-24 {{ $errors->has('captcha') ? 'border-ember focus:border-ember' : '' }}"
+                                                    placeholder="?">
+                                            </div>
+                                            <p id="aduan-captcha-bantuan" class="form-help">Ketikkan angka jawaban untuk membuktikan Anda bukan robot.</p>
+                                            @error('captcha') <span id="aduan-captcha-error" class="form-error">{{ $message }}</span> @enderror
+                                        </div>
+
+                                        <div>
+                                            <label for="aduan-persetujuan"
+                                                class="flex cursor-pointer items-start gap-3 rounded-2xl border border-line bg-surface-2/60 p-4 transition hover:border-line-strong">
+                                                <input id="aduan-persetujuan" type="checkbox" wire:model="consent"
+                                                    aria-required="true"
+                                                    aria-invalid="{{ $errors->has('consent') ? 'true' : 'false' }}"
+                                                    aria-describedby="{{ $errors->has('consent') ? 'aduan-persetujuan-error' : '' }}"
+                                                    class="mt-0.5 h-5 w-5 shrink-0 cursor-pointer rounded border-line-strong accent-unmaris-blue">
+                                                <span class="text-[13px] leading-relaxed text-body">
+                                                    Saya menyatakan bahwa informasi yang saya berikan adalah benar dan saya
+                                                    bertanggung jawab penuh atas isi pengaduan ini sesuai ketentuan yang berlaku.
+                                                    <span class="font-bold text-ember" aria-hidden="true">*</span>
+                                                </span>
+                                            </label>
+                                            @error('consent') <span id="aduan-persetujuan-error" class="form-error">{{ $message }}</span> @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col gap-3 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
+                                        <p class="text-[11px] leading-relaxed text-muted">
+                                            Data diri dan laporan Anda dijaga kerahasiaannya.
+                                        </p>
+
+                                        <button type="submit" wire:loading.attr="disabled" wire:target="submit" class="btn-primary">
+                                            <span wire:loading.remove wire:target="submit" class="inline-flex items-center gap-2">
+                                                Kirim Pengaduan
+                                                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                </svg>
+                                            </span>
+                                            <span wire:loading wire:target="submit" class="inline-flex items-center gap-2">
+                                                <span class="h-4 w-4 animate-spin rounded-full border-2 border-[#1b0f52]/30 border-t-[#1b0f52] motion-reduce:animate-none" aria-hidden="true"></span>
+                                                Memproses…
+                                            </span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     @endif
                 </div>
 
-                <!-- Hasil Lacak -->
-                @if($trackedComplaint)
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                        <div class="flex justify-between items-start mb-4 border-b pb-4">
-                            <div>
-                                <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Status Tiket</p>
-                                <h4 class="text-lg font-bold text-[#1B1464]">{{ $trackedComplaint->ticket_number }}</h4>
-                            </div>
-                            
-                            <!-- Badges Status -->
-                            @if($trackedComplaint->status === 'pending')
-                                <span class="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-bold border border-gray-200">Pending</span>
-                            @elseif($trackedComplaint->status === 'process')
-                                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold border border-yellow-200">Diproses</span>
-                            @elseif($trackedComplaint->status === 'resolved')
-                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold border border-green-200">Selesai</span>
-                            @else
-                                <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold border border-red-200">Ditolak</span>
-                            @endif
-                        </div>
+                <!-- Lacak status -->
+                <aside class="space-y-5 lg:col-span-4">
+                    <div class="relative overflow-hidden rounded-3xl bg-navy-deep p-6 text-white shadow-[var(--shadow-soft)] md:p-7">
+                        <div class="pointer-events-none absolute inset-0 hero-grid opacity-60" aria-hidden="true"></div>
+                        <div class="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-unmaris-yellow/20 blur-2xl" aria-hidden="true"></div>
 
-                        <div class="space-y-3 text-sm">
-                            <div>
-                                <span class="text-gray-500 block">Kategori:</span>
-                                <span class="font-semibold text-gray-800 capitalize">{{ $trackedComplaint->category }}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-500 block">Perihal:</span>
-                                <span class="font-semibold text-gray-800">{{ $trackedComplaint->subject }}</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-500 block">Tanggal Lapor:</span>
-                                <span class="font-semibold text-gray-800">{{ $trackedComplaint->created_at->format('d M Y, H:i') }}</span>
-                            </div>
-                        </div>
+                        <div class="relative">
+                            <span class="eyebrow-light mb-3">Lacak Pengaduan</span>
+                            <h2 class="font-display text-xl font-bold leading-tight text-white">Cek status tiket</h2>
+                            <p class="mt-2 text-sm leading-relaxed text-white/65">
+                                Masukkan nomor tiket untuk melihat perkembangan tindak lanjut pengaduan Anda.
+                            </p>
 
-                        <!-- Balasan Admin -->
-                        <div class="mt-6 pt-4 border-t">
-                            <span class="text-xs text-gray-500 font-medium uppercase tracking-wider block mb-2">Tanggapan Rektorat / Admin:</span>
-                            @if($trackedComplaint->admin_response)
-                                <div class="bg-blue-50 p-4 rounded-xl text-sm text-gray-700 border border-blue-100 italic">
-                                    "{{ $trackedComplaint->admin_response }}"
-                                </div>
-                            @else
-                                <div class="bg-gray-50 p-4 rounded-xl text-sm text-gray-500 border border-gray-100 text-center">
-                                    Belum ada tanggapan untuk tiket ini.
+                            <form wire:submit.prevent="checkStatus" class="mt-5">
+                                <label for="lacak-tiket" class="sr-only">Nomor tiket pengaduan</label>
+                                <input id="lacak-tiket" type="text" wire:model="searchTicket" required
+                                    aria-required="true"
+                                    aria-invalid="{{ $errors->has('searchTicket') ? 'true' : 'false' }}"
+                                    aria-describedby="{{ $errors->has('searchTicket') ? 'lacak-tiket-error' : '' }}"
+                                    placeholder="Contoh: ADU-2026…"
+                                    class="form-input min-h-12 border-white/20 bg-white/10 text-white placeholder:text-white/45 focus:border-unmaris-yellow uppercase">
+                                @error('searchTicket') <span id="lacak-tiket-error" class="mt-1.5 block text-[11px] font-semibold text-unmaris-yellow">{{ $message }}</span> @enderror
+
+                                <button type="submit" class="btn-primary mt-3 w-full">Cek Status Tiket</button>
+                            </form>
+
+                            @if ($searchError)
+                                <div class="mt-4 rounded-xl border border-ember/40 bg-ember/15 p-3 text-[12px] leading-relaxed text-white" role="alert">
+                                    {{ $searchError }}
                                 </div>
                             @endif
                         </div>
                     </div>
-                @endif
 
-                <!-- Info Box -->
-                <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                    <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        Keamanan & Privasi
-                    </h4>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        Data diri dan laporan Anda akan dijaga kerahasiaannya. Mohon gunakan bahasa yang sopan dan lengkapi dengan bukti valid agar laporan Anda dapat segera ditindaklanjuti.
-                    </p>
-                </div>
+                    @if ($trackedComplaint)
+                        <div class="rounded-3xl border border-line bg-surface p-6 shadow-[var(--shadow-soft)]">
+                            <div class="flex items-start justify-between gap-3 border-b border-line pb-4">
+                                <div class="min-w-0">
+                                    <p class="text-[10px] font-extrabold uppercase tracking-[0.14em] text-muted">Status Tiket</p>
+                                    <h3 class="mt-1 break-all font-display text-lg font-bold text-brand-ink">{{ $trackedComplaint->ticket_number }}</h3>
+                                </div>
+
+                                @php
+                                    $statusMap = [
+                                        'pending' => ['label' => 'Pending', 'class' => 'border-line bg-surface-2 text-body'],
+                                        'process' => ['label' => 'Diproses', 'class' => 'border-unmaris-yellow/60 bg-unmaris-yellow/20 text-brand-ink'],
+                                        'resolved' => ['label' => 'Selesai', 'class' => 'border-leaf/30 bg-leaf/10 text-leaf'],
+                                    ];
+                                    $statusStyle = $statusMap[$trackedComplaint->status] ?? ['label' => 'Ditolak', 'class' => 'border-ember/30 bg-ember/10 text-ember'];
+                                @endphp
+                                <span class="shrink-0 rounded-full border px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.06em] {{ $statusStyle['class'] }}">
+                                    {{ $statusStyle['label'] }}
+                                </span>
+                            </div>
+
+                            <dl class="mt-4 space-y-3 text-sm">
+                                <div>
+                                    <dt class="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">Kategori</dt>
+                                    <dd class="mt-0.5 font-semibold capitalize text-ink">{{ $trackedComplaint->category }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">Perihal</dt>
+                                    <dd class="mt-0.5 font-semibold text-ink">{{ $trackedComplaint->subject }}</dd>
+                                </div>
+                                <div>
+                                    <dt class="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">Tanggal Lapor</dt>
+                                    <dd class="mt-0.5 font-semibold text-ink">
+                                        {{ $trackedComplaint->created_at->copy()->locale('id')->translatedFormat('d F Y, H:i') }}
+                                    </dd>
+                                </div>
+                            </dl>
+
+                            <div class="mt-5 border-t border-line pt-4">
+                                <p class="text-[10px] font-extrabold uppercase tracking-[0.12em] text-muted">Tanggapan Admin</p>
+                                @if ($trackedComplaint->admin_response)
+                                    <div class="mt-2 rounded-2xl border border-unmaris-blue/20 bg-unmaris-blue/5 p-4 text-[13px] italic leading-relaxed text-body">
+                                        &ldquo;{{ $trackedComplaint->admin_response }}&rdquo;
+                                    </div>
+                                @else
+                                    <div class="mt-2 rounded-2xl border border-dashed border-line-strong bg-surface-2/60 p-4 text-center text-[13px] text-muted">
+                                        Belum ada tanggapan untuk tiket ini.
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                    @endif
+
+                    <div class="rounded-3xl border border-line bg-surface p-6">
+                        <div class="flex items-center gap-2.5">
+                            <span class="grid h-9 w-9 place-items-center rounded-lg bg-unmaris-yellow text-[#1b0f52]">
+                                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </span>
+                            <h2 class="text-sm font-bold text-ink">Keamanan &amp; Privasi</h2>
+                        </div>
+                        <p class="mt-3 text-[13px] leading-relaxed text-body">
+                            Data diri dan laporan Anda akan dijaga kerahasiaannya. Mohon gunakan bahasa yang sopan dan
+                            lengkapi dengan bukti valid agar laporan dapat segera ditindaklanjuti.
+                        </p>
+                    </div>
+                </aside>
             </div>
-
         </div>
-    </div>
+    </section>
 </div>
